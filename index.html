@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>BSB Düsseldorf 🇩🇪</title>
+<style>
+:root{
+  --bg:#0a0e1a;--bg2:#11172a;
+  --card:#151b2f;--line:rgba(255,255,255,.09);
+  --ink:#f2f4fa;--muted:#9aa4bf;
+  --gold:#e8b95f;--gold2:#c98a2e;
+  --coral:#ff8a68;--coral2:#e15a63;
+  --sky:#5aa9ff;--sky2:#2f6fd6;
+  --violet:#b09bff;--violet2:#7c63e0;
+  --acc:var(--gold);--acc2:var(--gold2);--acc-ink:#241705;
+  --ok:#57d38c;--warn:#ffcf5c;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;color:var(--ink);
+  font-family:'Manrope',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  line-height:1.5;
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(900px 500px at 10% -8%, rgba(232,185,95,.16), transparent 60%),
+    radial-gradient(700px 500px at 95% 10%, rgba(255,138,104,.12), transparent 60%),
+    radial-gradient(900px 700px at 50% 110%, rgba(90,169,255,.10), transparent 60%);
+  background-attachment:fixed;
+  background-repeat:no-repeat;
+  transition:color .3s;
+}
+body.acc-marina{--acc:var(--coral);--acc2:var(--coral2);--acc-ink:#2a0e08}
+body.acc-logistica{--acc:var(--sky);--acc2:var(--sky2);--acc-ink:#04162e}
+body.acc-mapas{--acc:var(--violet);--acc2:var(--violet2);--acc-ink:#160c33}
+
+h1,h2,.day,.brand,.nav button b{font-family:'Bebas Neue',Impact,sans-serif;letter-spacing:.03em}
+
+header{
+  position:relative;overflow:hidden;
+  background:linear-gradient(165deg,#0d1122 0%,#151a30 55%,#1a1330 100%);
+  padding:34px 20px 26px;border-radius:0 0 30px 30px;
+  box-shadow:0 20px 40px -20px rgba(0,0,0,.6);
+}
+.stage-art{position:absolute;inset:0;width:100%;height:100%}
+.stage-art .tw{animation:tw 2.6s ease-in-out infinite}
+.stage-art .tw2{animation:tw 3.4s ease-in-out infinite .6s}
+.stage-art .tw3{animation:tw 4s ease-in-out infinite 1.2s}
+@keyframes tw{0%,100%{opacity:.25}50%{opacity:.9}}
+.hdr-inner{position:relative;z-index:1}
+.brand{display:flex;align-items:center;gap:10px;color:#d9deee;font-size:13px;letter-spacing:.18em;opacity:.75;font-family:'Manrope';font-weight:700;text-transform:uppercase}
+.brand .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px 2px rgba(232,185,95,.7)}
+h1{margin:6px 0 0;font-size:44px;color:#fff;line-height:1;text-shadow:0 2px 18px rgba(0,0,0,.5)}
+.sub{opacity:.82;margin-top:8px;font-size:14.5px;color:#cfd4e6}
+
+main{max-width:720px;margin:auto;padding:16px 14px 44px}
+
+.nav{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:-16px;position:relative;z-index:2}
+.nav button{
+  position:relative;cursor:pointer;border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+  padding:16px 10px 13px;border-radius:18px;color:var(--ink);
+  font-family:'Manrope';font-weight:800;font-size:14px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  box-shadow:0 8px 20px -10px rgba(0,0,0,.5);
+  transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.nav button:active{transform:scale(.96)}
+.nav button .ic{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:17px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.15)}
+.nav button[data-t="plan"] .ic{background:radial-gradient(circle at 35% 30%,#f6d38f,var(--gold2))}
+.nav button[data-t="marina"] .ic{background:radial-gradient(circle at 35% 30%,#ffb199,var(--coral2))}
+.nav button[data-t="logistica"] .ic{background:radial-gradient(circle at 35% 30%,#9fc7ff,var(--sky2))}
+.nav button[data-t="mapas"] .ic{background:radial-gradient(circle at 35% 30%,#d4c8ff,var(--violet2))}
+.nav button.active{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc),0 10px 24px -10px rgba(0,0,0,.6)}
+
+section{display:none}.active{display:block}
+
+.hero{position:relative;overflow:hidden;border-radius:20px;padding:18px;margin:16px 0;border:1px solid var(--line);background:var(--card)}
+.hero b{font-size:15px}
+.hero-plain{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.015));}
+.tower-hero{min-height:230px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:18px}
+.tower-hero .tower-art{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.tower-hero .htxt{position:relative;z-index:1;text-shadow:0 2px 10px rgba(0,0,0,.55)}
+.tower-hero .htxt b{font-size:16px;display:block;margin-bottom:4px}
+.blink{animation:blink 1.6s steps(2,jump-none) infinite}
+@keyframes blink{50%{opacity:.15}}
+
+.day{display:flex;align-items:center;gap:10px;margin:24px 2px 10px;font-size:20px;color:var(--ink);text-transform:uppercase}
+.day::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 4px rgba(255,255,255,.06)}
+.day::after{content:"";flex:1;height:2px;background:linear-gradient(90deg,var(--acc),transparent)}
+
+.card{
+  position:relative;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
+  border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0;
+  box-shadow:0 10px 24px -16px rgba(0,0,0,.7);
+}
+.time{font-family:'Bebas Neue';font-size:18px;letter-spacing:.04em;color:var(--acc)}
+.place{font-weight:800;margin-top:3px;font-size:15.5px}
+.small{color:var(--muted);font-size:13.6px;margin-top:2px}
+.tag{display:inline-block;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid var(--line);font-size:11.5px;font-weight:700;margin:6px 5px 0 0;color:#dfe3f0}
+
+.marina{border-left:4px solid var(--acc)}
+.warn{background:linear-gradient(180deg,rgba(255,207,92,.14),rgba(255,207,92,.03));border-color:rgba(255,207,92,.35)}
+.ok{background:linear-gradient(180deg,rgba(87,211,140,.16),rgba(87,211,140,.03));border-color:rgba(87,211,140,.35)}
+ul{padding-left:20px;margin:8px 0 0}
+li{margin:3px 0}
+
+.mapbox{position:relative;overflow:hidden;padding:18px;border-radius:20px;background:linear-gradient(160deg,#10162a,#171029);color:#fff;margin:16px 0;border:1px solid var(--line)}
+.mapbox .grid{position:absolute;inset:0;opacity:.5}
+.mapbox b{position:relative;z-index:1;font-size:15px}
+.mapbox .small{position:relative;z-index:1;display:block;margin-top:6px;color:#c3c8de}
+
+.btn{
+  position:relative;display:flex;align-items:center;justify-content:center;gap:6px;
+  text-align:center;text-decoration:none;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  color:var(--acc-ink);padding:13px 16px;border-radius:13px;font-weight:800;font-size:14.5px;
+  margin-top:12px;box-shadow:0 10px 20px -8px rgba(0,0,0,.5);
+  transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+.btn::after{content:"→";font-weight:900;opacity:.75;transition:transform .15s ease}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.btn:hover::after{transform:translateX(3px)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn.alt{
+  background:rgba(255,255,255,.06);color:var(--ink);
+  border:1px solid var(--line);box-shadow:none;
+}
+.btn.alt::after{color:var(--acc);opacity:1}
+
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:34px;padding-top:18px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body class="acc-plan">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<symbol id="ic-tower" viewBox="0 0 40 40">
+  <path d="M18 38 L18 22 Q14 20 14 16 Q14 13 20 3 Q26 13 26 16 Q26 20 22 22 L22 38 Z" fill="currentColor"/>
+  <circle cx="20" cy="3" r="1.6" fill="#ff5a5a"/>
+</symbol>
+</defs>
+</svg>
+
+<header>
+<svg class="stage-art" viewBox="0 0 800 320" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+  <defs>
+    <radialGradient id="spotA" cx="30%" cy="0%" r="80%"><stop offset="0%" stop-color="#f6d38f" stop-opacity=".5"/><stop offset="100%" stop-color="#f6d38f" stop-opacity="0"/></radialGradient>
+    <radialGradient id="spotB" cx="75%" cy="0%" r="80%"><stop offset="0%" stop-color="#ff9db6" stop-opacity=".35"/><stop offset="100%" stop-color="#ff9db6" stop-opacity="0"/></radialGradient>
+    <linearGradient id="truss" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#e8b95f"/><stop offset="50%" stop-color="#ff9db6"/><stop offset="100%" stop-color="#9fc7ff"/></linearGradient>
+  </defs>
+  <rect width="800" height="320" fill="url(#spotA)"/>
+  <rect width="800" height="320" fill="url(#spotB)"/>
+  <polygon points="90,0 40,320 140,320" fill="#fff" opacity=".035"/>
+  <polygon points="250,0 190,320 300,320" fill="#fff" opacity=".05"/>
+  <polygon points="560,0 500,320 620,320" fill="#fff" opacity=".045"/>
+  <polygon points="720,0 660,320 780,320" fill="#fff" opacity=".03"/>
+  <circle class="tw" cx="60" cy="30" r="2" fill="#fff"/>
+  <circle class="tw2" cx="140" cy="55" r="1.6" fill="#fff"/>
+  <circle class="tw3" cx="230" cy="20" r="2" fill="#fff"/>
+  <circle class="tw" cx="360" cy="45" r="1.4" fill="#fff"/>
+  <circle class="tw2" cx="470" cy="15" r="2" fill="#fff"/>
+  <circle class="tw3" cx="600" cy="40" r="1.6" fill="#fff"/>
+  <circle class="tw" cx="700" cy="60" r="1.8" fill="#fff"/>
+  <circle class="tw2" cx="760" cy="25" r="1.4" fill="#fff"/>
+  <rect x="20" y="14" width="760" height="6" rx="3" fill="url(#truss)" opacity=".8"/>
+  <g fill="#0a0e1a" opacity=".9">
+    <ellipse cx="40" cy="330" rx="46" ry="26"/><ellipse cx="120" cy="336" rx="52" ry="28"/>
+    <ellipse cx="210" cy="330" rx="48" ry="26"/><ellipse cx="300" cy="338" rx="55" ry="28"/>
+    <ellipse cx="390" cy="330" rx="46" ry="26"/><ellipse cx="470" cy="336" rx="52" ry="28"/>
+    <ellipse cx="560" cy="330" rx="48" ry="26"/><ellipse cx="650" cy="338" rx="55" ry="28"/>
+    <ellipse cx="740" cy="330" rx="50" ry="26"/>
+  </g>
+</svg>
+<div class="hdr-inner">
+<div class="brand"><span class="dot"></span>DNA World Tour · Düsseldorf</div>
+<h1>BSB Düsseldorf</h1>
+<div class="sub">Planning del viaje · grupo de 8 · ruta especial de Marina</div>
+</div>
+</header>
+<main>
+<div class="nav">
+<button class="active" data-t="plan" onclick="show(this,'plan')"><span class="ic">📅</span>Planning</button>
+<button data-t="marina" onclick="show(this,'marina')"><span class="ic">👩</span>Marina</button>
+<button data-t="logistica" onclick="show(this,'logistica')"><span class="ic">🚆</span>Logística</button>
+<button data-t="mapas" onclick="show(this,'mapas')"><span class="ic">🗺️</span>Maps</button>
+</div>
+
+<section id="plan" class="active">
+<div class="hero hero-plain"><b>Resumen</b><br>Jerez → Sevilla → Ámsterdam → Düsseldorf → Sevilla → Jerez</div>
+
+<div class="day">DÍA 1 · Jerez → Ámsterdam</div>
+<div class="card"><div class="time">17:45–18:00</div><div class="place">🚐 Salida Jerez → Sevilla</div><div class="small">Furgoneta propia por A-4/AP-4 · aprox. 1 h 15 min.</div></div>
+<div class="card"><div class="time">19:00–19:15</div><div class="place">🅿️ Parking Apparkya 24Plus</div><div class="small">Aparcar y usar la lanzadera gratuita a la terminal (aprox. 3 min).</div><a class="btn alt" href="https://apparkya.com/parking/parking-aeropuerto-sevilla-24plus">Abrir Apparkya</a></div>
+<div class="card"><div class="time">20:10–23:05</div><div class="place">✈️ Sevilla (SVQ) → Ámsterdam (AMS)</div><div class="small">Llegada a Schiphol.</div></div>
+<div class="card"><div class="time">Noche</div><div class="place">🌙 Escala nocturna en Schiphol</div><div class="small">Pernocta dentro de la terminal.</div></div>
+
+<div class="day">DÍA 2 · Ámsterdam → Düsseldorf</div>
+<div class="card"><div class="time">06:55–07:40</div><div class="place">✈️ Ámsterdam (AMS) → Düsseldorf (DUS)</div></div>
+<div class="card"><div class="time">08:15–08:45</div><div class="place">🚐 Aeropuerto → hotel</div><div class="small">Minibús 8 pax pre-reservado o 2 taxis/Uber XL · 20–25 min.</div></div>
+<div class="card"><div class="time">09:00</div><div class="place">🏨 HK Hotel Düsseldorf City</div><div class="small">Dejar equipaje en consigna. Check-in oficial: 15:00.</div></div>
+<div class="card"><div class="time">09:30–15:00</div><div class="place">🚶 Mañana libre</div><div class="small">Desayuno y paseo por Altstadt o el Rin.</div></div>
+<div class="card"><div class="time">15:00</div><div class="place">🏨 Check-in y descanso</div></div>
+
+<div class="day">DÍA 3 · CONCIERTO BSB</div>
+<div class="card"><div class="time">Mañana–mediodía</div><div class="place">📍 Turismo + almuerzo</div><div class="small">Mañana y mediodía libres.</div></div>
+<div class="card"><div class="time">18:00–18:30</div><div class="place">🚋 Hotel → MERKUR SPIEL-ARENA</div><div class="small">Tranvía a Heinrich-Heine-Allee + U78 al estadio. El planning indica uso gratuito con KombiTicket.</div></div>
+<div class="card"><div class="time">20:00</div><div class="place">🎤 Backstreet Boys · MERKUR SPIEL-ARENA</div><div class="small">Inicio del evento.</div><a class="btn" href="https://www.google.com/maps/search/?api=1&query=MERKUR+SPIEL-ARENA+D%C3%BCsseldorf">📍 Abrir estadio en Maps</a></div>
+<div class="card"><div class="time">~22:30–23:00</div><div class="place">🚆 Estadio → hotel</div><div class="small">U78 de refuerzo continuo tras el evento hacia el centro.</div></div>
+
+<div class="day">DÍA 4 · Düsseldorf → Sevilla → Jerez</div>
+<div class="card"><div class="time">11:00</div><div class="place">🏨 Check-out</div><div class="small">Salida del HK Hotel Düsseldorf City con las maletas.</div></div>
+<div class="card"><div class="time">11:30–12:00</div><div class="place">🚐 Hotel → DUS</div><div class="small">Furgoneta privada o S-Bahn S11. Llegada prevista sobre las 12:30.</div></div>
+<div class="card"><div class="time">15:25–18:20</div><div class="place">✈️ Düsseldorf (DUS) → Sevilla (SVQ)</div><div class="small">Después: lanzadera Apparkya, recogida del vehículo y vuelta a Jerez (~20:15).</div></div>
+</section>
+
+<section id="marina">
+<div class="hero tower-hero">
+<svg class="tower-art" viewBox="0 0 800 460" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1c2148"/><stop offset="45%" stop-color="#5a3566"/><stop offset="78%" stop-color="#d9683f"/><stop offset="100%" stop-color="#f0a24a"/>
+    </linearGradient>
+    <linearGradient id="river" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7c4a52"/><stop offset="100%" stop-color="#241326"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="460" fill="url(#dusk)"/>
+  <circle cx="640" cy="90" r="46" fill="#ffd9a0" opacity=".85"/>
+  <g fill="#140a1e" opacity=".92">
+    <rect x="0" y="330" width="70" height="70"/>
+    <rect x="70" y="300" width="55" height="100"/>
+    <path d="M125 400 L125 330 Q160 300 195 330 Q210 345 195 360 L195 400 Z"/>
+    <rect x="600" y="310" width="60" height="90"/>
+    <rect x="660" y="345" width="45" height="55"/>
+    <path d="M705 400 L705 320 Q735 300 745 330 L745 400 Z"/>
+    <rect x="745" y="355" width="55" height="45"/>
+  </g>
+  <rect y="378" width="800" height="82" fill="url(#river)"/>
+  <path d="M0 385 Q60 380 120 385 T240 385 T360 385 T480 385 T600 385 T720 385 T800 385" stroke="#ffcf9e" stroke-opacity=".18" fill="none" stroke-width="2"/>
+  <path d="M0 405 Q60 400 120 405 T240 405 T360 405 T480 405 T600 405 T720 405 T800 405" stroke="#ffcf9e" stroke-opacity=".12" fill="none" stroke-width="2"/>
+  <g transform="translate(400,0)">
+    <ellipse cx="0" cy="378" rx="34" ry="8" fill="#000" opacity=".35"/>
+    <polygon points="-20,378 -8,205 8,205 20,378" fill="#150c1c"/>
+    <rect x="-4" y="120" width="8" height="90" fill="#150c1c"/>
+    <ellipse cx="0" cy="118" rx="26" ry="17" fill="#1d1226"/>
+    <ellipse cx="0" cy="118" rx="26" ry="17" fill="none" stroke="#ffcf9e" stroke-opacity=".25" stroke-width="1.5"/>
+    <rect x="-2.5" y="40" width="5" height="80" fill="#150c1c"/>
+    <circle cx="0" cy="38" r="4" class="blink" fill="#ff4d4d"/>
+    <circle cx="-10" cy="150" r="2" fill="#ffd9a0" opacity=".8"/>
+    <circle cx="9" cy="170" r="2" fill="#ffd9a0" opacity=".6"/>
+    <circle cx="-6" cy="230" r="2" fill="#ffd9a0" opacity=".7"/>
+    <circle cx="8" cy="270" r="2" fill="#ffd9a0" opacity=".5"/>
+    <g opacity=".25" transform="translate(0,806) scale(1,-1)">
+      <polygon points="-20,378 -8,205 8,205 20,378" fill="#150c1c"/>
+      <rect x="-4" y="120" width="8" height="90" fill="#150c1c"/>
+      <ellipse cx="0" cy="118" rx="26" ry="17" fill="#1d1226"/>
+    </g>
+  </g>
+</svg>
+<div class="htxt"><b>👩 MARINA · mientras el grupo está en el concierto</b>Ruta pensada para recorrer el centro de Düsseldorf a pie y reencontrarse con el grupo a las 22:30 en Heinrich-Heine-Allee.</div>
+</div>
+<div class="card"><div class="time">17:30</div><div class="place">📍 Heinrich-Heine-Allee · salida</div><div class="small">Punto de separación del grupo.</div><a class="btn" href="https://www.google.com/maps/search/?api=1&query=Heinrich-Heine-Allee+D%C3%BCsseldorf">📍 Maps</a></div>
+<div class="card"><div class="time">17:35–18:30</div><div class="place">☕ Café / merienda · Kö-Bogen II</div><div class="small">Caffè Pascucci o Woyton. Zona de Kö-Bogen II.</div><a class="btn alt" href="https://www.google.com/maps/search/?api=1&query=K%C3%B6-Bogen+II+D%C3%BCsseldorf">📍 Kö-Bogen II</a></div>
+<div class="card"><div class="time">18:30–19:30</div><div class="place">🌿 Kö-Bogen II → Carlsplatz</div><div class="small">Paseo y mercado. La guía original reserva aquí la parte central de la ruta.</div><a class="btn alt" href="https://www.google.com/maps/search/?api=1&query=Carlsplatz+D%C3%BCsseldorf">📍 Carlsplatz</a></div>
+<div class="card"><div class="time">19:30–20:00</div><div class="place">🌊 Rheinuferpromenade</div><div class="small">Paseo junto al Rin.</div></div>
+<div class="card"><div class="time">20:00–20:30</div><div class="place">🏢 Gehry Buildings / Neuer Zollhof</div><div class="small">Parada para fotos y arquitectura.</div><a class="btn alt" href="https://www.google.com/maps/search/?api=1&query=Gehry+Bauten+D%C3%BCsseldorf">📍 Gehry Buildings</a></div>
+<div class="card"><div class="time">20:30–21:15</div><div class="place"><svg class="ic-tower" width="16" height="16" viewBox="0 0 40 40" style="vertical-align:-2px;color:var(--acc)"><use href="#ic-tower" xlink:href="#ic-tower"/></svg> Rheinturm</div><div class="small">Subida al mirador para ver Düsseldorf de noche. La guía aportada indica tarifa Late Night de 9 € desde las 20:00; conviene verificar horario/precio para la fecha.</div><a class="btn" href="https://www.google.com/maps/search/?api=1&query=Rheinturm+D%C3%BCsseldorf">📍 Rheinturm</a></div>
+<div class="card"><div class="time">21:15–22:15</div><div class="place">🍺 Altstadt · paseo + algo de comer</div><div class="small">Opción tradicional: Uerige, Berger Straße 1.</div><a class="btn alt" href="https://www.google.com/maps/search/?api=1&query=Uerige+Bergerstra%C3%9Fe+1+D%C3%BCsseldorf">📍 Uerige</a></div>
+<div class="card"><div class="time">22:15–22:30</div><div class="place">🚶 Regreso a Heinrich-Heine-Allee</div><div class="small">Salir con margen para el reencuentro.</div></div>
+<div class="card ok"><div class="time">22:30</div><div class="place">👥 REENCUENTRO CON EL GRUPO</div><div class="small">Heinrich-Heine-Allee.</div><a class="btn" href="https://www.google.com/maps/search/?api=1&query=Heinrich-Heine-Allee+D%C3%BCsseldorf">📍 Punto de encuentro</a></div>
+<div class="mapbox"><b>🗺️ Ruta completa a pie</b><br><span class="small" style="color:#d1d5db">Heinrich-Heine-Allee → Kö-Bogen II → Carlsplatz → Rheinuferpromenade → Gehry Buildings → Rheinturm → Altstadt → Heinrich-Heine-Allee</span>
+<a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=Heinrich-Heine-Allee,+D%C3%BCsseldorf&destination=Heinrich-Heine-Allee,+D%C3%BCsseldorf&travelmode=walking&waypoints=K%C3%B6-Bogen+II,+D%C3%BCsseldorf%7CCarlsplatz,+D%C3%BCsseldorf%7CRheinuferpromenade,+D%C3%BCsseldorf%7CGehry+Bauten,+D%C3%BCsseldorf%7CRheinturm,+D%C3%BCsseldorf%7CAltstadt,+D%C3%BCsseldorf">🗺️ ABRIR RUTA EN GOOGLE MAPS</a></div>
+</section>
+
+<section id="logistica">
+<div class="day">✈️ Aeropuerto ↔ Hotel · 8 personas</div>
+<div class="card"><b>Minibús / furgoneta 8 pax</b><br><span class="small">55–75 € total aprox. · confirmar equipaje.</span><a class="btn alt" href="https://www.holidayextras.com/dusseldorf-airport-transfers.html">Holiday Extras</a></div>
+<div class="card"><b>2 taxis grandes / 2 Uber XL</b><br><span class="small">60–70 € total aprox. · 4 + 4.</span></div>
+<div class="card"><b>Transporte público</b><br><span class="small">S11 + tranvía. El documento indica 30,40 € total billete sencillo o 60,80 € 24 h para el grupo.</span><a class="btn alt" href="https://www.rheinbahn.com">Rheinbahn</a></div>
+<div class="day">🚆 Regreso después del concierto</div>
+<div class="card"><b>U78 de refuerzo</b><br><span class="small">El planning aportado indica trenes de refuerzo continuos tras el evento hacia el centro, sin reserva.</span></div>
+<div class="card"><b>Plan nocturno</b><br><span class="small">Si la noche continúa, el documento menciona NachtExpress/NE hacia la zona de Karolingerstraße / Moorenstraße.</span></div>
+<div class="card warn"><b>⚠️ Pendientes de confirmar</b><ul><li>Fecha exacta del concierto.</li><li>Dirección exacta del HK Hotel Düsseldorf City.</li><li>Horarios/precio de Rheinturm para la fecha.</li><li>Condiciones del KombiTicket.</li><li>Horarios reales de U78/S11 el día del viaje.</li></ul></div>
+</section>
+
+<section id="mapas">
+<div class="mapbox"><b>👩 Ruta Marina</b><a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=Heinrich-Heine-Allee,+D%C3%BCsseldorf&destination=Heinrich-Heine-Allee,+D%C3%BCsseldorf&travelmode=walking&waypoints=K%C3%B6-Bogen+II,+D%C3%BCsseldorf%7CCarlsplatz,+D%C3%BCsseldorf%7CRheinuferpromenade,+D%C3%BCsseldorf%7CGehry+Bauten,+D%C3%BCsseldorf%7CRheinturm,+D%C3%BCsseldorf%7CAltstadt,+D%C3%BCsseldorf">Abrir ruta completa a pie</a></div>
+<div class="card"><b>📍 Heinrich-Heine-Allee</b><a class="btn alt" href="https://www.google.com/maps/search/?api=1&query=Heinrich-Heine-Allee+D%C3%BCsseldorf">Maps</a></div>
+<div class="card"><b>📍 Kö-Bogen II</b><a class="btn alt" href="https://www.google.com/maps/search/?api=1&query=K%C3%B6-Bogen+II+D%C3%BCsseldorf">Maps</a></div>
+<div class="card"><b>📍 Carlsplatz</b><a class="btn alt" href="https://www.google.com/maps/search/?api=1&query=Carlsplatz+D%C3%BCsseldorf">Maps</a></div>
+<div class="card"><b><svg class="ic-tower" width="15" height="15" viewBox="0 0 40 40" style="vertical-align:-2px;color:var(--acc)"><use href="#ic-tower" xlink:href="#ic-tower"/></svg> Rheinturm</b><a class="btn alt" href="https://www.google.com/maps/search/?api=1&query=Rheinturm+D%C3%BCsseldorf">Maps</a></div>
+<div class="card"><b>📍 Uerige</b><a class="btn alt" href="https://www.google.com/maps/search/?api=1&query=Uerige+Bergerstra%C3%9Fe+1+D%C3%BCsseldorf">Maps</a></div>
+</section>
+
+<footer>Planning creado a partir del documento facilitado. Los datos de vuelos, horarios y logística se muestran tal como aparecen en el planning aportado.</footer>
+</main>
+<script>
+function show(btn,id){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.body.className='acc-'+id;
+  window.scrollTo(0,0);
+}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js'))}
+</script>
+</body></html>
