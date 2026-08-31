@@ -183,6 +183,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:34px;paddi
 <div class="sub">Planning del viaje · grupo de 8 · ruta especial de Marina</div>
 </div>
 </header>
+
 <main>
 <div class="nav">
 <button class="active" data-t="plan" onclick="show(this,'plan')"><span class="ic">📅</span>Planning</button>
@@ -288,7 +289,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:34px;paddi
 <div class="card"><div class="time">21:15–22:15</div><div class="place">🍺 Altstadt · paseo + algo de comer</div><div class="small">Opción tradicional: Uerige, Berger Straße 1.</div><a class="btn alt" href="https://www.google.com/maps/search/?api=1&query=Uerige+Bergerstra%C3%9Fe+1+D%C3%BCsseldorf">📍 Uerige</a></div>
 <div class="card"><div class="time">22:15–22:30</div><div class="place">🚶 Regreso a Heinrich-Heine-Allee</div><div class="small">Salir con margen para el reencuentro.</div></div>
 <div class="card ok"><div class="time">22:30</div><div class="place">👥 REENCUENTRO CON EL GRUPO</div><div class="small">Heinrich-Heine-Allee.</div><a class="btn" href="https://www.google.com/maps/search/?api=1&query=Heinrich-Heine-Allee+D%C3%BCsseldorf">📍 Punto de encuentro</a></div>
-<div <div class="mapbox"><b>🗺️ Ruta completa a pie</b><br><span class="small" style="color:#d1d5db">Heinrich-Heine-Allee → Kö-Bogen II → Carlsplatz → Rheinuferpromenade → Gehry Buildings → Rheinturm → Altstadt → Heinrich-Heine-Allee</span>
+<div class="mapbox"><b>🗺️ Ruta completa a pie</b><br><span class="small" style="color:#d1d5db">Heinrich-Heine-Allee → Kö-Bogen II → Carlsplatz → Rheinuferpromenade → Gehry Buildings → Rheinturm → Altstadt → Heinrich-Heine-Allee</span>
 <a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=Heinrich-Heine-Allee,+D%C3%BCsseldorf&destination=Heinrich-Heine-Allee,+D%C3%BCsseldorf&travelmode=walking&waypoints=K%C3%B6-Bogen+II,+D%C3%BCsseldorf%7CCarlsplatz,+D%C3%BCsseldorf%7CRheinuferpromenade,+D%C3%BCsseldorf%7CGehry+Bauten,+D%C3%BCsseldorf%7CRheinturm,+D%C3%BCsseldorf%7CAltstadt,+D%C3%BCsseldorf">🗺️ ABRIR RUTA EN GOOGLE MAPS</a></div>
 </section>
 
@@ -314,6 +315,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:34px;paddi
 
 <footer>Planning actualizado con los datos de salida de Jerez y la reserva del parking 24Plus.</footer>
 </main>
+
 <script>
 function show(btn,id){
   document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
@@ -325,4 +327,5 @@ function show(btn,id){
 }
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js'))}
 </script>
-</body></html>
+</body>
+</html>
