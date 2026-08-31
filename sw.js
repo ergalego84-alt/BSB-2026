@@ -1,4 +1,4 @@
-const CACHE='bsb-dusseldorf-v3';
+const CACHE='bsb-dusseldorf-v4';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg','./sw.js'];
 
 self.addEventListener('install',e=>{
