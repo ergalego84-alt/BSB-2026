@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b0f1c">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -195,8 +195,22 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:34px;paddi
 <div class="hero hero-plain"><b>Resumen</b><br>Jerez → Sevilla → Ámsterdam → Düsseldorf → Sevilla → Jerez</div>
 
 <div class="day">DÍA 1 · Jerez → Ámsterdam</div>
-<div class="card"><div class="time">17:45–18:00</div><div class="place">🚐 Salida Jerez → Sevilla</div><div class="small">Furgoneta propia por A-4/AP-4 · aprox. 1 h 15 min.</div></div>
-<div class="card"><div class="time">19:00–19:15</div><div class="place">🅿️ Parking Apparkya 24Plus</div><div class="small">Aparcar y usar la lanzadera gratuita a la terminal (aprox. 3 min).</div><a class="btn alt" href="https://apparkya.com/parking/parking-aeropuerto-sevilla-24plus">Abrir Apparkya</a></div>
+<div class="card">
+  <div class="time">17:30–17:35</div>
+  <div class="place">🚗 Salida Jerez (La Canaleja) → Sevilla</div>
+  <div class="small">Trayecto por AP-4 (~85 km, 55–60 min). Salida fija a las 17:30 h para llegar al parking entre 18:35 h y 18:40 h (con margen previo a la reserva de las 18:45 h).</div>
+</div>
+
+<div class="card">
+  <div class="time">18:35–18:45</div>
+  <div class="place">🅿️ Parking 24Plus Aeropuerto Sevilla</div>
+  <div class="small">
+    <strong>Ref:</strong> P0000090095 | <strong>Matrícula:</strong> 1935FXH<br>
+    Barriada del Avión 1 (al fondo). Apertura por lectura de matrícula y traslado en vehículo oficial a la terminal.
+  </div>
+  <a class="btn alt" href="https://maps.google.com/?q=Barriada+del+Avi%C3%B3n+1+Sevilla" target="_blank">🗺️ Ubicación Parking</a>
+</div>
+
 <div class="card"><div class="time">20:10–23:05</div><div class="place">✈️ Sevilla (SVQ) → Ámsterdam (AMS)</div><div class="small">Llegada a Schiphol.</div></div>
 <div class="card"><div class="time">Noche</div><div class="place">🌙 Escala nocturna en Schiphol</div><div class="small">Pernocta dentro de la terminal.</div></div>
 
@@ -216,7 +230,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:34px;paddi
 <div class="day">DÍA 4 · Düsseldorf → Sevilla → Jerez</div>
 <div class="card"><div class="time">11:00</div><div class="place">🏨 Check-out</div><div class="small">Salida del HK Hotel Düsseldorf City con las maletas.</div></div>
 <div class="card"><div class="time">11:30–12:00</div><div class="place">🚐 Hotel → DUS</div><div class="small">Furgoneta privada o S-Bahn S11. Llegada prevista sobre las 12:30.</div></div>
-<div class="card"><div class="time">15:25–18:20</div><div class="place">✈️ Düsseldorf (DUS) → Sevilla (SVQ)</div><div class="small">Después: lanzadera Apparkya, recogida del vehículo y vuelta a Jerez (~20:15).</div></div>
+<div class="card"><div class="time">15:25–18:20</div><div class="place">✈️ Düsseldorf (DUS) → Sevilla (SVQ)</div><div class="small">Después: lanzadera 24Plus, recogida del vehículo y vuelta a Jerez (~20:15).</div></div>
 </section>
 
 <section id="marina">
@@ -274,7 +288,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:34px;paddi
 <div class="card"><div class="time">21:15–22:15</div><div class="place">🍺 Altstadt · paseo + algo de comer</div><div class="small">Opción tradicional: Uerige, Berger Straße 1.</div><a class="btn alt" href="https://www.google.com/maps/search/?api=1&query=Uerige+Bergerstra%C3%9Fe+1+D%C3%BCsseldorf">📍 Uerige</a></div>
 <div class="card"><div class="time">22:15–22:30</div><div class="place">🚶 Regreso a Heinrich-Heine-Allee</div><div class="small">Salir con margen para el reencuentro.</div></div>
 <div class="card ok"><div class="time">22:30</div><div class="place">👥 REENCUENTRO CON EL GRUPO</div><div class="small">Heinrich-Heine-Allee.</div><a class="btn" href="https://www.google.com/maps/search/?api=1&query=Heinrich-Heine-Allee+D%C3%BCsseldorf">📍 Punto de encuentro</a></div>
-<div class="mapbox"><b>🗺️ Ruta completa a pie</b><br><span class="small" style="color:#d1d5db">Heinrich-Heine-Allee → Kö-Bogen II → Carlsplatz → Rheinuferpromenade → Gehry Buildings → Rheinturm → Altstadt → Heinrich-Heine-Allee</span>
+<div <div class="mapbox"><b>🗺️ Ruta completa a pie</b><br><span class="small" style="color:#d1d5db">Heinrich-Heine-Allee → Kö-Bogen II → Carlsplatz → Rheinuferpromenade → Gehry Buildings → Rheinturm → Altstadt → Heinrich-Heine-Allee</span>
 <a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=Heinrich-Heine-Allee,+D%C3%BCsseldorf&destination=Heinrich-Heine-Allee,+D%C3%BCsseldorf&travelmode=walking&waypoints=K%C3%B6-Bogen+II,+D%C3%BCsseldorf%7CCarlsplatz,+D%C3%BCsseldorf%7CRheinuferpromenade,+D%C3%BCsseldorf%7CGehry+Bauten,+D%C3%BCsseldorf%7CRheinturm,+D%C3%BCsseldorf%7CAltstadt,+D%C3%BCsseldorf">🗺️ ABRIR RUTA EN GOOGLE MAPS</a></div>
 </section>
 
@@ -298,7 +312,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:34px;paddi
 <div class="card"><b>📍 Uerige</b><a class="btn alt" href="https://www.google.com/maps/search/?api=1&query=Uerige+Bergerstra%C3%9Fe+1+D%C3%BCsseldorf">Maps</a></div>
 </section>
 
-<footer>Planning creado a partir del documento facilitado. Los datos de vuelos, horarios y logística se muestran tal como aparecen en el planning aportado.</footer>
+<footer>Planning actualizado con los datos de salida de Jerez y la reserva del parking 24Plus.</footer>
 </main>
 <script>
 function show(btn,id){
