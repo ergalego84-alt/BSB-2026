@@ -1,0 +1,10 @@
+{
+  "name":"BSB Düsseldorf 🇩🇪",
+  "short_name":"BSB Düsseldorf",
+  "start_url":"./",
+  "display":"standalone",
+  "background_color":"#0a0e1a",
+  "theme_color":"#0b0f1c",
+  "lang":"es",
+  "icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
