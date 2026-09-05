@@ -1,97 +1,458 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#1e293b">
-<title>Planning & Traslados - Düsseldorf</title>
-<style>
-:root{--primary:#1e293b;--accent:#2563eb;--accent-light:#eff6ff;--bg:#f8fafc;--card-bg:#fff;--text:#334155;--text-muted:#64748b;--border:#e2e8f0;--success-bg:#dcfce7;--success-text:#166534}
-*{box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;margin:0;padding:16px}.container{max-width:800px;margin:0 auto}h1{color:var(--primary);font-size:1.6rem;margin-bottom:4px;text-align:center}.subtitle{text-align:center;color:var(--text-muted);font-size:.95rem;margin-bottom:20px}
-.weather-card{background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:15px;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,.05)}.weather-title{font-weight:800;color:var(--primary);font-size:1.05rem}.weather-status{font-size:.86rem;color:var(--text-muted);margin:4px 0 12px}.weather-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.weather-day{background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center}.weather-date{font-weight:800;color:var(--primary);font-size:.82rem}.weather-icon{font-size:1.8rem;margin:4px 0}.weather-temp{font-weight:800;color:var(--accent);font-size:.95rem}.weather-rain{font-size:.78rem;color:var(--text-muted)}.weather-note{font-size:.75rem;color:var(--text-muted);margin-top:10px}
-.day-header{background:var(--primary);color:white;padding:10px 16px;border-radius:8px;font-size:1.1rem;font-weight:700;margin-top:24px;margin-bottom:12px}.card{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.05)}.time{font-weight:700;color:var(--accent);font-size:.9rem}.place{font-weight:600;font-size:1.05rem;color:var(--primary);margin-bottom:4px}.small{font-size:.9rem;color:var(--text-muted)}.btn{display:inline-block;margin-top:8px;margin-right:6px;padding:6px 12px;background:var(--accent);color:white;border-radius:6px;text-decoration:none;font-size:.85rem;font-weight:600}.btn.alt{background:#e2e8f0;color:#1e293b}.section-title{color:var(--primary);font-size:1.3rem;margin-top:40px;margin-bottom:12px;border-bottom:2px solid var(--accent);padding-bottom:6px}.table-container{overflow-x:auto;background:#fff;border-radius:8px;border:1px solid var(--border)}table{width:100%;border-collapse:collapse;font-size:.88rem}th,td{padding:12px;text-align:left;border-bottom:1px solid var(--border)}th{background:var(--accent-light);color:var(--primary);font-weight:700}.tag-rec{display:inline-block;background:var(--success-bg);color:var(--success-text);font-weight:700;padding:2px 6px;border-radius:4px;font-size:.8rem;margin-bottom:4px}.quick-access{margin-top:30px;margin-bottom:25px}.quick-access-title{color:var(--primary);font-size:1.1rem;font-weight:700;margin-bottom:10px}.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.quick-btn{display:flex;align-items:center;justify-content:center;min-height:48px;padding:8px 6px;background:#fff;border:1px solid var(--border);border-radius:8px;color:var(--primary);text-decoration:none;font-size:.82rem;font-weight:700;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-@media(min-width:600px){.quick-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:430px){.weather-grid{grid-template-columns:1fr}.weather-day{display:grid;grid-template-columns:60px 45px 1fr;align-items:center;text-align:left;gap:5px}.weather-icon{margin:0;text-align:center}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Düsseldorf Trip 2026 - Guía de Traslados</title>
+  <style>
+    :root {
+      --bg-main: #0b0f19;
+      --bg-card: #151c2c;
+      --accent-blue: #38bdf8;
+      --accent-purple: #818cf8;
+      --accent-green: #34d399;
+      --accent-amber: #fbbf24;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --border-color: #1e293b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      padding: 24px;
+      line-height: 1.5;
+    }
+
+    .wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      background: linear-gradient(180deg, #0f172a 0%, #0b0f19 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    /* HEADER BANNER CON SILUETA DÜSSELDORF & RHEINTURM */
+    .header {
+      position: relative;
+      background: linear-gradient(135deg, #1e1b4b 0%, #311b92 50%, #0f172a 100%);
+      padding: 40px 32px 80px 32px;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .badge-top {
+      display: inline-block;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-blue);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    .header h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+    }
+
+    /* SKYLINE SVG BACKGROUND */
+    .skyline-svg {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 110px;
+      z-index: 1;
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .content {
+      padding: 32px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 28px;
+      margin-bottom: 16px;
+    }
+
+    .section-title:first-child { margin-top: 0; }
+
+    /* RESERVATION CARD */
+    .reservation-card {
+      background: linear-gradient(135deg, rgba(52, 211, 153, 0.1) 0%, rgba(15, 23, 42, 0.6) 100%);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .res-info h3 {
+      color: var(--accent-green);
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+
+    .res-info p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .res-details {
+      display: flex;
+      gap: 12px;
+    }
+
+    .res-chip {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border-color);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    .res-chip span {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+    }
+
+    .res-chip strong {
+      color: var(--text-primary);
+    }
+
+    /* TIMELINE */
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .time-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .time-card .badge {
+      background: var(--accent-purple);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
+    .time-card h4 { font-size: 0.95rem; margin-bottom: 2px; }
+    .time-card p { font-size: 0.8rem; color: var(--text-secondary); }
+
+    /* CHARTS CONTAINER */
+    .chart-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 28px;
+    }
+
+    .bar-group { margin-bottom: 18px; }
+    .bar-group:last-child { margin-bottom: 0; }
+
+    .bar-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .bar-track {
+      height: 24px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .bar-fill { height: 100%; border-radius: 6px; }
+    .bar-fill.public { background: linear-gradient(90deg, #2563eb, #38bdf8); }
+    .bar-fill.private { background: linear-gradient(90deg, #059669, #34d399); }
+
+    .bar-value {
+      position: absolute;
+      right: 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    }
+
+    /* SUMMARY TABLE */
+    .table-responsive {
+      overflow-x: auto;
+      margin-bottom: 28px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg-card);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    th {
+      background: rgba(15, 23, 42, 0.9);
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.9rem;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .tag-rec {
+      background: rgba(52, 211, 153, 0.15);
+      color: var(--accent-green);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .tag-ticket {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-blue);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    /* FOOTER TIP */
+    .tip-box {
+      background: rgba(251, 191, 36, 0.08);
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .tip-icon { font-size: 1.4rem; line-height: 1; }
+    .tip-content p { font-size: 0.88rem; color: var(--text-secondary); margin-top: 2px; }
+    .tip-content strong { color: var(--accent-amber); }
+  </style>
 </head>
-<body><div class="container">
-<h1>✈️ ITINERARIO & GUÍA DE TRASLADOS</h1><div class="subtitle">Viaje a Düsseldorf · Concierto Backstreet Boys (8 Pax)</div>
+<body>
 
-<section class="weather-card">
-<div class="weather-title">🌤️ TIEMPO EN DÜSSELDORF</div>
-<div id="weatherStatus" class="weather-status">Consultando previsión actualizada…</div>
-<div id="weatherGrid" class="weather-grid"></div>
-<div class="weather-note">La previsión se actualiza automáticamente al abrir la página y se irá haciendo más precisa conforme se acerque el viaje.</div>
-</section>
+<div class="wrapper">
+  <!-- HEADER CON SILUETA RHEINTURM DÜSSELDORF -->
+  <div class="header">
+    <div class="header-content">
+      <span class="badge-top">DÜSSELDORF TRIP 2026</span>
+      <h1>Guía Logística & Traslados</h1>
+      <p>Grupo de 8 Personas · Concierto Backstreet Boys (MERKUR SPIEL-ARENA)</p>
+    </div>
 
-<section id="plan">
-<div class="day-header">DÍA 2 · Jerez → Sevilla → Ámsterdam</div>
-<div class="card"><div class="time">17:00</div><div class="place">🚗 Salida Jerez (La Canaleja) → Sevilla</div><div class="small">Trayecto por AP-4 (~85 km, 55–60 min). Salida a las 17:00 h para llegar con margen y tener la entrada al parking a las 18:45 h.</div></div>
-<div class="card"><div class="time">18:45</div><div class="place">🅿️ Parking 24Plus Aeropuerto Sevilla</div><div class="small"><strong>Ref:</strong> P0000090095 | <strong>Matrícula:</strong> 1935FXH<br><strong>Entrada:</strong> 02/10/2026 · 18:45 h<br><strong>Salida:</strong> 04/10/2026 · 18:45 h<br><br>Barriada del Avión 1 (al fondo). Apertura por lectura de matrícula y traslado en vehículo oficial a la terminal.</div><a class="btn alt" href="https://maps.google.com/?q=Barriada+del+Avi%C3%B3n+1+Sevilla" target="_blank">🗺️ Ubicación Parking</a><a class="btn alt" href="https://drive.google.com/file/d/1XgR5_5L1Sj0b-JIn9M8S0Cj2S5I7xRkG/view?usp=sharing" target="_blank">📄 Reserva en Drive</a></div>
-<div class="card"><div class="time">20:10–23:05</div><div class="place">✈️ Sevilla (SVQ) → Ámsterdam (AMS)</div><div class="small">Llegada a Schiphol.</div></div>
-<div class="card"><div class="time">Noche</div><div class="place">🌙 Escala nocturna en Schiphol</div><div class="small">Pernocta dentro de la terminal.</div></div>
+    <!-- SILUETA SVG DE DÜSSELDORF Y RHEINTURM -->
+    <svg class="skyline-svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path fill="#ffffff" d="M0,120 L0,110 L150,110 L150,105 L220,105 L220,110 L350,110 L350,95 L380,95 L380,110 L450,110 L450,120 Z"></path>
+      <!-- TORRE DEL RIN (RHEINTURM) -->
+      <path fill="#ffffff" d="M520,120 L527,40 L522,35 L522,25 L526,20 L526,0 L528,0 L528,20 L532,25 L532,35 L527,40 L534,120 Z"></path>
+      <path fill="#ffffff" d="M515,32 L539,32 L535,42 L519,42 Z"></path>
+      <!-- PUENTE DEL RIN & EDIFICIOS GEHRY -->
+      <path fill="#ffffff" d="M550,120 L550,85 L590,85 L590,120 M600,120 L600,75 L640,80 L650,120 M680,120 Q750,60 850,110 L850,120 Z"></path>
+      <path fill="#ffffff" d="M850,120 L850,90 L980,90 L980,100 L1200,100 L1200,120 Z"></path>
+    </svg>
+  </div>
 
-<div class="day-header">DÍA 3 · Ámsterdam → Düsseldorf (Concierto BSB)</div>
-<div class="card"><div class="time">06:55–07:40</div><div class="place">✈️ Ámsterdam (AMS) → Düsseldorf (DUS)</div></div>
-<div class="card"><div class="time">08:15–08:45</div><div class="place">🚐 Aeropuerto → hotel</div><div class="small">Minibús 8 pax pre-reservado o 2 taxis/Uber XL · 20–25 min.</div></div>
-<div class="card"><div class="time">09:00</div><div class="place">🏨 HK Hotel Düsseldorf City</div><div class="small">Dejar equipaje en consigna. Check-in oficial: 15:00.</div><a class="btn alt" href="https://maps.app.goo.gl/qhRmbcHaLEYHcJFN6" target="_blank">🗺️ Ubicación Hotel</a></div>
-<div class="card"><div class="time">09:30–15:00</div><div class="place">🚶 Mañana libre</div><div class="small">Desayuno y paseo por Altstadt o el Rin.</div></div>
-<div class="card"><div class="time">15:00</div><div class="place">🏨 Check-in y descanso</div></div>
-<div class="card"><div class="time">18:00–18:30</div><div class="place">🚋 Hotel → MERKUR SPIEL-ARENA</div><div class="small">Tranvía a Heinrich-Heine-Allee + U78 al estadio. Uso gratuito con KombiTicket de la entrada.</div></div>
-<div class="card"><div class="time">20:00</div><div class="place">🎤 Backstreet Boys · MERKUR SPIEL-ARENA</div><div class="small">Inicio del evento.</div><a class="btn" href="https://www.google.com/maps/search/?api=1&query=MERKUR+SPIEL-ARENA+D%C3%BCsseldorf" target="_blank">📍 Abrir estadio en Maps</a></div>
-<div class="card"><div class="time">~22:30–23:00</div><div class="place">🚆 Estadio → hotel</div><div class="small">U78 de refuerzo continuo tras el evento hacia el centro.</div></div>
+  <div class="content">
 
-<div class="day-header">DÍA 4 · Düsseldorf → Sevilla → Jerez</div>
-<div class="card"><div class="time">11:00</div><div class="place">🏨 Check-out</div><div class="small">Salida del HK Hotel Düsseldorf City con las maletas.</div></div>
-<div class="card"><div class="time">11:30–12:00</div><div class="place">🚐 Hotel → DUS</div><div class="small">Furgoneta privada o S-Bahn S11. Llegada prevista sobre las 12:30.</div></div>
-<div class="card"><div class="time">15:25–18:20</div><div class="place">✈️ Düsseldorf (DUS) → Sevilla (SVQ)</div><div class="small">Después: lanzadera 24Plus, recogida del vehículo y vuelta a Jerez (~20:15).</div></div>
+    <!-- CONFIRMACIÓN DE LA RESERVA -->
+    <div class="reservation-card">
+      <div class="res-info">
+        <h3>✅ Reserva de Minivan Confirmada (8 Plazas)</h3>
+        <p>Trayectos directos Aeropuerto (DUS) ↔ Hotel</p>
+      </div>
+      <div class="res-details">
+        <div class="res-chip">
+          <span>IDA (DÍA 3)</span>
+          <strong>08:30 h · Terminal B</strong>
+        </div>
+        <div class="res-chip">
+          <span>VUELTA (DÍA 4)</span>
+          <strong>13:00 h · Salida Hotel</strong>
+        </div>
+      </div>
+    </div>
 
-<div class="quick-access"><div class="quick-access-title">📍 ACCESOS RÁPIDOS</div><div class="quick-grid">
-<a class="quick-btn" href="https://maps.google.com/?q=Barriada+del+Avi%C3%B3n+1+Sevilla" target="_blank">🅿️ Parking 24Plus</a>
-<a class="quick-btn" href="https://maps.google.com/?q=Seville+Airport+SVQ" target="_blank">✈️ Aeropuerto Sevilla</a>
-<a class="quick-btn" href="https://maps.google.com/?q=Amsterdam+Airport+Schiphol" target="_blank">🛫 Schiphol</a>
-<a class="quick-btn" href="https://maps.google.com/?q=D%C3%BCsseldorf+Airport+DUS" target="_blank">🛬 Aeropuerto Düsseldorf</a>
-<a class="quick-btn" href="https://maps.app.goo.gl/qhRmbcHaLEYHcJFN6" target="_blank">🏨 HK Hotel</a>
-<a class="quick-btn" href="https://www.google.com/maps/search/?api=1&query=Heinrich-Heine-Allee+D%C3%BCsseldorf" target="_blank">🚇 Heinrich-Heine-Allee</a>
-<a class="quick-btn" href="https://www.google.com/maps/search/?api=1&query=MERKUR+SPIEL-ARENA+D%C3%BCsseldorf" target="_blank">🏟️ MERKUR SPIEL-ARENA</a>
-<a class="quick-btn" href="https://www.google.com/maps/search/?api=1&query=Altstadt+D%C3%BCsseldorf" target="_blank">🍺 Altstadt</a>
-</div></div></section>
+    <!-- CRONOGRAMA -->
+    <div class="section-title">⏱️ Cronograma de Referencia</div>
+    <div class="timeline-grid">
+      <div class="time-card">
+        <span class="badge">DÍA 3 · 07:40 H</span>
+        <h4>Llegada Vuelo KLM</h4>
+        <p>Aeropuerto DUS (Terminal B)</p>
+      </div>
+      <div class="time-card">
+        <span class="badge">DÍA 3 · 08:30 H</span>
+        <h4>Recogida Minivan</h4>
+        <p>Traslado directo al Hotel</p>
+      </div>
+      <div class="time-card">
+        <span class="badge" style="background: var(--accent-amber); color: #000;">DÍA 3 · 18:00 H</span>
+        <h4>Salida Concierto</h4>
+        <p>Metro U78 hacia MERKUR Arena</p>
+      </div>
+      <div class="time-card">
+        <span class="badge" style="background: #ef4444; color: #fff;">DÍA 4 · 13:00 H</span>
+        <h4>Minivan de Regreso</h4>
+        <p>Hotel ➔ Aeropuerto (Vuelo 15:25h)</p>
+      </div>
+    </div>
 
-<section id="traslados"><h2 class="section-title">📊 Comparativa de Opciones de Traslado (8 pax)</h2><div class="table-container"><table>
-<thead><tr><th>Trayecto</th><th>Más Barata</th><th>Más Rápida</th><th>Opción Recomendada</th></tr></thead><tbody>
-<tr><td><strong>1. Aeropuerto → Hotel</strong><br><span class="small">Día 3 · ~08:15 h</span></td><td>Público (S11+704)<br><span class="small">~30,40 € total (35–45 min)</span></td><td>Minibús / 2 Taxis<br><span class="small">~60 €–75 € total (20–25 min)</span></td><td><span class="tag-rec">RECOMMENDED</span><br><strong>🚐 Minibús Reservado</strong><br><span class="small">~60 € (~7,50 €/pax). Rápido, cómodo y evita cargar maletas.</span></td></tr>
-<tr><td><strong>2. Hotel → Concierto</strong><br><span class="small">Día 3 · ~18:00 h</span></td><td>Público (U78)<br><span class="small"><strong>0 €</strong> (KombiTicket)</span></td><td>2 Taxis / Uber XL<br><span class="small">~50 €–60 € (25–35 min)</span></td><td><span class="tag-rec">RECOMMENDED</span><br><strong>🚋 Tranvía + Metro U78</strong><br><span class="small">Gratis con la entrada. Directo y sin atascos pre-concierto.</span></td></tr>
-<tr><td><strong>3. Concierto → Hotel</strong><br><span class="small">Día 3 · ~22:30 h</span></td><td>Público (U78)<br><span class="small"><strong>0 €</strong> (KombiTicket)</span></td><td>Minibús / 2 Taxis<br><span class="small">~60 €–80 € (20–25 min)</span></td><td><span class="tag-rec">RECOMMENDED</span><br><strong>🚋 Metro U78 Refuerzo</strong><br><span class="small">Salidas masivas continuas al finalizar. Evita el colapso de taxis.</span></td></tr>
-<tr><td><strong>4. Hotel → Aeropuerto</strong><br><span class="small">Día 4 · ~11:45 h</span></td><td>Público (704+S11)<br><span class="small">~30,40 € total (35–45 min)</span></td><td>Minibús / 2 Taxis<br><span class="small">~55 €–70 € total (20–25 min)</span></td><td><span class="tag-rec">RECOMMENDED</span><br><strong>🚐 Minibús Reservado</strong><br><span class="small">~60 € total. Máxima comodidad con equipaje antes de facturar.</span></td></tr>
-</tbody></table></div>
-<div class="quick-access"><div class="quick-access-title">📍 ACCESOS RÁPIDOS DE TRASLADOS</div><div class="quick-grid">
-<a class="quick-btn" href="https://maps.app.goo.gl/qhRmbcHaLEYHcJFN6" target="_blank">🏨 Hotel</a>
-<a class="quick-btn" href="https://www.google.com/maps/search/?api=1&query=D%C3%BCsseldorf+Airport+DUS" target="_blank">🛬 Aeropuerto DUS</a>
-<a class="quick-btn" href="https://www.google.com/maps/search/?api=1&query=Heinrich-Heine-Allee+D%C3%BCsseldorf" target="_blank">🚇 Heinrich-Heine-Allee</a>
-<a class="quick-btn" href="https://www.google.com/maps/search/?api=1&query=MERKUR+SPIEL-ARENA+D%C3%BCsseldorf" target="_blank">🏟️ Estadio</a>
-<a class="quick-btn" href="https://www.google.com/maps/search/?api=1&query=D%C3%BCsseldorf+Altstadt" target="_blank">🍺 Altstadt</a>
-<a class="quick-btn" href="https://maps.google.com/?q=Barriada+del+Avi%C3%B3n+1+Sevilla" target="_blank">🅿️ Parking Sevilla</a>
-</div></div></section>
+    <!-- GRÁFICOS VISUALES -->
+    <div class="section-title">📈 Comparativa de Costes y Tiempos</div>
+    <div class="chart-container">
+
+      <div class="bar-group">
+        <div class="bar-header">
+          <span>1. Aeropuerto (DUS) ➔ Hotel (Día 3 · 08:30h)</span>
+          <span style="color: var(--accent-green);">★ Minivan Reservada</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill private" style="width: 70%;"></div>
+          <span class="bar-value">Minivan Reservada: Directo y cómodo (~20 min)</span>
+        </div>
+      </div>
+
+      <div class="bar-group" style="margin-top: 18px;">
+        <div class="bar-header">
+          <span>2 & 3. Ida y Vuelta Concierto (Día 3 · 18:00h / 22:30h)</span>
+          <span style="color: var(--accent-blue);">★ Metro U78</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill public" style="width: 40%;"></div>
+          <span class="bar-value">Billete Sencillo: ~3,40 € por trayecto (~6,80 € persona I/V)</span>
+        </div>
+      </div>
+
+      <div class="bar-group" style="margin-top: 18px;">
+        <div class="bar-header">
+          <span>4. Hotel ➔ Aeropuerto (DUS) (Día 4 · 13:00h)</span>
+          <span style="color: var(--accent-green);">★ Minivan Reservada</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill private" style="width: 70%;"></div>
+          <span class="bar-value">Minivan Reservada: Salida 13:00h (Llegada 13:20h para vuelo 15:25h)</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TABLA RESUMEN -->
+    <div class="section-title">📋 Resumen del Plan de Transporte</div>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Trayecto</th>
+            <th>Transporte Elección</th>
+            <th>Horario / Reserva</th>
+            <th>Detalles y Billetes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Aeropuerto ➔ Hotel</strong></td>
+            <td><span class="tag-rec">MINIVAN RESERVADA</span></td>
+            <td><strong>08:30 h</strong> (Terminal B)</td>
+            <td>Llegada en vuelo KLM (07:40h). Recogida en el hall de Llegadas.</td>
+          </tr>
+          <tr>
+            <td><strong>Hotel ↔ Concierto</strong></td>
+            <td><span class="tag-ticket">METRO U78</span></td>
+            <td><strong>18:00 h</strong> (Ida) / 22:30 h (Vuelta)</td>
+            <td>Compra de billete sencillo (EinzelTicket A3) en máquinas de la estación.</td>
+          </tr>
+          <tr>
+            <td><strong>Hotel ➔ Aeropuerto</strong></td>
+            <td><span class="tag-rec">MINIVAN RESERVADA</span></td>
+            <td><strong>13:00 h</strong> (Salida Hotel)</td>
+            <td>Llegada al aeropuerto sobre las 13:20h para embarcar a las 15:25h.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- CONSEJO FINAL -->
+    <div class="tip-box">
+      <div class="tip-icon">💡</div>
+      <div class="tip-content">
+        <strong>Nota sobre los billetes de metro:</strong>
+        <p>Si compráis los billetes sencillos (*EinzelTicket*) en soporte físico de papel en las máquinas del metro, recordad convalidarlos en las maquinitas amarillas/naranjas antes de subir al andén para evitar multas.</p>
+      </div>
+    </div>
+
+  </div>
 </div>
 
-<script>
-const lat=51.2277,lon=6.7735,tz="Europe/Berlin";
-const dates=["2026-10-02","2026-10-03","2026-10-04"];
-const statusEl=document.getElementById("weatherStatus"),grid=document.getElementById("weatherGrid");
-function icon(c){if(c===0)return"☀️";if([1,2].includes(c))return"🌤️";if(c===3)return"☁️";if([45,48].includes(c))return"🌫️";if([51,53,55,56,57].includes(c))return"🌦️";if([61,63,65,66,67,80,81,82].includes(c))return"🌧️";if([71,73,75,77,85,86].includes(c))return"🌨️";if([95,96,99].includes(c))return"⛈️";return"🌤️"}
-function desc(c){if(c===0)return"Despejado";if([1,2].includes(c))return"Parcialmente nublado";if(c===3)return"Nublado";if([45,48].includes(c))return"Niebla";if([51,53,55,56,57].includes(c))return"Llovizna";if([61,63,65,66,67,80,81,82].includes(c))return"Lluvia";if([71,73,75,77,85,86].includes(c))return"Nieve";if([95,96,99].includes(c))return"Tormenta";return"Variable"}
-function label(s){return new Intl.DateTimeFormat("es-ES",{weekday:"short",day:"numeric",month:"short"}).format(new Date(s+"T12:00:00")).replace(/\.$/,"")}
-async function loadWeather(){
- const p=new URLSearchParams({latitude:lat,longitude:lon,daily:"weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max",timezone:tz,start_date:dates[0],end_date:dates[2]});
- try{
-  const r=await fetch("https://api.open-meteo.com/v1/forecast?"+p,{cache:"no-store"}); if(!r.ok)throw Error();
-  const d=await r.json();
-  grid.innerHTML=dates.map((date,i)=>{const c=d.daily.weather_code?.[i],mx=d.daily.temperature_2m_max?.[i],mn=d.daily.temperature_2m_min?.[i],rain=d.daily.precipitation_probability_max?.[i];
-   if(c==null)return`<div class="weather-day"><div class="weather-date">${label(date)}</div><div class="weather-icon">⏳</div><div>Previsión aún no disponible</div></div>`;
-   return`<div class="weather-day"><div class="weather-date">${label(date)}</div><div class="weather-icon" title="${desc(c)}">${icon(c)}</div><div><div class="weather-temp">${Math.round(mx)}° / ${Math.round(mn)}°</div><div class="weather-rain">🌧️ ${rain??"—"}% · ${desc(c)}</div></div></div>`;
-  }).join("");
-  statusEl.textContent="Actualizado automáticamente · "+new Intl.DateTimeFormat("es-ES",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}).format(new Date());
- }catch(e){statusEl.textContent="No se ha podido actualizar ahora. Se intentará de nuevo al abrir la página.";grid.innerHTML=dates.map(d=>`<div class="weather-day"><div class="weather-date">${label(d)}</div><div class="weather-icon">🌤️</div><div>Datos no disponibles</div></div>`).join("")}
-}
-loadWeather();
-</script>
-</body></html>
+</body>
+</html>
