@@ -104,6 +104,4 @@ Los horarios y datos de transporte se mantienen según el planning proporcionado
 
 ---
 
-🇩🇪 BSB Düsseldorf
-
-Travel PWA · Düsseldorf · Backstreet Boys · 2026
+🇩🇪 BSB Düsseldorf - Backstreet Boys · 2026
