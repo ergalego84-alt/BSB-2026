@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0f1a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<title>BSB Düsseldorf 🇩🇪</title>
+<style>
+:root{
+  --bg-0:#0a0e1a; --bg-1:#111729; --bg-2:#171f38;
+  --card:#141b30; --card-line:#242e4d;
+  --ink:#eef1fb; --muted:#8b93b3;
+  --gold:#d6a84f; --gold-soft:#f0cf8a;
+  --cyan:#5fd0d8; --cyan-soft:#a7ecf0;
+  --ok-bg:#122a20; --ok-line:#2e6b4a;
+  --warn-bg:#2c2311; --warn-line:#7a5a1e;
+  --radius:16px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg-0);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.day,.time{font-family:'Space Grotesk',sans-serif}
+
+/* ---- header ---- */
+header{position:relative;overflow:hidden;padding:34px 20px 26px;background:
+  radial-gradient(120% 100% at 20% 0%, #1c2748 0%, #0d1224 55%, #090c17 100%)}
+.skyline{position:absolute;bottom:0;left:0;right:0;opacity:.9;pointer-events:none}
+.hdr-top{position:relative;z-index:1}
+h1{margin:0;font-size:26px;font-weight:700;letter-spacing:.2px;display:flex;align-items:center;gap:8px}
+.sub{color:var(--muted);margin-top:6px;font-size:14px}
+
+/* ---- weather card ---- */
+.weather{position:relative;z-index:1;margin-top:20px;background:rgba(20,27,48,.72);backdrop-filter:blur(6px);
+  border:1px solid var(--card-line);border-radius:var(--radius);padding:16px}
+.weather-head{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--muted)}
+.weather-title{font-weight:600;color:var(--ink);font-size:15px}
+.wx-days{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.wx-day{text-align:center;background:rgba(255,255,255,.03);border-radius:12px;padding:10px 4px}
+.wx-day .lbl{font-size:12px;color:var(--muted);font-weight:600}
+.wx-day .ico{font-size:22px;margin:4px 0}
+.wx-day .tmp{font-size:13px;font-weight:600}
+.wx-day .rain{font-size:11px;color:var(--cyan-soft);margin-top:2px}
+.wx-pending{text-align:center;padding:14px 6px;color:var(--muted);font-size:13px}
+.wx-pending b{color:var(--gold-soft)}
+
+/* ---- nav ---- */
+main{max-width:720px;margin:auto;padding:16px 14px 40px}
+.nav{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+.nav button{border:1px solid var(--card-line);background:var(--card);padding:14px 10px;border-radius:14px;
+  font-weight:600;color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:14px}
+.nav button.is-on{border-color:var(--gold);color:var(--gold-soft);background:#1b1a12}
+
+section{display:none}.active{display:block}
+.day{font-size:18px;font-weight:700;margin:22px 2px 10px;color:var(--gold-soft)}
+.card{background:var(--card);border:1px solid var(--card-line);border-radius:var(--radius);padding:15px;margin:10px 0}
+.time{font-weight:700;font-size:14px;color:var(--cyan-soft)}
+.place{font-weight:700;margin-top:4px;font-size:15px}
+.small{color:var(--muted);font-size:13.5px;margin-top:3px}
+.tag{display:inline-block;padding:4px 9px;border-radius:999px;background:#1d2542;color:var(--cyan-soft);font-size:11.5px;font-weight:600;margin:6px 5px 0 0}
+.hero{background:var(--card);border:1px solid var(--card-line);border-radius:var(--radius);padding:15px;margin:14px 0;font-size:14px;color:var(--muted)}
+.hero b{color:var(--ink)}
+.btn{display:inline-block;text-align:center;text-decoration:none;background:var(--gold);color:#1a1406;
+  padding:10px 13px;border-radius:11px;font-weight:700;margin-top:10px;font-size:13.5px}
+.btn.alt{background:#1d2542;color:var(--cyan-soft)}
+.btn.ghost{background:transparent;border:1px solid var(--card-line);color:var(--ink)}
+.marina{border-left:4px solid var(--cyan)}
+.warn{background:var(--warn-bg);border-color:var(--warn-line)}
+.ok{background:var(--ok-bg);border-color:var(--ok-line)}
+ul{padding-left:20px;margin:8px 0}
+.flow{display:flex;flex-direction:column;gap:2px;background:var(--card);border:1px solid var(--card-line);
+  border-radius:var(--radius);padding:14px;margin:14px 0;font-size:13.5px}
+.flow .step{display:flex;gap:8px;padding:5px 0}
+.flow .step .t{color:var(--cyan-soft);font-weight:700;min-width:44px}
+.flow .arrow{color:var(--card-line);padding-left:44px;font-size:12px}
+
+/* mini location buttons row inside a card */
+.pins{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.pin{font-size:12px;padding:6px 10px;border-radius:999px;background:#1d2542;color:var(--cyan-soft);
+  text-decoration:none;font-weight:600;border:1px solid var(--card-line)}
+.pin.gold{background:#241d0e;color:var(--gold-soft)}
+
+/* ---- interactive map (Leaflet / OpenStreetMap) ---- */
+.map-wrap{position:relative;background:var(--card);border:1px solid var(--card-line);
+  border-radius:var(--radius);padding:10px;margin:14px 0}
+.map-legend{display:flex;gap:14px;font-size:12px;color:var(--muted);padding:2px 6px 10px;flex-wrap:wrap}
+.map-legend span{display:inline-flex;align-items:center;gap:5px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.dot.grupo{background:var(--gold)}.dot.marina{background:var(--cyan)}.dot.hub{background:#e2e6f5}
+#leafletMap{width:100%;height:380px;border-radius:12px;background:#0d1428}
+.leaflet-popup-content-wrapper{background:var(--card);color:var(--ink);border-radius:12px}
+.leaflet-popup-tip{background:var(--card)}
+.leaflet-popup-content .mp-title{font-weight:700;font-family:'Space Grotesk',sans-serif;font-size:13.5px}
+.leaflet-popup-content .mp-meta{color:var(--cyan-soft);font-size:12px;margin-top:2px}
+.leaflet-popup-content .mp-note{color:var(--muted);font-size:12.5px;margin-top:5px;line-height:1.4}
+.map-filters{display:flex;gap:8px;margin-bottom:8px}
+.map-filters button{flex:1;padding:8px;border-radius:10px;border:1px solid var(--card-line);background:#0f1526;color:var(--muted);font-size:12.5px;font-weight:600}
+.map-filters button.is-on{background:#1b1a12;border-color:var(--gold);color:var(--gold-soft)}
+.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid #0a0e1a;box-shadow:0 0 0 2px rgba(255,255,255,.08)}
+
+/* ---- accesos rápidos (integrados, no fijos) ---- */
+.quick{margin:16px 0}
+.quick-title{font-size:13px;color:var(--muted);font-weight:600;margin:0 2px 8px}
+.quick-row{display:flex;flex-wrap:wrap;gap:7px}
+.qpin{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--ink);
+  background:var(--card);border:1px solid var(--card-line);padding:8px 12px;border-radius:999px;font-size:12.5px;font-weight:600}
+.qpin .qi{font-size:14px}
+
+footer{text-align:center;color:var(--muted);font-size:11.5px;margin-top:26px;padding-bottom:6px}
+</style>
+</head>
+<body>
+<header>
+<svg class="skyline" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0,60 L0,40 L20,40 L20,30 L26,30 L26,15 L32,15 L32,5 L38,5 L38,15 L44,15 L44,30 L60,30 L60,20 L70,20 L70,35 L90,35 L90,25 L100,25 L100,40 L130,40 L130,18 L136,18 L136,10 L142,10 L142,18 L148,18 L148,40 L200,40 L200,32 L215,32 L215,40 L260,40 L260,28 L270,28 L270,40 L320,40 L320,33 L335,33 L335,40 L400,40 L400,60 Z" fill="#0d1224" stroke="#1c2748" stroke-width="1"/></svg>
+<div class="hdr-top">
+<h1>🇩🇪 BSB Düsseldorf</h1>
+<div class="sub">Planning del viaje · grupo de 8 · ruta especial de Marina · 2–4 oct 2026</div>
+</div>
+<div class="weather" id="wxCard">
+  <div class="weather-head"><span class="weather-title">🌤️ Tiempo en Düsseldorf</span><span id="wxUpdated">—</span></div>
+  <div id="wxBody"><div class="wx-pending">Cargando previsión…</div></div>
+</div>
+</header>
+
+<main>
+<div class="nav">
+<button onclick="show('plan',this)" class="is-on">📅 Planning</button>
+<button onclick="show('marina',this)">👩 Marina</button>
+<button onclick="show('logistica',this)">🚆 Logística</button>
+<button onclick="show('mapas',this)">🗺️ Mapa</button>
+</div>
+
+<div class="quick">
+  <div class="quick-title">📍 Accesos rápidos</div>
+  <div class="quick-row">
+    <a class="qpin" href="https://www.google.com/maps/search/?api=1&query=Varnhagenstra%C3%9Fe+37+D%C3%BCsseldorf" target="_blank"><span class="qi">🏨</span>Hotel</a>
+    <a class="qpin" href="https://www.google.com/maps/search/?api=1&query=MERKUR+SPIEL-ARENA+D%C3%BCsseldorf" target="_blank"><span class="qi">🎤</span>Arena</a>
+    <a class="qpin" href="https://www.google.com/maps/search/?api=1&query=Heinrich-Heine-Allee+D%C3%BCsseldorf" target="_blank"><span class="qi">🚇</span>H.H. Allee</a>
+    <a class="qpin" href="https://www.google.com/maps/search/?api=1&query=Hofgarten+D%C3%BCsseldorf" target="_blank"><span class="qi">🌳</span>Hofgarten</a>
+    <a class="qpin" href="https://www.google.com/maps/search/?api=1&query=Rheinturm+D%C3%BCsseldorf" target="_blank"><span class="qi">🌆</span>Rheinturm</a>
+    <a class="qpin" href="https://www.google.com/maps/search/?api=1&query=Barriada+del+Avi%C3%B3n+1+Sevilla" target="_blank"><span class="qi">🅿️</span>Parking</a>
+  </div>
+</div>
+
+<!-- ================= PLANNING ================= -->
+<section id="plan" class="active">
+<div class="hero"><b>Resumen</b><br>Jerez → Sevilla → Ámsterdam → Düsseldorf → Sevilla → Jerez</div>
+
+<div class="day">DÍA 1 · Jerez → Ámsterdam</div>
+<div class="card"><div class="time">17:45–18:00</div><div class="place">🚐 Salida Jerez → Sevilla</div><div class="small">Furgoneta propia por A-4/AP-4 · aprox. 1 h 15 min.</div></div>
+<div class="card"><div class="time">18:45</div><div class="place">🅿️ Parking Apparkya 24Plus · entrada</div><div class="small">Barriada del Avión 1, Sevilla. Lanzadera oficial gratuita a la terminal (aprox. 3 min); la barrera se abre sola con el lector de matrícula.</div>
+  <div class="small" style="margin-top:6px">Referencia: <b>P0000090095</b> · Matrícula: <b>1935FXH</b> · Total: 9,50 €</div>
+  <div class="pins">
+    <a class="pin" href="https://www.google.com/maps/search/?api=1&query=Barriada+del+Avi%C3%B3n+1+Sevilla" target="_blank">📍 Ubicación</a>
+    <a class="pin gold" href="https://drive.google.com/file/d/1hlj7dtSdUVqM9iQmLODBjXoQTKMJ5aiJ/view?usp=drivesdk" target="_blank">📄 Ver reserva en Drive</a>
+  </div>
+</div>
+<div class="card"><div class="time">20:10–23:05</div><div class="place">✈️ Sevilla (SVQ) → Ámsterdam (AMS)</div></div>
+<div class="card"><div class="time">Noche</div><div class="place">🌙 Escala nocturna en Schiphol</div><div class="small">Pernocta dentro de la terminal.</div></div>
+
+<div class="day">DÍA 2 · Ámsterdam → Düsseldorf</div>
+<div class="card"><div class="time">06:55–07:40</div><div class="place">✈️ Ámsterdam (AMS) → Düsseldorf (DUS)</div><div class="small">Vuelo KLM.</div></div>
+<div class="card"><div class="time">09:00–09:30</div><div class="place">🚐 Recogida minivan</div><div class="small">Terminal B · hall de Llegadas · minivan 8 plazas reservada.</div></div>
+<div class="card"><div class="time">09:30–10:00</div><div class="place">🏨 HK Hotel Düsseldorf City</div><div class="small">Varnhagenstraße 37 · zona Bilk. Se dejan las mochilas en consigna; check-in oficial a las 15:00.</div>
+  <div class="pins"><a class="pin" href="https://www.google.com/maps/search/?api=1&query=Varnhagenstra%C3%9Fe+37+D%C3%BCsseldorf" target="_blank">📍 Hotel</a></div>
+</div>
+<div class="card"><div class="time">Resto del día</div><div class="place">🚶 Tarde libre por Düsseldorf</div><div class="small">Altstadt, Rin y alrededores a ritmo tranquilo.</div></div>
+
+<div class="day">DÍA 3 · CONCIERTO BSB</div>
+<div class="flow">
+  <div class="step"><span class="t">10:15</span> Desayuno + paseo Hofgarten → Kö-Bogen</div><div class="arrow">↓</div>
+  <div class="step"><span class="t">11:30</span> Súper REWE (pan para bocatas)</div><div class="arrow">↓</div>
+  <div class="step"><span class="t">12:00</span> Hofgarten + bocadillos</div><div class="arrow">↓</div>
+  <div class="step"><span class="t">13:45</span> Primer vistazo a Altstadt / Rin</div><div class="arrow">↓</div>
+  <div class="step"><span class="t">15:00</span> Check-in + descanso</div><div class="arrow">↓</div>
+  <div class="step"><span class="t">17:45</span> Salida hacia Heinrich-Heine-Allee</div><div class="arrow">↓</div>
+  <div class="step"><span class="t">18:20</span> U78 → MERKUR SPIEL-ARENA</div><div class="arrow">↓</div>
+  <div class="step"><span class="t">20:00</span> 🎤 BACKSTREET BOYS</div><div class="arrow">↓</div>
+  <div class="step"><span class="t">~22:00</span> U78 de vuelta</div><div class="arrow">↓</div>
+  <div class="step"><span class="t">~22:30</span> Altstadt · Altbier + Currywurst</div><div class="arrow">↓</div>
+  <div class="step"><span class="t">~00:00</span> Hotel</div>
+</div>
+
+<div class="card"><div class="time">10:15–11:30</div><div class="place">🥐 Desayuno + paseo</div><div class="small">Hofgarten → Kö-Bogen → Heinrich-Heine-Allee: el gran parque del centro, pegado a Heinrich-Heine-Allee, deja bien colocado el grupo para seguir hacia el centro.</div>
+  <div class="pins"><a class="pin" href="https://www.google.com/maps/search/?api=1&query=Hofgarten+D%C3%BCsseldorf" target="_blank">📍 Hofgarten</a></div>
+</div>
+<div class="card"><div class="time">11:30</div><div class="place">🛒 Súper REWE</div><div class="small">REWE Am Wehrhahn 43 · solo pan, algo para rellenar, bebida y fruta.</div>
+  <div class="pins"><a class="pin" href="https://www.google.com/maps/search/?api=1&query=REWE+Am+Wehrhahn+43+D%C3%BCsseldorf" target="_blank">📍 REWE</a></div>
+</div>
+<div class="card"><div class="time">12:00–13:45</div><div class="place">🌳 Hofgarten / centro + bocadillos</div><div class="small">Ruta: Kö-Bogen → Hofgarten → Landskrone → Heinrich-Heine-Allee. Bocadillos entre 12:30–13:15, sin depender de restaurantes tras la noche corta en Schiphol.</div></div>
+<div class="card"><div class="time">13:45–14:30</div><div class="place">🏙️ Primer contacto con Altstadt</div><div class="small">Heinrich-Heine-Allee → Burgplatz → Rheinuferpromenade: Burgplatz, St. Lambertus, el Ayuntamiento, Jan-Wellem y la Rheinuferpromenade son los puntos clave de la Altstadt.</div>
+  <div class="pins"><a class="pin" href="https://www.google.com/maps/search/?api=1&query=Burgplatz+D%C3%BCsseldorf" target="_blank">📍 Burgplatz</a></div>
+</div>
+<div class="card ok"><div class="time">15:00</div><div class="place">🏨 Check-in + descanso</div><div class="small">Sin más planes hasta la salida: llegada esa mañana desde Ámsterdam y concierto a las 20:00.</div></div>
+<div class="card"><div class="time">17:45</div><div class="place">🚶 Salida del hotel</div><div class="small">U72/U73 desde Auf'm Hennekamp hacia Heinrich-Heine-Allee, aprox. 10–15 min.</div></div>
+<div class="card"><div class="time">18:20–18:30</div><div class="place">🚇 U78 → MERKUR SPIEL-ARENA / Messe Nord</div><div class="small">Conexión recomendada por Rheinbahn desde Heinrich-Heine-Allee, aprox. 15–20 min. Billete EinzelTicket A3 (~3,40 €/trayecto) en las máquinas; validar en las máquinas amarillas/naranjas antes de subir al andén.</div>
+  <div class="tag">KombiTicket incluido con la entrada</div>
+</div>
+<div class="card"><div class="time">18:45–19:00</div><div class="place">🏟️ Llegada a la Arena</div><div class="small">Margen de ~1 h antes del concierto: entrar, localizar bloque, baños, bebida.</div></div>
+<div class="card"><div class="time">20:00</div><div class="place">🎤 Backstreet Boys · MERKUR SPIEL-ARENA</div><div class="small">Sábado 3 de octubre.</div>
+  <a class="btn" href="https://www.google.com/maps/search/?api=1&query=MERKUR+SPIEL-ARENA+D%C3%BCsseldorf" target="_blank">📍 Abrir estadio en Maps</a>
+</div>
+<div class="card warn"><div class="time">~21:30–22:00</div><div class="place">🌙 Fin probable del concierto</div><div class="small">No hay hora oficial de cierre publicada por el recinto; estimación de 1 h 30–2 h desde el inicio.</div></div>
+<div class="card"><div class="time">22:00–22:30</div><div class="place">🚇 Salida de la Arena + U78 de vuelta</div><div class="small">Rheinbahn confirma refuerzos de trenes tras el evento hacia el centro.</div></div>
+<div class="card"><div class="time">22:30–23:30</div><div class="place">🍺 Altstadt · cerveza + algo de comer</div><div class="small">Vuelta hacia Altstadt, zona con bares y cervecerías tradicionales. Objetivo: Altbier + Currywurst/Bratwurst en vez de cena formal.</div>
+  <div class="pins">
+    <a class="pin gold" href="https://www.google.com/maps/search/?api=1&query=F%C3%BCchschen+D%C3%BCsseldorf" target="_blank">🍺 Füchschen</a>
+    <a class="pin gold" href="https://www.google.com/maps/search/?api=1&query=Uerige+Bergerstra%C3%9Fe+1+D%C3%BCsseldorf" target="_blank">🍺 Uerige</a>
+    <a class="pin gold" href="https://www.google.com/maps/search/?api=1&query=K%C3%BCrzer+D%C3%BCsseldorf" target="_blank">🍺 Kürzer</a>
+  </div>
+</div>
+<div class="card"><div class="time">23:30–00:00</div><div class="place">🛏️ Regreso al hotel</div></div>
+
+<div class="day">DÍA 4 · Düsseldorf → Sevilla → Jerez</div>
+<div class="card"><div class="time">08:30–09:15</div><div class="place">🥐 Desayuno del hotel</div></div>
+<div class="card"><div class="time">09:30–11:00</div><div class="place">🚶 Última mañana</div><div class="small">Opción tranquila: paseo por Bilk, muy cerca del hotel. Opción más larga si hay ganas: Königsallee → Schadowplatz/Kö-Bogen → Hofgarten.</div></div>
+<div class="card"><div class="time">11:00</div><div class="place">☕ Café / descanso</div></div>
+<div class="card"><div class="time">11:30</div><div class="place">🚶 Regreso al hotel</div></div>
+<div class="card"><div class="time">12:00–12:15</div><div class="place">🧳 Maletas y todos en recepción</div></div>
+<div class="card ok"><div class="time">13:00</div><div class="place">🚐 Minivan → DUS</div><div class="small">Salida desde el hotel, llegada al aeropuerto ~13:20 con margen para el vuelo.</div></div>
+<div class="card"><div class="time">15:25–18:20</div><div class="place">✈️ Düsseldorf (DUS) → Sevilla (SVQ)</div><div class="small">Después: lanzadera Apparkya, recogida del vehículo y vuelta a Jerez (~20:15).</div></div>
+</section>
+
+<!-- ================= MARINA ================= -->
+<section id="marina">
+<div class="hero marina"><b>👩 MARINA · mientras el grupo está en el concierto</b><br>Ruta a pie por el centro de Düsseldorf, con reencuentro a las 22:30 en Heinrich-Heine-Allee (ajustado a la nueva hora de vuelta ~22:00–22:30).</div>
+<div class="card"><div class="time">17:30–18:00</div><div class="place">📍 Heinrich-Heine-Allee · salida</div><div class="small">Punto de separación del grupo, coincidiendo con su salida hacia la Arena.</div><a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=Heinrich-Heine-Allee+D%C3%BCsseldorf" target="_blank">📍 Maps</a></div>
+<div class="card"><div class="time">18:00–18:45</div><div class="place">☕ Café / merienda · Kö-Bogen II</div><div class="small">Caffè Pascucci o Woyton.</div><a class="btn alt" href="https://www.google.com/maps/search/?api=1&query=K%C3%B6-Bogen+II+D%C3%BCsseldorf" target="_blank">📍 Kö-Bogen II</a></div>
+<div class="card"><div class="time">18:45–19:45</div><div class="place">🌿 Kö-Bogen II → Carlsplatz</div><div class="small">Paseo y mercado.</div><a class="btn alt" href="https://www.google.com/maps/search/?api=1&query=Carlsplatz+D%C3%BCsseldorf" target="_blank">📍 Carlsplatz</a></div>
+<div class="card"><div class="time">19:45–20:15</div><div class="place">🌊 Rheinuferpromenade</div><div class="small">Paseo junto al Rin.</div></div>
+<div class="card"><div class="time">20:15–20:45</div><div class="place">🏢 Gehry Buildings / Neuer Zollhof</div><div class="small">Parada para fotos y arquitectura.</div><a class="btn alt" href="https://www.google.com/maps/search/?api=1&query=Gehry+Bauten+D%C3%BCsseldorf" target="_blank">📍 Gehry Buildings</a></div>
+<div class="card"><div class="time">20:45–21:30</div><div class="place">🌆 Rheinturm</div><div class="small">Mirador nocturno. Tarifa Late Night aprox. 9 € desde las 20:00; conviene verificar horario/precio para la fecha.</div><a class="btn" href="https://www.google.com/maps/search/?api=1&query=Rheinturm+D%C3%BCsseldorf" target="_blank">📍 Rheinturm</a></div>
+<div class="card"><div class="time">21:30–22:15</div><div class="place">🍺 Altstadt · paseo + algo de comer</div><div class="small">Opción tradicional: Uerige, Berger Straße 1.</div><a class="btn alt" href="https://www.google.com/maps/search/?api=1&query=Uerige+Bergerstra%C3%9Fe+1+D%C3%BCsseldorf" target="_blank">📍 Uerige</a></div>
+<div class="card"><div class="time">22:15–22:30</div><div class="place">🚶 Regreso a Heinrich-Heine-Allee</div></div>
+<div class="card ok"><div class="time">22:30</div><div class="place">👥 REENCUENTRO CON EL GRUPO</div><a class="btn" href="https://www.google.com/maps/search/?api=1&query=Heinrich-Heine-Allee+D%C3%BCsseldorf" target="_blank">📍 Punto de encuentro</a></div>
+<div class="card"><b>🗺️ Ruta completa a pie</b><div class="small">Heinrich-Heine-Allee → Kö-Bogen II → Carlsplatz → Rheinuferpromenade → Gehry Buildings → Rheinturm → Altstadt → Heinrich-Heine-Allee</div>
+<a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=Heinrich-Heine-Allee,+D%C3%BCsseldorf&destination=Heinrich-Heine-Allee,+D%C3%BCsseldorf&travelmode=walking&waypoints=K%C3%B6-Bogen+II,+D%C3%BCsseldorf%7CCarlsplatz,+D%C3%BCsseldorf%7CRheinuferpromenade,+D%C3%BCsseldorf%7CGehry+Bauten,+D%C3%BCsseldorf%7CRheinturm,+D%C3%BCsseldorf%7CAltstadt,+D%C3%BCsseldorf" target="_blank">🗺️ Abrir ruta en Google Maps</a></div>
+</section>
+
+<!-- ================= LOGÍSTICA ================= -->
+<section id="logistica">
+<div class="day">📋 Trayectos y reservas confirmadas</div>
+<div class="card ok"><b>🚐 Aeropuerto (DUS) → Hotel</b><div class="small">Minivan reservada · 08:30 h (Día 3) · llegada en vuelo KLM a las 07:40 h · recogida en el hall de Llegadas de la Terminal B.</div></div>
+<div class="card"><b>🚇 Hotel ↔ MERKUR Arena</b><div class="small">Metro U78 · 18:20 h ida / ~22:00–22:30 h vuelta · EinzelTicket A3 (~3,40 €/trayecto) en las máquinas de la estación. El concierto incluye KombiTicket.</div></div>
+<div class="card ok"><b>🚐 Hotel → Aeropuerto (DUS)</b><div class="small">Minivan reservada · 13:00 h (Día 4) · salida con margen para llegar sobre las 13:20 h, de cara al vuelo de las 15:25 h.</div></div>
+<div class="card warn"><b>💡 Recordatorio sobre el metro</b><div class="small">Si compráis EinzelTicket en papel en las máquinas, hay que convalidarlo/timbrarlo en las máquinas amarillas/naranjas a la entrada del andén antes de subir.</div></div>
+
+<div class="day">🅿️ Parking ida/vuelta (Sevilla)</div>
+<div class="card"><b>Apparkya 24Plus</b>
+  <div class="small">Entrada: 02/10/2026 18:45 h · Salida: 04/10/2026 18:45 h · Barriada del Avión 1, Sevilla · lanzadera oficial gratuita a la terminal.</div>
+  <div class="small">Referencia: <b>P0000090095</b> · Matrícula: <b>1935FXH</b> · Pago con tarjeta · Total: 9,50 €</div>
+  <div class="pins">
+    <a class="pin" href="https://www.google.com/maps/search/?api=1&query=Barriada+del+Avi%C3%B3n+1+Sevilla" target="_blank">📍 Ubicación</a>
+    <a class="pin gold" href="https://drive.google.com/file/d/1hlj7dtSdUVqM9iQmLODBjXoQTKMJ5aiJ/view?usp=drivesdk" target="_blank">📄 Ver reserva en Drive</a>
+  </div>
+</div>
+
+<div class="day">🚐 Otras opciones de traslado aeropuerto-hotel (Düsseldorf)</div>
+<div class="card"><b>2 taxis grandes / 2 Uber XL</b><div class="small">60–70 € total aprox. · 4 + 4.</div></div>
+<div class="card"><b>Transporte público</b><div class="small">S11 + tranvía · 30,40 € billete sencillo o 60,80 € 24 h para el grupo.</div><a class="btn alt" href="https://www.rheinbahn.com" target="_blank">Rheinbahn</a></div>
+
+<div class="card warn"><b>⚠️ Pendientes de confirmar</b><ul>
+<li>Hora oficial de fin del concierto (estimación 1 h 30–2 h).</li>
+<li>Horario/precio de Rheinturm para la fecha exacta.</li>
+<li>Horarios reales de U78/S11 el propio día (habrá refuerzos por el concierto).</li>
+</ul></div>
+</section>
+
+<!-- ================= MAPA ================= -->
+<section id="mapas">
+<div class="hero"><b>🗺️ Mapa interactivo</b><br>Toca un punto para ver día, hora y notas. Filtra por grupo o por la ruta de Marina.</div>
+<div class="map-filters">
+  <button class="is-on" id="fAll" onclick="setFilter('all')">Todos</button>
+  <button id="fGrupo" onclick="setFilter('grupo')">🟡 Grupo</button>
+  <button id="fMarina" onclick="setFilter('marina')">🔵 Marina</button>
+</div>
+<div class="map-wrap">
+  <div class="map-legend">
+    <span><i class="dot grupo"></i> Grupo / concierto</span>
+    <span><i class="dot marina"></i> Ruta de Marina</span>
+    <span><i class="dot hub"></i> Hotel / transporte</span>
+  </div>
+  <div id="leafletMap"></div>
+</div>
+</section>
+
+</main>
+
+<script>
+function show(id, btn){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('is-on'));
+  if(btn) btn.classList.add('is-on');
+  window.scrollTo(0,0);
+}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js'))}
+
+/* ---------- Weather (Open-Meteo, no API key) ---------- */
+(function(){
+  var lat=51.2277, lon=6.7735;
+  var tripDates=['2026-10-02','2026-10-03','2026-10-04'];
+  var labels=['VI 2 OCT','SÁ 3 OCT','DO 4 OCT'];
+  var icons={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌦️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'🌨️',80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️'};
+  var today=new Date();
+  var target=new Date('2026-10-02T00:00:00');
+  var daysLeft=Math.ceil((target-today)/86400000);
+  var wxBody=document.getElementById('wxBody');
+  var wxUpdated=document.getElementById('wxUpdated');
+
+  function renderPending(){
+    wxBody.innerHTML='<div class="wx-pending">⏳ Previsión todavía no disponible<br><b>Faltan '+Math.max(daysLeft,0)+' días</b><br>Se actualizará automáticamente conforme se acerque el viaje.</div>';
+    wxUpdated.textContent='hoy';
+  }
+
+  if(daysLeft>16){ renderPending(); return; }
+
+  fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+
+        '&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode'+
+        '&timezone=Europe%2FBerlin&start_date='+tripDates[0]+'&end_date='+tripDates[2])
+  .then(r=>{ if(!r.ok) throw new Error('no data'); return r.json(); })
+  .then(data=>{
+    if(!data.daily || !data.daily.time || !data.daily.time.length) throw new Error('empty');
+    var html='<div class="wx-days">';
+    data.daily.time.forEach(function(d,i){
+      var idx=tripDates.indexOf(d);
+      var lbl = idx>-1 ? labels[idx] : d.slice(5);
+      var code=data.daily.weathercode[i];
+      var ic=icons[code] || '🌡️';
+      html+='<div class="wx-day"><div class="lbl">'+lbl+'</div><div class="ico">'+ic+'</div>'+
+            '<div class="tmp">'+Math.round(data.daily.temperature_2m_max[i])+'° / '+Math.round(data.daily.temperature_2m_min[i])+'°</div>'+
+            '<div class="rain">🌧️ '+data.daily.precipitation_probability_max[i]+'%</div></div>';
+    });
+    html+='</div>';
+    wxBody.innerHTML=html;
+    var now=new Date();
+    wxUpdated.textContent='hoy · '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  })
+  .catch(function(){ renderPending(); });
+})();
+
+/* ---------- Interactive map (Leaflet + OpenStreetMap tiles) ---------- */
+var mapPoints=[
+  {lat:51.2038, lon:6.7847, type:'hub', title:'HK Hotel Düsseldorf City', meta:'Alojamiento · Varnhagenstraße 37', note:'Punto de partida y llegada de cada jornada.'},
+  {lat:51.2263, lon:6.7729, type:'hub', title:'Heinrich-Heine-Allee', meta:'Día 3 · 17:45 salida / 22:30 reencuentro', note:'Punto donde el grupo y Marina se separan y se reencuentran.'},
+  {lat:51.2606, lon:6.7346, type:'grupo', title:'MERKUR SPIEL-ARENA', meta:'Día 3 · 20:00 h', note:'Concierto de Backstreet Boys. Llegada recomendada 18:45–19:00 vía U78.'},
+  {lat:51.2280, lon:6.7807, type:'marina', title:'Hofgarten', meta:'Día 3 · 12:00–13:45', note:'Parque para descansar y comer los bocadillos. También parada del Día 4 si hay tiempo.'},
+  {lat:51.2255, lon:6.7768, type:'marina', title:'Kö-Bogen II', meta:'Marina · 18:00–18:45', note:'Café/merienda antes de continuar la ruta a pie.'},
+  {lat:51.2298, lon:6.7745, type:'marina', title:'Carlsplatz', meta:'Marina · 18:45–19:45', note:'Paseo y mercado.'},
+  {lat:51.2199, lon:6.7644, type:'marina', title:'Gehry Buildings', meta:'Marina · 20:15–20:45', note:'Parada fotográfica junto al Rin.'},
+  {lat:51.2217, lon:6.7683, type:'marina', title:'Rheinturm', meta:'Marina · 20:45–21:30', note:'Mirador nocturno; tarifa Late Night aprox. 9 € desde las 20:00 (verificar).'},
+  {lat:51.2277, lon:6.7745, type:'grupo', title:'Altstadt (Füchschen / Uerige / Kürzer)', meta:'Día 3 · ~22:30–23:30', note:'Cerveza Altbier + Currywurst/Bratwurst tras el concierto.'},
+  {lat:51.2298, lon:6.7838, type:'grupo', title:'REWE Am Wehrhahn 43', meta:'Día 3 · 11:30 h', note:'Compra de pan y básicos para los bocadillos.'}
+];
+function colorFor(t){ return t==='grupo' ? '#d6a84f' : (t==='marina' ? '#5fd0d8' : '#e2e6f5'); }
+
+var leafMap=L.map('leafletMap',{scrollWheelZoom:true}).setView([51.226,6.775],13);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+  attribution:'© OpenStreetMap · © CARTO', maxZoom:19
+}).addTo(leafMap);
+
+var markerLayers=[];
+mapPoints.forEach(function(p){
+  var icon=L.divIcon({className:'',html:'<div class="pin-dot" style="background:'+colorFor(p.type)+'"></div>',iconSize:[14,14]});
+  var m=L.marker([p.lat,p.lon],{icon:icon}).addTo(leafMap);
+  m.bindPopup('<div class="mp-title">'+p.title+'</div><div class="mp-meta">'+p.meta+'</div><div class="mp-note">'+p.note+'</div>');
+  markerLayers.push({marker:m,type:p.type});
+});
+
+function setFilter(f){
+  ['fAll','fGrupo','fMarina'].forEach(id=>document.getElementById(id).classList.remove('is-on'));
+  document.getElementById(f==='all'?'fAll':(f==='grupo'?'fGrupo':'fMarina')).classList.add('is-on');
+  markerLayers.forEach(function(ml){
+    var visible = f==='all' || ml.type===f || ml.type==='hub';
+    if(visible){ if(!leafMap.hasLayer(ml.marker)) ml.marker.addTo(leafMap); }
+    else { if(leafMap.hasLayer(ml.marker)) leafMap.removeLayer(ml.marker); }
+  });
+}
+/* Leaflet needs a size recalculation once its section becomes visible */
+var mapInited=false;
+var origShow=show;
+show=function(id,btn){
+  origShow(id,btn);
+  if(id==='mapas' && !mapInited){ mapInited=true; setTimeout(()=>leafMap.invalidateSize(),80); }
+  else if(id==='mapas'){ setTimeout(()=>leafMap.invalidateSize(),80); }
+};
+</script>
+</body></html>
