@@ -8,6 +8,8 @@
 <link rel="apple-touch-icon" href="icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <title>BSB Düsseldorf 🇩🇪</title>
 <style>
 :root{
@@ -47,7 +49,7 @@ h1{margin:0;font-size:26px;font-weight:700;letter-spacing:.2px;display:flex;alig
 .wx-pending b{color:var(--gold-soft)}
 
 /* ---- nav ---- */
-main{max-width:720px;margin:auto;padding:16px 14px 100px}
+main{max-width:720px;margin:auto;padding:16px 14px 40px}
 .nav{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
 .nav button{border:1px solid var(--card-line);background:var(--card);padding:14px 10px;border-radius:14px;
   font-weight:600;color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:14px}
@@ -82,33 +84,31 @@ ul{padding-left:20px;margin:8px 0}
   text-decoration:none;font-weight:600;border:1px solid var(--card-line)}
 .pin.gold{background:#241d0e;color:var(--gold-soft)}
 
-/* ---- interactive map ---- */
-.map-wrap{position:relative;background:linear-gradient(180deg,#0d1428,#0a0f20);border:1px solid var(--card-line);
-  border-radius:var(--radius);padding:10px;margin:14px 0;overflow:hidden}
+/* ---- interactive map (Leaflet / OpenStreetMap) ---- */
+.map-wrap{position:relative;background:var(--card);border:1px solid var(--card-line);
+  border-radius:var(--radius);padding:10px;margin:14px 0}
 .map-legend{display:flex;gap:14px;font-size:12px;color:var(--muted);padding:2px 6px 10px;flex-wrap:wrap}
 .map-legend span{display:inline-flex;align-items:center;gap:5px}
 .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
 .dot.grupo{background:var(--gold)}.dot.marina{background:var(--cyan)}.dot.hub{background:#e2e6f5}
-svg.mapsvg{width:100%;height:auto;display:block}
-.pinmark{cursor:pointer}
-.pinmark circle{transition:r .15s}
-.pinmark:hover circle{r:9}
-.map-panel{margin-top:10px;background:var(--card);border:1px solid var(--card-line);border-radius:12px;padding:13px;font-size:13.5px}
-.map-panel .mp-title{font-weight:700;font-family:'Space Grotesk',sans-serif}
-.map-panel .mp-meta{color:var(--cyan-soft);font-size:12.5px;margin-top:2px}
-.map-panel .mp-note{color:var(--muted);margin-top:6px}
+#leafletMap{width:100%;height:380px;border-radius:12px;background:#0d1428}
+.leaflet-popup-content-wrapper{background:var(--card);color:var(--ink);border-radius:12px}
+.leaflet-popup-tip{background:var(--card)}
+.leaflet-popup-content .mp-title{font-weight:700;font-family:'Space Grotesk',sans-serif;font-size:13.5px}
+.leaflet-popup-content .mp-meta{color:var(--cyan-soft);font-size:12px;margin-top:2px}
+.leaflet-popup-content .mp-note{color:var(--muted);font-size:12.5px;margin-top:5px;line-height:1.4}
 .map-filters{display:flex;gap:8px;margin-bottom:8px}
 .map-filters button{flex:1;padding:8px;border-radius:10px;border:1px solid var(--card-line);background:#0f1526;color:var(--muted);font-size:12.5px;font-weight:600}
 .map-filters button.is-on{background:#1b1a12;border-color:var(--gold);color:var(--gold-soft)}
+.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid #0a0e1a;box-shadow:0 0 0 2px rgba(255,255,255,.08)}
 
-/* ---- bottom quick access bar ---- */
-.quickbar{position:fixed;left:0;right:0;bottom:0;background:rgba(10,14,26,.92);backdrop-filter:blur(8px);
-  border-top:1px solid var(--card-line);padding:8px 10px calc(8px + env(safe-area-inset-bottom))}
-.quickgrid{max-width:720px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(74px,1fr));gap:6px}
-.qbtn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--muted);
-  font-size:10.5px;font-weight:600;padding:6px 2px;border-radius:10px}
-.qbtn .qi{font-size:17px}
-.qbtn:active{background:#171f38}
+/* ---- accesos rápidos (integrados, no fijos) ---- */
+.quick{margin:16px 0}
+.quick-title{font-size:13px;color:var(--muted);font-weight:600;margin:0 2px 8px}
+.quick-row{display:flex;flex-wrap:wrap;gap:7px}
+.qpin{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--ink);
+  background:var(--card);border:1px solid var(--card-line);padding:8px 12px;border-radius:999px;font-size:12.5px;font-weight:600}
+.qpin .qi{font-size:14px}
 
 footer{text-align:center;color:var(--muted);font-size:11.5px;margin-top:26px;padding-bottom:6px}
 </style>
@@ -132,6 +132,18 @@ footer{text-align:center;color:var(--muted);font-size:11.5px;margin-top:26px;pad
 <button onclick="show('marina',this)">👩 Marina</button>
 <button onclick="show('logistica',this)">🚆 Logística</button>
 <button onclick="show('mapas',this)">🗺️ Mapa</button>
+</div>
+
+<div class="quick">
+  <div class="quick-title">📍 Accesos rápidos</div>
+  <div class="quick-row">
+    <a class="qpin" href="https://www.google.com/maps/search/?api=1&query=Varnhagenstra%C3%9Fe+37+D%C3%BCsseldorf" target="_blank"><span class="qi">🏨</span>Hotel</a>
+    <a class="qpin" href="https://www.google.com/maps/search/?api=1&query=MERKUR+SPIEL-ARENA+D%C3%BCsseldorf" target="_blank"><span class="qi">🎤</span>Arena</a>
+    <a class="qpin" href="https://www.google.com/maps/search/?api=1&query=Heinrich-Heine-Allee+D%C3%BCsseldorf" target="_blank"><span class="qi">🚇</span>H.H. Allee</a>
+    <a class="qpin" href="https://www.google.com/maps/search/?api=1&query=Hofgarten+D%C3%BCsseldorf" target="_blank"><span class="qi">🌳</span>Hofgarten</a>
+    <a class="qpin" href="https://www.google.com/maps/search/?api=1&query=Rheinturm+D%C3%BCsseldorf" target="_blank"><span class="qi">🌆</span>Rheinturm</a>
+    <a class="qpin" href="https://www.google.com/maps/search/?api=1&query=Barriada+del+Avi%C3%B3n+1+Sevilla" target="_blank"><span class="qi">🅿️</span>Parking</a>
+  </div>
 </div>
 
 <!-- ================= PLANNING ================= -->
@@ -272,32 +284,11 @@ footer{text-align:center;color:var(--muted);font-size:11.5px;margin-top:26px;pad
     <span><i class="dot marina"></i> Ruta de Marina</span>
     <span><i class="dot hub"></i> Hotel / transporte</span>
   </div>
-  <svg class="mapsvg" viewBox="0 0 340 260" id="mapSvg">
-    <!-- Rin -->
-    <path d="M40,10 C90,60 60,120 110,160 C150,190 140,230 190,250" stroke="#1f3a5f" stroke-width="14" fill="none" opacity=".55"/>
-    <path d="M40,10 C90,60 60,120 110,160 C150,190 140,230 190,250" stroke="#3a6ea5" stroke-width="2" fill="none" opacity=".5"/>
-    <!-- transit lines -->
-    <line x1="205" y1="55" x2="150" y2="140" stroke="#5fd0d8" stroke-width="2" stroke-dasharray="4 3" opacity=".6"/>
-    <line x1="150" y1="140" x2="130" y2="205" stroke="#5fd0d8" stroke-width="2" stroke-dasharray="4 3" opacity=".6"/>
-    <text x="180" y="95" fill="#5fd0d8" font-size="8">U78</text>
-    <text x="132" y="178" fill="#5fd0d8" font-size="8">U72/U73</text>
-  </svg>
-  <div class="map-panel" id="mapPanel">Toca un punto del mapa para ver los detalles.</div>
+  <div id="leafletMap"></div>
 </div>
 </section>
 
 </main>
-
-<div class="quickbar">
-  <div class="quickgrid">
-    <a class="qbtn" href="https://www.google.com/maps/search/?api=1&query=Varnhagenstra%C3%9Fe+37+D%C3%BCsseldorf" target="_blank"><span class="qi">🏨</span>Hotel</a>
-    <a class="qbtn" href="https://www.google.com/maps/search/?api=1&query=MERKUR+SPIEL-ARENA+D%C3%BCsseldorf" target="_blank"><span class="qi">🎤</span>Arena</a>
-    <a class="qbtn" href="https://www.google.com/maps/search/?api=1&query=Heinrich-Heine-Allee+D%C3%BCsseldorf" target="_blank"><span class="qi">🚇</span>H.H.Allee</a>
-    <a class="qbtn" href="https://www.google.com/maps/search/?api=1&query=Hofgarten+D%C3%BCsseldorf" target="_blank"><span class="qi">🌳</span>Hofgarten</a>
-    <a class="qbtn" href="https://www.google.com/maps/search/?api=1&query=Rheinturm+D%C3%BCsseldorf" target="_blank"><span class="qi">🌆</span>Rheinturm</a>
-    <a class="qbtn" href="https://www.google.com/maps/search/?api=1&query=Barriada+del+Avi%C3%B3n+1+Sevilla" target="_blank"><span class="qi">🅿️</span>Parking</a>
-  </div>
-</div>
 
 <script>
 function show(id, btn){
@@ -352,46 +343,50 @@ if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.se
   .catch(function(){ renderPending(); });
 })();
 
-/* ---------- Interactive map ---------- */
+/* ---------- Interactive map (Leaflet + OpenStreetMap tiles) ---------- */
 var mapPoints=[
-  {x:150,y:200,type:'hub',title:'HK Hotel Düsseldorf City',meta:'Alojamiento · Varnhagenstraße 37',note:'Punto de partida y llegada de cada jornada.'},
-  {x:150,y:140,type:'hub',title:'Heinrich-Heine-Allee',meta:'Día 3 · 17:45 salida / 22:30 reencuentro',note:'Punto donde el grupo y Marina se separan y se reencuentran.'},
-  {x:205,y:55,type:'grupo',title:'MERKUR SPIEL-ARENA',meta:'Día 3 · 20:00 h',note:'Concierto de Backstreet Boys. Llegada recomendada 18:45–19:00 vía U78.'},
-  {x:120,y:95,type:'marina',title:'Hofgarten',meta:'Día 3 · 12:00–13:45',note:'Parque para descansar y comer los bocadillos. También parada del Día 4 si hay tiempo.'},
-  {x:140,y:120,type:'marina',title:'Kö-Bogen II',meta:'Marina · 18:00–18:45',note:'Café/merienda antes de continuar la ruta a pie.'},
-  {x:118,y:150,type:'marina',title:'Carlsplatz',meta:'Marina · 18:45–19:45',note:'Paseo y mercado.'},
-  {x:100,y:175,type:'marina',title:'Gehry Buildings',meta:'Marina · 20:15–20:45',note:'Parada fotográfica junto al Rin.'},
-  {x:95,y:200,type:'marina',title:'Rheinturm',meta:'Marina · 20:45–21:30',note:'Mirador nocturno; tarifa Late Night aprox. 9 € desde las 20:00 (verificar).'},
-  {x:130,y:170,type:'grupo',title:'Altstadt (Füchschen / Uerige / Kürzer)',meta:'Día 3 · ~22:30–23:30',note:'Cerveza Altbier + Currywurst/Bratwurst tras el concierto.'},
-  {x:175,y:100,type:'grupo',title:'REWE Am Wehrhahn 43',meta:'Día 3 · 11:30 h',note:'Compra de pan y básicos para los bocadillos.'}
+  {lat:51.2038, lon:6.7847, type:'hub', title:'HK Hotel Düsseldorf City', meta:'Alojamiento · Varnhagenstraße 37', note:'Punto de partida y llegada de cada jornada.'},
+  {lat:51.2263, lon:6.7729, type:'hub', title:'Heinrich-Heine-Allee', meta:'Día 3 · 17:45 salida / 22:30 reencuentro', note:'Punto donde el grupo y Marina se separan y se reencuentran.'},
+  {lat:51.2606, lon:6.7346, type:'grupo', title:'MERKUR SPIEL-ARENA', meta:'Día 3 · 20:00 h', note:'Concierto de Backstreet Boys. Llegada recomendada 18:45–19:00 vía U78.'},
+  {lat:51.2280, lon:6.7807, type:'marina', title:'Hofgarten', meta:'Día 3 · 12:00–13:45', note:'Parque para descansar y comer los bocadillos. También parada del Día 4 si hay tiempo.'},
+  {lat:51.2255, lon:6.7768, type:'marina', title:'Kö-Bogen II', meta:'Marina · 18:00–18:45', note:'Café/merienda antes de continuar la ruta a pie.'},
+  {lat:51.2298, lon:6.7745, type:'marina', title:'Carlsplatz', meta:'Marina · 18:45–19:45', note:'Paseo y mercado.'},
+  {lat:51.2199, lon:6.7644, type:'marina', title:'Gehry Buildings', meta:'Marina · 20:15–20:45', note:'Parada fotográfica junto al Rin.'},
+  {lat:51.2217, lon:6.7683, type:'marina', title:'Rheinturm', meta:'Marina · 20:45–21:30', note:'Mirador nocturno; tarifa Late Night aprox. 9 € desde las 20:00 (verificar).'},
+  {lat:51.2277, lon:6.7745, type:'grupo', title:'Altstadt (Füchschen / Uerige / Kürzer)', meta:'Día 3 · ~22:30–23:30', note:'Cerveza Altbier + Currywurst/Bratwurst tras el concierto.'},
+  {lat:51.2298, lon:6.7838, type:'grupo', title:'REWE Am Wehrhahn 43', meta:'Día 3 · 11:30 h', note:'Compra de pan y básicos para los bocadillos.'}
 ];
-var currentFilter='all';
+function colorFor(t){ return t==='grupo' ? '#d6a84f' : (t==='marina' ? '#5fd0d8' : '#e2e6f5'); }
+
+var leafMap=L.map('leafletMap',{scrollWheelZoom:true}).setView([51.226,6.775],13);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+  attribution:'© OpenStreetMap · © CARTO', maxZoom:19
+}).addTo(leafMap);
+
+var markerLayers=[];
+mapPoints.forEach(function(p){
+  var icon=L.divIcon({className:'',html:'<div class="pin-dot" style="background:'+colorFor(p.type)+'"></div>',iconSize:[14,14]});
+  var m=L.marker([p.lat,p.lon],{icon:icon}).addTo(leafMap);
+  m.bindPopup('<div class="mp-title">'+p.title+'</div><div class="mp-meta">'+p.meta+'</div><div class="mp-note">'+p.note+'</div>');
+  markerLayers.push({marker:m,type:p.type});
+});
+
 function setFilter(f){
-  currentFilter=f;
   ['fAll','fGrupo','fMarina'].forEach(id=>document.getElementById(id).classList.remove('is-on'));
   document.getElementById(f==='all'?'fAll':(f==='grupo'?'fGrupo':'fMarina')).classList.add('is-on');
-  drawPins();
-}
-function colorFor(t){ return t==='grupo' ? '#d6a84f' : (t==='marina' ? '#5fd0d8' : '#e2e6f5'); }
-function drawPins(){
-  var svg=document.getElementById('mapSvg');
-  svg.querySelectorAll('.pinmark').forEach(function(el){ el.remove(); });
-  mapPoints.forEach(function(p,i){
-    if(currentFilter!=='all' && p.type!==currentFilter && p.type!=='hub') return;
-    var g=document.createElementNS('http://www.w3.org/2000/svg','g');
-    g.setAttribute('class','pinmark');
-    g.setAttribute('onclick','showPoint('+i+')');
-    var c=document.createElementNS('http://www.w3.org/2000/svg','circle');
-    c.setAttribute('cx',p.x); c.setAttribute('cy',p.y); c.setAttribute('r',6);
-    c.setAttribute('fill',colorFor(p.type)); c.setAttribute('stroke','#0a0e1a'); c.setAttribute('stroke-width','1.5');
-    g.appendChild(c);
-    svg.appendChild(g);
+  markerLayers.forEach(function(ml){
+    var visible = f==='all' || ml.type===f || ml.type==='hub';
+    if(visible){ if(!leafMap.hasLayer(ml.marker)) ml.marker.addTo(leafMap); }
+    else { if(leafMap.hasLayer(ml.marker)) leafMap.removeLayer(ml.marker); }
   });
 }
-function showPoint(i){
-  var p=mapPoints[i];
-  document.getElementById('mapPanel').innerHTML='<div class="mp-title">'+p.title+'</div><div class="mp-meta">'+p.meta+'</div><div class="mp-note">'+p.note+'</div>';
-}
-drawPins();
+/* Leaflet needs a size recalculation once its section becomes visible */
+var mapInited=false;
+var origShow=show;
+show=function(id,btn){
+  origShow(id,btn);
+  if(id==='mapas' && !mapInited){ mapInited=true; setTimeout(()=>leafMap.invalidateSize(),80); }
+  else if(id==='mapas'){ setTimeout(()=>leafMap.invalidateSize(),80); }
+};
 </script>
 </body></html>
