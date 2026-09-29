@@ -1,10 +1,16 @@
 {
-  "name":"BSB Düsseldorf 🇩🇪",
-  "short_name":"BSB Düsseldorf",
-  "start_url":"./",
-  "display":"standalone",
-  "background_color":"#0a0e1a",
-  "theme_color":"#0a0e1a",
-  "lang":"es",
-  "icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+  "name": "Düsseldorf 2026 · Backstreet Boys",
+  "short_name": "BSB26",
+  "description": "Guía de viaje Düsseldorf 2026 · Backstreet Boys",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#050b14",
+  "theme_color": "#07111f",
+  "lang": "es",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-384.png", "sizes": "384x384", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
 }

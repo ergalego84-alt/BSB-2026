@@ -1,107 +1,21 @@
-🇩🇪 BSB Düsseldorf — Travel PWA
+# Düsseldorf Trip 2026 · Backstreet Boys
 
-PWA (Progressive Web App) para organizar el viaje a Düsseldorf con motivo del concierto de Backstreet Boys.
+PWA preparada para GitHub Pages. Incluye estética oscura con Torre del Rin, tiempo automático, planning de 8 personas, mini botones de ubicación, logística del concierto, opciones de visita y mapa interactivo por días.
 
-La aplicación está diseñada principalmente para utilizarse desde móvil, especialmente iPhone, y permite consultar el planning, horarios, desplazamientos, ubicaciones y rutas a pie.
+## Publicar
+1. Crea un repositorio en GitHub.
+2. Sube estos archivos a la raíz.
+3. Settings → Pages → Deploy from a branch → `main` → `/ (root)`.
+4. Abre la URL publicada en Safari y usa Compartir → Añadir a pantalla de inicio.
 
-📱 Características
+## Tiempo
+Se consulta automáticamente a Open-Meteo al abrir la app. Si aún no existe previsión fiable, se muestra un aviso y se actualizará en futuras aperturas.
 
-- 📅 Planning completo del viaje.
-- ✈️ Información de vuelos.
-- 🚐 Traslados y logística para el grupo.
-- 🏨 Información del alojamiento.
-- 🎤 Información del concierto de Backstreet Boys.
-- 👥 Planning específico para el grupo.
-- 👩 Ruta especial para Marina durante el concierto.
-- ⏰ Horarios recomendados.
-- 📍 Ubicaciones de los lugares.
-- 🗺️ Enlaces directos a Google Maps.
-- 🚶 Rutas diseñadas para realizarse a pie.
-- 📱 Diseño responsive para móvil.
-- 📴 Funcionamiento básico offline mediante Service Worker.
-- ➕ Posibilidad de instalar la aplicación en la pantalla de inicio del iPhone.
+## Mapa
+Botones DÍA 3 / OPCIONES / DÍA 4 / TODO. Cada pin muestra lugar, horario y función en el planning.
 
----
+## Transporte
+La referencia actual de Rheinbahn confirma U78 desde Heinrich-Heine-Allee hasta MERKUR SPIEL-ARENA/Messe Nord en unos 15–20 minutos, con refuerzos en los días de concierto. El ticket del evento incluye transporte VRR si lleva el logo correspondiente.
 
-🗓️ Itinerario
-
-Día 1
-
-Jerez → Sevilla → Ámsterdam
-
-- Salida desde Jerez.
-- Parking en el aeropuerto de Sevilla.
-- Vuelo Sevilla → Ámsterdam.
-- Escala nocturna en Schiphol.
-
-Día 2
-
-Ámsterdam → Düsseldorf
-
-- Vuelo Ámsterdam → Düsseldorf.
-- Traslado al hotel.
-- Dejar equipaje.
-- Turismo por Düsseldorf.
-- Check-in y descanso.
-
-Día 3
-
-Düsseldorf + concierto BSB
-
-- Turismo y almuerzo.
-- Traslado del grupo a la MERKUR SPIEL-ARENA.
-- Concierto Backstreet Boys.
-
-👩 Marina
-
-Durante el concierto Marina realiza una ruta independiente por el centro de Düsseldorf:
-
-Heinrich-Heine-Allee → Kö-Bogen II → Carlsplatz → Rheinuferpromenade → Gehry Buildings → Rheinturm → Altstadt → Heinrich-Heine-Allee
-
-El objetivo es que Marina pueda conocer Düsseldorf mientras el resto del grupo está en el concierto y reencontrarse posteriormente con el grupo.
-
-Día 4
-
-Düsseldorf → Sevilla → Jerez
-
-- Check-out.
-- Traslado al aeropuerto.
-- Vuelo Düsseldorf → Sevilla.
-- Recogida del vehículo.
-- Regreso a Jerez.
-
----
-
-📲 Uso recomendado
-
-La aplicación está pensada para utilizarse principalmente desde el móvil.
-
-Los botones de ubicación permiten abrir directamente los lugares en Google Maps.
-
-Para Marina, la sección 👩 Marina concentra toda la información necesaria durante el concierto.
-
----
-
-⚠️ Datos pendientes de verificar
-
-Antes del viaje conviene comprobar:
-
-- Fecha exacta del concierto.
-- Horarios definitivos de vuelos.
-- Dirección exacta del hotel.
-- Horario y precio de Rheinturm.
-- Condiciones del KombiTicket.
-- Horarios definitivos de U78 y S11.
-- Horarios de los establecimientos incluidos en la ruta.
-
----
-
-📄 Fuente del planning
-
-El contenido inicial de la aplicación se basa en el planning de viaje proporcionado para el grupo de 8 personas y en la guía específica de la ruta de Marina.
-
-Los horarios y datos de transporte se mantienen según el planning proporcionado y deben verificarse antes del viaje.
-
----
-
-🇩🇪 BSB Düsseldorf - Backstreet Boys · 2026
+## Icono de la app
+El icono instalado usa la imagen BSB26 en formato PNG y está preparado en varios tamaños para Android/PWA y para el icono de inicio de iPhone.
