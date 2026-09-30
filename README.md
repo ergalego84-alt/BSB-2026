@@ -1,21 +1,27 @@
-# Düsseldorf Trip 2026 · Backstreet Boys
+# BSB26 · Düsseldorf 2026
 
-PWA preparada para GitHub Pages. Incluye estética oscura con Torre del Rin, tiempo automático, planning de 8 personas, mini botones de ubicación, logística del concierto, opciones de visita y mapa interactivo por días.
+PWA lista para GitHub Pages.
 
 ## Publicar
-1. Crea un repositorio en GitHub.
-2. Sube estos archivos a la raíz.
-3. Settings → Pages → Deploy from a branch → `main` → `/ (root)`.
-4. Abre la URL publicada en Safari y usa Compartir → Añadir a pantalla de inicio.
+1. Crea o abre un repositorio en GitHub.
+2. Sube **todos los archivos de esta carpeta a la raíz** del repositorio.
+3. Ve a **Settings → Pages**.
+4. Selecciona **Deploy from a branch → main → / (root)**.
+5. Abre la URL HTTPS de GitHub Pages.
+6. En Android Chrome: menú **⋮ → Instalar aplicación** / **Añadir a pantalla de inicio**. En iPhone: **Compartir → Añadir a pantalla de inicio**.
 
-## Tiempo
-Se consulta automáticamente a Open-Meteo al abrir la app. Si aún no existe previsión fiable, se muestra un aviso y se actualizará en futuras aperturas.
+## Importante para la instalación Android
+El paquete incluye `manifest.webmanifest`, iconos PWA de 192/384/512 px, `start_url`, `scope`, `display: standalone` y `sw.js`. La instalación debe hacerse desde la URL HTTPS publicada en GitHub Pages, no abriendo el HTML como archivo local.
 
-## Mapa
-Botones DÍA 3 / OPCIONES / DÍA 4 / TODO. Cada pin muestra lugar, horario y función en el planning.
-
-## Transporte
-La referencia actual de Rheinbahn confirma U78 desde Heinrich-Heine-Allee hasta MERKUR SPIEL-ARENA/Messe Nord en unos 15–20 minutos, con refuerzos en los días de concierto. El ticket del evento incluye transporte VRR si lleva el logo correspondiente.
-
-## Icono de la app
-El icono instalado usa la imagen BSB26 en formato PNG y está preparado en varios tamaños para Android/PWA y para el icono de inicio de iPhone.
+## Contenido
+- Itinerario 2, 3 y 4 de octubre.
+- Barra inferior fija: Itinerario / Mapa / Documentos.
+- Un único Mapa interactivo.
+- Hotel con reserva y enlace a Google Maps.
+- Vuelo de vuelta EW9568 con los dos códigos de reserva.
+- Vuelos de ida pendientes de completar con los datos de check-in.
+- Parking Sevilla.
+- Carpeta genérica de fotos de Drive.
+- Tiempo de Düsseldorf actualizado al abrir.
+- Fichas visuales de cada día.
+- Opciones de visita integradas sin mencionar a ninguna persona.
