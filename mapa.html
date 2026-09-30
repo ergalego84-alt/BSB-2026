@@ -15,13 +15,27 @@ const points=[
  {id:'arena',name:'MERKUR SPIEL-ARENA',lat:51.2612,lon:6.7330,type:'red',group:'todo',time:'Sábado 3 · 20:00',text:'Concierto Backstreet Boys. Llegada prevista 18:45–19:00.',gm:'MERKUR SPIEL-ARENA Düsseldorf'},
  {id:'messe',name:'MERKUR SPIEL-ARENA / Messe Nord',lat:51.2590,lon:6.7357,type:'black',group:'todo',time:'Transporte',text:'Parada de referencia de la U78 para el concierto.',gm:'MERKUR SPIEL-ARENA/Messe Nord Düsseldorf'}
 ];
-const map=L.map('map',{zoomControl:true}).setView([51.227,6.772],13);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
+const map=L.map('map',{zoomControl:true}).setView([51.227,6.772],13);L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap &copy; CARTO'}).addTo(map);
 const layers={centro:L.layerGroup().addTo(map),rin:L.layerGroup().addTo(map),todo:L.layerGroup()};
 const markerIcon=(type)=>L.divIcon({className:'custom-pin',html:`<div style="width:26px;height:26px;border-radius:50%;background:${type==='red'?'#c8102e':type==='yellow'?'#f4c300':'#111'};border:3px solid #fff;box-shadow:0 2px 8px #0006;display:flex;align-items:center;justify-content:center;color:${type==='yellow'?'#111':'#fff'};font-weight:900;font-size:12px">•</div>`,iconSize:[26,26],iconAnchor:[13,13]});
 const markers={};
 points.forEach((p,i)=>{const m=L.marker([p.lat,p.lon],{icon:markerIcon(p.type)}).bindPopup(`<div class="popup-title">${p.name}</div><div class="popup-time">${p.time}</div><div>${p.text}</div><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.gm)}" target="_blank">📍 Abrir en Google Maps</a>`);m.on('click',()=>document.getElementById('mapInfo').innerHTML=`<b>${p.name}</b><div class="small" style="margin-top:5px"><b>${p.time}</b><br>${p.text}</div>`);markers[p.id]=m;if(p.group==='centro'){m.addTo(layers.centro);m.addTo(layers.todo)}else if(p.group==='rin'){m.addTo(layers.rin);m.addTo(layers.todo)}else m.addTo(layers.todo);});
-const cityRoute=['tokyo','ko','konigs','carls','burg','rhein','tower','media'].map(id=>{const p=points.find(x=>x.id===id);return [p.lat,p.lon]});L.polyline(cityRoute,{color:'#111',weight:4,opacity:.7,dashArray:'8 7'}).addTo(map);
-const arenaRoute=['hotel','heinrich','arena'].map(id=>{const p=points.find(x=>x.id===id);return [p.lat,p.lon]});L.polyline(arenaRoute,{color:'#c8102e',weight:4,opacity:.75}).addTo(map);
+const cityRoute=['tokyo','ko','konigs','carls','burg','rhein','tower','media'].map(id=>{const p=points.find(x=>x.id===id);return [p.lat,p.lon]});
+const arenaRoute=['hotel','heinrich','arena'].map(id=>{const p=points.find(x=>x.id===id);return [p.lat,p.lon]});
+function drawWalkRoute(coords,color,fallback){
+  const osrmCoords=coords.map(c=>c[1]+','+c[0]).join(';');
+  fetch('https://router.project-osrm.org/route/v1/foot/'+osrmCoords+'?overview=full&geometries=geojson')
+    .then(r=>r.json())
+    .then(d=>{
+      if(d.routes && d.routes[0]){
+        const line=d.routes[0].geometry.coordinates.map(c=>[c[1],c[0]]);
+        L.polyline(line,{color:color,weight:4,opacity:.8,lineJoin:'round'}).addTo(map);
+      } else { fallback(); }
+    })
+    .catch(()=>{ fallback(); });
+}
+drawWalkRoute(cityRoute,'#111',()=>L.polyline(cityRoute,{color:'#111',weight:4,opacity:.7,dashArray:'8 7'}).addTo(map));
+drawWalkRoute(arenaRoute,'#c8102e',()=>L.polyline(arenaRoute,{color:'#c8102e',weight:4,opacity:.75}).addTo(map));
 function focusGroup(group){['centro','rin','todo'].forEach(x=>{const b=document.getElementById('btn'+x.charAt(0).toUpperCase()+x.slice(1));if(b)b.classList.remove('active')});const b=document.getElementById('btn'+group.charAt(0).toUpperCase()+group.slice(1));if(b)b.classList.add('active');Object.values(layers).forEach(l=>{if(map.hasLayer(l))map.removeLayer(l)});layers[group].addTo(map);const visible=points.filter(p=>p.group===group||group==='todo').map(p=>[p.lat,p.lon]);if(visible.length)map.fitBounds(visible,{padding:[35,35]});setTimeout(()=>map.invalidateSize(),100)}
 focusGroup('centro');
 </script></body></html>

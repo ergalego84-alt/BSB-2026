@@ -1,0 +1,126 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111111"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="style.css"><title>Mi recuerdo · BSB26 Düsseldorf</title>
+<style>
+.checklist{margin:12px 0}
+.citem{display:flex;align-items:flex-start;gap:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;margin:8px 0}
+.citem input{width:22px;height:22px;margin-top:2px;accent-color:#c8102e;flex:0 0 auto}
+.citem .ci-body{flex:1}
+.citem .ci-top{display:flex;justify-content:space-between;gap:8px;font-weight:900}
+.citem .ci-time{color:#c8102e;font-weight:850;font-size:13px}
+.citem .ci-note{color:var(--muted);font-size:13px;margin-top:2px}
+.daylabel{font-size:12px;font-weight:900;letter-spacing:1px;color:#888;margin:16px 2px 4px}
+.canvas-wrap{background:#fff;border:1px solid var(--line);border-radius:17px;padding:10px;margin:14px 0;box-shadow:0 4px 15px #0000000d}
+#recuerdoCanvas{width:100%;display:block;border-radius:10px;background:#fff}
+.quickrow{display:flex;gap:8px;margin:10px 0}
+.quickrow button{flex:1;border:1px solid #111;background:#fff;border-radius:11px;padding:9px;font-weight:850}
+</style>
+</head><body><div class="wrap">
+<header><h1>🎟️ RECUERDO<br>BSB26</h1><div class="sub">Marca lo que habéis vivido y descargad vuestra imagen</div></header>
+<main>
+<a class="back" href="index.html">← Volver al itinerario</a>
+<div class="notice"><b>Cómo funciona.</b> Marca cada momento según lo vayáis viviendo. La imagen de abajo se genera sola con lo marcado — cuando esté como queráis, descargadla como recuerdo del viaje.</div>
+
+<div class="quickrow"><button onclick="setAll(true)">✅ Marcar todo</button><button onclick="setAll(false)">⬜ Vaciar</button></div>
+
+<div class="canvas-wrap"><canvas id="recuerdoCanvas" width="1080" height="600"></canvas></div>
+<a class="btn red" id="downloadBtn" href="#">⬇️ Descargar imagen</a>
+
+<div id="checklist" class="checklist"></div>
+
+<div class="footer">BSB26 · Düsseldorf · 2–4 octubre 2026</div>
+</main>
+</div>
+<nav class="bottom"><a href="index.html">📅<br>Itinerario</a><a href="mapa.html">🗺️<br>Mapa</a><a href="fotos.html">📸<br>Fotos</a><a href="documentos.html">📄<br>Documentos</a></nav>
+<script>
+const items=[
+ {id:'flight-out',day:'VIERNES 2',icon:'✈️',title:'Sevilla → Ámsterdam',time:'20:10–23:05',note:'Vuelo Transavia KL2690'},
+ {id:'schiphol',day:'VIERNES 2',icon:'🌙',title:'Noche en Schiphol',time:'Noche',note:'Pernocta en la terminal'},
+ {id:'flight-in',day:'SÁBADO 3',icon:'✈️',title:'Ámsterdam → Düsseldorf',time:'06:55–07:40',note:'Vuelo KLM KL1797'},
+ {id:'hotel',day:'SÁBADO 3',icon:'🏨',title:'Llegada al HK Hotel',time:'08:15–09:00',note:'Varnhagenstr. 37, Düsseldorf'},
+ {id:'tokyo',day:'SÁBADO 3',icon:'🇯🇵',title:'Little Tokyo',time:'Mañana',note:'Paseo por el barrio japonés'},
+ {id:'altstadt',day:'SÁBADO 3',icon:'🏙️',title:'Altstadt / Burgplatz',time:'Mañana',note:'Casco histórico junto al Rin'},
+ {id:'rhein',day:'SÁBADO 3',icon:'🌊',title:'Paseo del Rin',time:'Mañana',note:'Rheinuferpromenade'},
+ {id:'checkin',day:'SÁBADO 3',icon:'🛏️',title:'Check-in + descanso',time:'15:00–17:15',note:'Antes del concierto'},
+ {id:'arena',day:'SÁBADO 3',icon:'🎤',title:'Backstreet Boys',time:'20:00',note:'MERKUR SPIEL-ARENA'},
+ {id:'altbier',day:'SÁBADO 3',icon:'🍺',title:'Altbier en la Altstadt',time:'Noche',note:'Ambiente después del concierto'},
+ {id:'domingo-paseo',day:'DOMINGO 4',icon:'☀️',title:'Paseo libre',time:'07:30–11:30',note:'Centro / Rin, sin prisas'},
+ {id:'checkout',day:'DOMINGO 4',icon:'🧳',title:'Check-out',time:'11:30–12:00',note:'Salida del hotel'},
+ {id:'flight-back',day:'DOMINGO 4',icon:'✈️',title:'Düsseldorf → Sevilla',time:'15:25–18:20',note:'Eurowings EW9568'}
+];
+const STORE_KEY='bsb26_recuerdo_checked';
+function loadChecked(){try{return JSON.parse(localStorage.getItem(STORE_KEY))||{}}catch(e){return {}}}
+function saveChecked(c){try{localStorage.setItem(STORE_KEY,JSON.stringify(c))}catch(e){}}
+let checked=loadChecked();
+
+function renderList(){
+  const wrap=document.getElementById('checklist');
+  let html='';let lastDay='';
+  items.forEach(it=>{
+    if(it.day!==lastDay){html+=`<div class="daylabel">${it.day}</div>`;lastDay=it.day;}
+    const on=!!checked[it.id];
+    html+=`<label class="citem"><input type="checkbox" ${on?'checked':''} onchange="toggle('${it.id}',this.checked)"><div class="ci-body"><div class="ci-top"><span>${it.icon} ${it.title}</span><span class="ci-time">${it.time}</span></div><div class="ci-note">${it.note}</div></div></label>`;
+  });
+  wrap.innerHTML=html;
+}
+function toggle(id,val){checked[id]=val;saveChecked(checked);draw();}
+function setAll(val){items.forEach(it=>checked[it.id]=val);saveChecked(checked);renderList();draw();}
+
+const cv=document.getElementById('recuerdoCanvas');
+const ctx=cv.getContext('2d');
+function draw(){
+  const done=items.filter(it=>checked[it.id]);
+  const rowH=68, top=190, bottom=60;
+  const h=Math.max(600, top+Math.max(done.length,1)*rowH+bottom);
+  cv.width=1080; cv.height=h;
+  // background
+  ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,1080,h);
+  // header stripe (diagonal, like the app header)
+  ctx.save();
+  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(1080,0);ctx.lineTo(1080,118);ctx.lineTo(0,150);ctx.closePath();ctx.fillStyle='#111';ctx.fill();
+  ctx.beginPath();ctx.moveTo(0,150);ctx.lineTo(1080,118);ctx.lineTo(1080,148);ctx.lineTo(0,178);ctx.closePath();ctx.fillStyle='#c8102e';ctx.fill();
+  ctx.beginPath();ctx.moveTo(0,178);ctx.lineTo(1080,148);ctx.lineTo(1080,168);ctx.lineTo(0,198);ctx.closePath();ctx.fillStyle='#f4c300';ctx.fill();
+  ctx.restore();
+  ctx.fillStyle='#fff';
+  ctx.font='900 54px -apple-system,Segoe UI,Roboto,Arial';
+  ctx.fillText('MI RECUERDO',40,72);
+  ctx.font='900 30px -apple-system,Segoe UI,Roboto,Arial';
+  ctx.fillText('BSB26 · DÜSSELDORF 2026',40,112);
+  ctx.fillStyle='#111';
+  ctx.font='700 22px -apple-system,Segoe UI,Roboto,Arial';
+  ctx.fillText('Backstreet Boys · Into The Millennium · 3 oct 2026',40,212);
+
+  if(done.length===0){
+    ctx.fillStyle='#888';
+    ctx.font='600 26px -apple-system,Segoe UI,Roboto,Arial';
+    ctx.fillText('Marca los momentos que hayáis vivido',40,280);
+    ctx.fillText('para que aparezcan aquí.',40,314);
+  } else {
+    let y=top+40;
+    done.forEach((it,i)=>{
+      ctx.fillStyle='#f5f5f5';
+      ctx.beginPath();ctx.roundRect ? ctx.roundRect(40,y-42,1000,56,14) : ctx.rect(40,y-42,1000,56);
+      ctx.fill();
+      ctx.fillStyle='#111';
+      ctx.font='900 30px -apple-system,Segoe UI,Roboto,Arial';
+      ctx.fillText(it.icon+'  '+it.title,58,y-4);
+      ctx.fillStyle='#c8102e';
+      ctx.font='850 22px -apple-system,Segoe UI,Roboto,Arial';
+      const w=ctx.measureText(it.time).width;
+      ctx.fillText(it.time,1020-w,y-6);
+      y+=rowH;
+    });
+  }
+  ctx.fillStyle='#aaa';
+  ctx.font='600 18px -apple-system,Segoe UI,Roboto,Arial';
+  ctx.fillText('BSB26 · Düsseldorf · 2–4 octubre 2026',40,h-26);
+}
+document.getElementById('downloadBtn').addEventListener('click',function(e){
+  e.preventDefault();
+  const a=document.createElement('a');
+  a.download='BSB26-mi-recuerdo.png';
+  a.href=cv.toDataURL('image/png');
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+});
+renderList();draw();
+if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
+</script>
+</body></html>
