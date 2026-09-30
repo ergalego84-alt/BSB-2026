@@ -1,27 +1,19 @@
 # BSB26 · Düsseldorf 2026
 
-PWA lista para GitHub Pages.
+PWA estática para el viaje del 2 al 4 de octubre de 2026.
 
-## Publicar
-1. Crea o abre un repositorio en GitHub.
-2. Sube **todos los archivos de esta carpeta a la raíz** del repositorio.
-3. Ve a **Settings → Pages**.
-4. Selecciona **Deploy from a branch → main → / (root)**.
-5. Abre la URL HTTPS de GitHub Pages.
-6. En Android Chrome: menú **⋮ → Instalar aplicación** / **Añadir a pantalla de inicio**. En iPhone: **Compartir → Añadir a pantalla de inicio**.
+## Estructura
+- `index.html` — itinerario
+- `mapa.html` — mapa interactivo con más puntos de interés y rutas
+- `fotos.html` — acceso directo a la carpeta compartida de Google Drive
+- `documentos.html` — hotel, vuelos, parking y concierto
+- `style.css` / `app.js` — estilos y tiempo
+- `manifest.webmanifest` / `sw.js` — PWA
 
-## Importante para la instalación Android
-El paquete incluye `manifest.webmanifest`, iconos PWA de 192/384/512 px, `start_url`, `scope`, `display: standalone` y `sw.js`. La instalación debe hacerse desde la URL HTTPS publicada en GitHub Pages, no abriendo el HTML como archivo local.
+## Publicación
+Sube todos los archivos a un repositorio de GitHub Pages y abre la URL HTTPS desde el móvil. Cada sección se abre como una página independiente y la barra inferior permite saltar entre Itinerario, Mapa, Fotos y Documentos.
 
-## Contenido
-- Itinerario 2, 3 y 4 de octubre.
-- Barra inferior fija: Itinerario / Mapa / Documentos.
-- Un único Mapa interactivo.
-- Hotel con reserva y enlace a Google Maps.
-- Vuelo de vuelta EW9568 con los dos códigos de reserva.
-- Vuelos de ida pendientes de completar con los datos de check-in.
-- Parking Sevilla.
-- Carpeta genérica de fotos de Drive.
-- Tiempo de Düsseldorf actualizado al abrir.
-- Fichas visuales de cada día.
-- Opciones de visita integradas sin mencionar a ninguna persona.
+No se incluye botón de instalación dentro de la app. Cada persona puede instalarla desde las opciones de su propio navegador si quiere añadirla a la pantalla de inicio.
+
+## Mapa
+El mapa usa OpenStreetMap + Leaflet cuando hay conexión. Incluye puntos del centro, Rin, hotel, transporte y MERKUR SPIEL-ARENA, además de rutas orientativas.
