@@ -36,6 +36,13 @@ function init(){if(mapObj)return;if(!window.L){document.getElementById('mapLoadi
 document.getElementById('btnTodo').onclick=()=>show('todo');document.getElementById('btnSabado').onclick=()=>show('sabado');document.getElementById('btnOpciones').onclick=()=>show('opciones');list();
 window.addEventListener('load',init);setTimeout(()=>{if(!mapObj && window.L)init()},900);
 </script>
-<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
-<script>if(!window.L){var s=document.createElement('script');s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';s.onload=()=>init();document.body.appendChild(s);}else{init();}</script>
-</body></html>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function(){
+  function startMap(){
+    if(window.L){ init(); }
+    else { document.getElementById('mapLoading').textContent='🗺️ No se ha podido cargar el mapa. Comprueba la conexión.'; document.getElementById('mapFallback').style.display='block'; }
+  }
+  if(window.L) startMap(); else window.addEventListener('load',startMap,{once:true});
+})();
+</script></body></html>
