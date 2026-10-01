@@ -1,5 +1,12 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111111"><meta name="description" content="BSB26 Düsseldorf · guía de viaje del 2 al 4 de octubre de 2026"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"><link rel="stylesheet" href="style.css"><title>BSB26 · Düsseldorf 2026</title></head><body><div class="wrap"><header><h1>🇩🇪 Düsseldorf<br>BSB26</h1><div class="sub">2–4 OCT 2026 · 8 personas · Backstreet Boys · Into The Millennium</div></header><main>
-<div class="quick"><a href="index.html">📅 Itinerario</a><a href="mapa.html">🗺️ Mapa</a><a href="fotos.html">📸 Fotos</a><a href="documentos.html">📄 Documentos</a></div>
+<div class="quick"><a href="index.html">📅 Itinerario</a><a href="mapa.html">🗺️ Mapa</a><a href="fotos.html">📸 Fotos</a><a href="documentos.html">📄 Documentos</a><a href="recuerdo.html" class="highlight">🎟️ Recuerdo</a></div>
+<a id="recuerdoHero" href="recuerdo.html" style="display:none;text-decoration:none">
+  <div class="card black" style="background:#111;color:#fff;border-left:6px solid #f4c300">
+    <div class="title" style="color:#fff">🎬 CREAR RECUERDO</div>
+    <div class="small" style="color:#ccc;margin-top:4px">¡Ya habéis vuelto! Marcad lo que habéis vivido, añadid vuestras fotos y generad vuestro recuerdo del viaje.</div>
+    <span class="btn yellow" style="margin-top:11px">Crear ahora →</span>
+  </div>
+</a>
 <div class="weather"><div style="display:flex;justify-content:space-between;gap:10px"><b>🌤️ TIEMPO EN DÜSSELDORF</b><span id="weatherStatus" class="small">Actualizando…</span></div><div id="weatherGrid" class="weather-grid"><div class="weather-day">02 OCT<br>⌛</div><div class="weather-day">03 OCT<br>⌛</div><div class="weather-day">04 OCT<br>⌛</div></div></div>
 <div class="notice"><b>Ruta completa:</b> Sevilla → Ámsterdam → Düsseldorf → Sevilla. El viernes se duerme en Schiphol; el sábado es llegada a Düsseldorf + concierto; el domingo regreso a Sevilla.</div>
 <div class="dayhead"><h2>VIERNES 2 · VIAJE</h2><span>✈️ SVQ → AMS</span></div>
@@ -26,6 +33,10 @@
 <div class="route-card card"><img src="itinerario-domingo-4.png" alt="Ficha visual del domingo 4 de octubre"><div class="caption"><b>Ficha visual · Domingo 4</b><div class="small">Última mañana + aeropuerto + Sevilla.</div><a class="btn" href="itinerario-domingo-4.png" download="BSB26-domingo-4-octubre.png">⬇️ Descargar imagen</a></div></div>
 
 <div class="dayhead"><h2>ACCESOS RÁPIDOS</h2><span>📍</span></div><div class="grid2"><a class="btn" href="mapa.html">🗺️ Explorar Düsseldorf</a><a class="btn yellow" href="fotos.html">📸 Subir / ver fotos</a></div>
-<a class="btn red" href="recuerdo.html" style="margin-top:9px">🎟️ Crear mi recuerdo del viaje</a>
 <div class="footer">BSB26 · Düsseldorf · 2–4 octubre 2026<br><span class="credits">Los horarios de planning son orientativos salvo cuando proceden de reservas/recibos. El tiempo se actualiza al abrir la app.</span></div>
-</main></div><nav class="bottom"><a class="active" href="index.html">📅<br>Itinerario</a><a href="mapa.html">🗺️<br>Mapa</a><a href="fotos.html">📸<br>Fotos</a><a href="documentos.html">📄<br>Documentos</a></nav><script src="app.js"></script></body></html>
+</main></div><nav class="bottom"><a class="active" href="index.html">📅<br>Itinerario</a><a href="mapa.html">🗺️<br>Mapa</a><a href="fotos.html">📸<br>Fotos</a><a href="documentos.html">📄<br>Documentos</a></nav><script src="app.js"></script><script>
+(function(){
+  var tripEnd=new Date('2026-10-05T00:00:00');
+  if(new Date()>=tripEnd){ var h=document.getElementById('recuerdoHero'); if(h) h.style.display='block'; }
+})();
+</script></body></html>

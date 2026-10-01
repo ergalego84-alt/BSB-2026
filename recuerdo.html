@@ -2,27 +2,45 @@
 <style>
 .checklist{margin:12px 0}
 .citem{display:flex;align-items:flex-start;gap:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;margin:8px 0}
-.citem input{width:22px;height:22px;margin-top:2px;accent-color:#c8102e;flex:0 0 auto}
-.citem .ci-body{flex:1}
-.citem .ci-top{display:flex;justify-content:space-between;gap:8px;font-weight:900}
-.citem .ci-time{color:#c8102e;font-weight:850;font-size:13px}
-.citem .ci-note{color:var(--muted);font-size:13px;margin-top:2px}
+.citem input[type=checkbox]{width:22px;height:22px;margin-top:20px;accent-color:#c8102e;flex:0 0 auto}
+.citem .badge{position:relative;flex:0 0 auto;width:60px;height:60px;border-radius:14px;overflow:hidden;background:#eee;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.citem .badge img{width:100%;height:100%;object-fit:cover}
+.citem .badge .num{position:absolute;bottom:-4px;right:-4px;width:24px;height:24px;border-radius:50%;color:#fff;font-weight:950;font-size:12px;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.citem .ci-body{flex:1;min-width:0}
+.citem .ci-title{font-weight:950;font-size:16px}
+.citem .ci-place{color:var(--muted);font-size:13px;margin-top:2px}
+.citem .ci-place:before{content:'📍 '}
+.citem .ci-time{color:#c8102e;font-weight:850;font-size:13px;margin-top:2px}
+.citem .ci-time:before{content:'🕐 '}
+.citem .ci-tag{display:inline-block;margin-top:7px;padding:4px 9px;border-radius:999px;background:#eef2ff;color:#1769aa;font-size:11.5px;font-weight:800}
+.citem .ci-photo-row{margin-top:8px;display:flex;align-items:center;gap:8px}
+.citem .ci-photo-row label{font-size:12.5px;font-weight:800;border:1px solid #111;border-radius:999px;padding:5px 10px;cursor:pointer}
+.citem .ci-photo-row input{display:none}
+.citem .ci-photo-row .ok-txt{font-size:12px;color:#177245;font-weight:800}
 .daylabel{font-size:12px;font-weight:900;letter-spacing:1px;color:#888;margin:16px 2px 4px}
 .canvas-wrap{background:#fff;border:1px solid var(--line);border-radius:17px;padding:10px;margin:14px 0;box-shadow:0 4px 15px #0000000d}
 #recuerdoCanvas{width:100%;display:block;border-radius:10px;background:#fff}
 .quickrow{display:flex;gap:8px;margin:10px 0}
 .quickrow button{flex:1;border:1px solid #111;background:#fff;border-radius:11px;padding:9px;font-weight:850}
+.modebtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
+#videoStatus{font-size:13px;color:var(--muted);margin-top:8px;min-height:18px}
 </style>
 </head><body><div class="wrap">
-<header><h1>🎟️ RECUERDO<br>BSB26</h1><div class="sub">Marca lo que habéis vivido y descargad vuestra imagen</div></header>
+<header><h1>🎟️ RECUERDO<br>BSB26</h1><div class="sub">Marca lo vivido, añade fotos y generad vuestro recuerdo</div></header>
 <main>
+<div class="quick"><a href="index.html">📅 Itinerario</a><a href="mapa.html">🗺️ Mapa</a><a href="fotos.html">📸 Fotos</a><a href="documentos.html">📄 Documentos</a><a href="recuerdo.html" class="highlight">🎟️ Recuerdo</a></div>
 <a class="back" href="index.html">← Volver al itinerario</a>
-<div class="notice"><b>Cómo funciona.</b> Marca cada momento según lo vayáis viviendo. La imagen de abajo se genera sola con lo marcado — cuando esté como queráis, descargadla como recuerdo del viaje.</div>
+<div class="notice"><b>Cómo funciona.</b> 1) Marca los momentos que habéis vivido. 2) Opcionalmente, añade una foto vuestra de ese momento (se usa solo aquí, en vuestro propio móvil — no se sube a ningún sitio). 3) Generad una imagen o un vídeo con lo marcado, en orden, y descargadlo.</div>
+<div class="notice warn" style="background:#fff3e0;border-color:#f0b24d"><b>⚠️ Nota técnica.</b> Las fotos solo viven en esta pestaña del navegador mientras la tenéis abierta — si recargáis la página, se pierden (hay que volver a añadirlas antes de descargar). Al crear el vídeo, el móvil os ofrecerá "Guardar vídeo" para añadirlo directamente a la galería; si vuestro navegador no lo permite (más probable en iPhones con iOS antiguo), se descargará igualmente a Archivos/Descargas, o podéis usar la imagen, que funciona siempre.</div>
 
 <div class="quickrow"><button onclick="setAll(true)">✅ Marcar todo</button><button onclick="setAll(false)">⬜ Vaciar</button></div>
 
 <div class="canvas-wrap"><canvas id="recuerdoCanvas" width="1080" height="600"></canvas></div>
+<div class="modebtns">
 <a class="btn red" id="downloadBtn" href="#">⬇️ Descargar imagen</a>
+<button class="btn" id="videoBtn" style="border:0" onclick="createVideo()">🎬 Crear vídeo</button>
+</div>
+<div id="videoStatus"></div>
 
 <div id="checklist" class="checklist"></div>
 
@@ -32,32 +50,78 @@
 <nav class="bottom"><a href="index.html">📅<br>Itinerario</a><a href="mapa.html">🗺️<br>Mapa</a><a href="fotos.html">📸<br>Fotos</a><a href="documentos.html">📄<br>Documentos</a></nav>
 <script>
 const items=[
- {id:'flight-out',day:'VIERNES 2',icon:'✈️',title:'Sevilla → Ámsterdam',time:'20:10–23:05',note:'Vuelo Transavia KL2690'},
- {id:'schiphol',day:'VIERNES 2',icon:'🌙',title:'Noche en Schiphol',time:'Noche',note:'Pernocta en la terminal'},
- {id:'flight-in',day:'SÁBADO 3',icon:'✈️',title:'Ámsterdam → Düsseldorf',time:'06:55–07:40',note:'Vuelo KLM KL1797'},
- {id:'hotel',day:'SÁBADO 3',icon:'🏨',title:'Llegada al HK Hotel',time:'08:15–09:00',note:'Varnhagenstr. 37, Düsseldorf'},
- {id:'tokyo',day:'SÁBADO 3',icon:'🇯🇵',title:'Little Tokyo',time:'Mañana',note:'Paseo por el barrio japonés'},
- {id:'altstadt',day:'SÁBADO 3',icon:'🏙️',title:'Altstadt / Burgplatz',time:'Mañana',note:'Casco histórico junto al Rin'},
- {id:'rhein',day:'SÁBADO 3',icon:'🌊',title:'Paseo del Rin',time:'Mañana',note:'Rheinuferpromenade'},
- {id:'checkin',day:'SÁBADO 3',icon:'🛏️',title:'Check-in + descanso',time:'15:00–17:15',note:'Antes del concierto'},
- {id:'arena',day:'SÁBADO 3',icon:'🎤',title:'Backstreet Boys',time:'20:00',note:'MERKUR SPIEL-ARENA'},
- {id:'altbier',day:'SÁBADO 3',icon:'🍺',title:'Altbier en la Altstadt',time:'Noche',note:'Ambiente después del concierto'},
- {id:'domingo-paseo',day:'DOMINGO 4',icon:'☀️',title:'Paseo libre',time:'07:30–11:30',note:'Centro / Rin, sin prisas'},
- {id:'checkout',day:'DOMINGO 4',icon:'🧳',title:'Check-out',time:'11:30–12:00',note:'Salida del hotel'},
- {id:'flight-back',day:'DOMINGO 4',icon:'✈️',title:'Düsseldorf → Sevilla',time:'15:25–18:20',note:'Eurowings EW9568'}
+ {id:'flight-out',day:'VIERNES 2',icon:'✈️',title:'Sevilla → Ámsterdam',place:'Aeropuerto de Sevilla (SVQ)',time:'20:10–23:05',dur:'2 h 55 min',note:'Vuelo Transavia KL2690',tag:'Vuelo'},
+ {id:'schiphol',day:'VIERNES 2',icon:'🌙',title:'Noche en Schiphol',place:'Aeropuerto de Ámsterdam',time:'Noche',dur:'~7 h',note:'Pernocta dentro de la terminal',tag:'Descanso'},
+ {id:'flight-in',day:'SÁBADO 3',icon:'✈️',title:'Ámsterdam → Düsseldorf',place:'AMS → DUS',time:'06:55–07:40',dur:'45 min',note:'Vuelo KLM KL1797',tag:'Vuelo'},
+ {id:'hotel',day:'SÁBADO 3',icon:'🏨',title:'Llegada al HK Hotel',place:'Varnhagenstr. 37, Düsseldorf',time:'08:15–09:00',dur:'45 min',note:'Traslado y dejar equipaje',tag:'Alojamiento'},
+ {id:'tokyo',day:'SÁBADO 3',icon:'🇯🇵',title:'Little Tokyo',place:'Immermannstraße, Düsseldorf',time:'Mañana',dur:'~45 min',note:'Paseo por el barrio japonés',tag:'Paseo / Visita'},
+ {id:'altstadt',day:'SÁBADO 3',icon:'🏙️',title:'Altstadt / Burgplatz',place:'Casco histórico, Düsseldorf',time:'Mañana',dur:'~1 h',note:'Corazón histórico junto al Rin',tag:'Visita / Cultura'},
+ {id:'rhein',day:'SÁBADO 3',icon:'🌊',title:'Paseo del Rin',place:'Rheinuferpromenade, Düsseldorf',time:'Mañana',dur:'~40 min',note:'Paseo junto al río con vistas',tag:'Paseo / Visita'},
+ {id:'checkin',day:'SÁBADO 3',icon:'🛏️',title:'Check-in + descanso',place:'HK Hotel Düsseldorf City',time:'15:00–17:15',dur:'2 h 15 min',note:'Antes del concierto',tag:'Alojamiento'},
+ {id:'arena',day:'SÁBADO 3',icon:'🎤',title:'Backstreet Boys',place:'MERKUR SPIEL-ARENA, Düsseldorf',time:'20:00',dur:'~2 h',note:'Into The Millennium',tag:'Concierto'},
+ {id:'altbier',day:'SÁBADO 3',icon:'🍺',title:'Altbier en la Altstadt',place:'Altstadt, Düsseldorf',time:'Noche',dur:'~1 h',note:'Ambiente después del concierto',tag:'Gastronomía'},
+ {id:'domingo-paseo',day:'DOMINGO 4',icon:'☀️',title:'Paseo libre',place:'Centro / Rin, Düsseldorf',time:'07:30–11:30',dur:'hasta 4 h',note:'Sin prisas, opcional',tag:'Paseo / Visita'},
+ {id:'checkout',day:'DOMINGO 4',icon:'🧳',title:'Check-out',place:'HK Hotel Düsseldorf City',time:'11:30–12:00',dur:'30 min',note:'Salida del hotel',tag:'Alojamiento'},
+ {id:'flight-back',day:'DOMINGO 4',icon:'✈️',title:'Düsseldorf → Sevilla',place:'DUS → SVQ',time:'15:25–18:20',dur:'2 h 55 min',note:'Eurowings EW9568',tag:'Vuelo'}
 ];
+const PALETTE=['#c8102e','#1769aa','#177245','#f4c300','#7a3fc8','#c8102e','#1769aa','#177245','#f4c300','#7a3fc8','#c8102e','#1769aa','#177245'];
 const STORE_KEY='bsb26_recuerdo_checked';
 function loadChecked(){try{return JSON.parse(localStorage.getItem(STORE_KEY))||{}}catch(e){return {}}}
 function saveChecked(c){try{localStorage.setItem(STORE_KEY,JSON.stringify(c))}catch(e){}}
 let checked=loadChecked();
+let photos={}; // id -> dataURL (session only, not persisted: can be heavy)
+let imgCache={}; // id -> Image object, preloaded
+
+function resizeImage(file){
+  return new Promise((resolve)=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        const maxDim=900;
+        let w=img.width,h=img.height;
+        if(w>h && w>maxDim){h=h*maxDim/w;w=maxDim;} else if(h>maxDim){w=w*maxDim/h;h=maxDim;}
+        const c=document.createElement('canvas'); c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0,w,h);
+        resolve(c.toDataURL('image/jpeg',0.82));
+      };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+function loadImageObj(src){return new Promise((res,rej)=>{const img=new Image();img.onload=()=>res(img);img.onerror=rej;img.src=src;});}
+
+async function attachPhoto(id, input){
+  const file=input.files && input.files[0];
+  if(!file) return;
+  const dataUrl=await resizeImage(file);
+  photos[id]=dataUrl;
+  imgCache[id]=await loadImageObj(dataUrl);
+  renderList();
+  draw();
+}
 
 function renderList(){
   const wrap=document.getElementById('checklist');
   let html='';let lastDay='';
-  items.forEach(it=>{
+  items.forEach((it,idx)=>{
     if(it.day!==lastDay){html+=`<div class="daylabel">${it.day}</div>`;lastDay=it.day;}
     const on=!!checked[it.id];
-    html+=`<label class="citem"><input type="checkbox" ${on?'checked':''} onchange="toggle('${it.id}',this.checked)"><div class="ci-body"><div class="ci-top"><span>${it.icon} ${it.title}</span><span class="ci-time">${it.time}</span></div><div class="ci-note">${it.note}</div></div></label>`;
+    const col=PALETTE[idx%PALETTE.length];
+    const thumb=photos[it.id] ? `<img src="${photos[it.id]}">` : it.icon;
+    html+=`<label class="citem"><input type="checkbox" ${on?'checked':''} onchange="toggle('${it.id}',this.checked)">
+      <div class="badge" style="background:${photos[it.id]?'#ddd':col};font-size:22px">${thumb}<span class="num" style="background:${col}">${idx+1}</span></div>
+      <div class="ci-body">
+        <div class="ci-title">${it.title}</div>
+        <div class="ci-place">${it.place}</div>
+        <div class="ci-time">${it.time} · ${it.dur}</div>
+        <span class="ci-tag">${it.tag}</span>
+        <div class="ci-photo-row">
+          <label>${photos[it.id]?'🔄 Cambiar foto':'📷 Añadir foto'}<input type="file" accept="image/*" onchange="attachPhoto('${it.id}',this)"></label>
+          ${photos[it.id]?'<span class="ok-txt">✓ Foto añadida</span>':''}
+        </div>
+      </div></label>`;
   });
   wrap.innerHTML=html;
 }
@@ -66,46 +130,70 @@ function setAll(val){items.forEach(it=>checked[it.id]=val);saveChecked(checked);
 
 const cv=document.getElementById('recuerdoCanvas');
 const ctx=cv.getContext('2d');
+function roundRect(c,x,y,w,h,r){if(c.roundRect){c.beginPath();c.roundRect(x,y,w,h,r);}else{c.beginPath();c.rect(x,y,w,h);}}
+function coverDraw(c,img,x,y,w,h){
+  const ir=img.width/img.height, tr=w/h;
+  let sx,sy,sw,sh;
+  if(ir>tr){sh=img.height;sw=sh*tr;sx=(img.width-sw)/2;sy=0;} else {sw=img.width;sh=sw/tr;sx=0;sy=(img.height-sh)/2;}
+  c.drawImage(img,sx,sy,sw,sh,x,y,w,h);
+}
+function headerStripe(c,W){
+  c.save();
+  c.beginPath();c.moveTo(0,0);c.lineTo(W,0);c.lineTo(W,118);c.lineTo(0,150);c.closePath();c.fillStyle='#111';c.fill();
+  c.beginPath();c.moveTo(0,150);c.lineTo(W,118);c.lineTo(W,148);c.lineTo(0,178);c.closePath();c.fillStyle='#c8102e';c.fill();
+  c.beginPath();c.moveTo(0,178);c.lineTo(W,148);c.lineTo(W,168);c.lineTo(0,198);c.closePath();c.fillStyle='#f4c300';c.fill();
+  c.restore();
+}
 function draw(){
-  const done=items.filter(it=>checked[it.id]);
-  const rowH=68, top=190, bottom=60;
-  const h=Math.max(600, top+Math.max(done.length,1)*rowH+bottom);
+  const done=items.map((it,idx)=>Object.assign({},it,{col:PALETTE[idx%PALETTE.length]})).filter(it=>checked[it.id]);
+  const rowH=130, top=230, bottom=60;
+  const h=Math.max(620, top+Math.max(done.length,1)*rowH+bottom);
   cv.width=1080; cv.height=h;
-  // background
   ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,1080,h);
-  // header stripe (diagonal, like the app header)
-  ctx.save();
-  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(1080,0);ctx.lineTo(1080,118);ctx.lineTo(0,150);ctx.closePath();ctx.fillStyle='#111';ctx.fill();
-  ctx.beginPath();ctx.moveTo(0,150);ctx.lineTo(1080,118);ctx.lineTo(1080,148);ctx.lineTo(0,178);ctx.closePath();ctx.fillStyle='#c8102e';ctx.fill();
-  ctx.beginPath();ctx.moveTo(0,178);ctx.lineTo(1080,148);ctx.lineTo(1080,168);ctx.lineTo(0,198);ctx.closePath();ctx.fillStyle='#f4c300';ctx.fill();
-  ctx.restore();
+  headerStripe(ctx,1080);
   ctx.fillStyle='#fff';
-  ctx.font='900 54px -apple-system,Segoe UI,Roboto,Arial';
-  ctx.fillText('MI RECUERDO',40,72);
-  ctx.font='900 30px -apple-system,Segoe UI,Roboto,Arial';
-  ctx.fillText('BSB26 · DÜSSELDORF 2026',40,112);
+  ctx.font='900 50px -apple-system,Segoe UI,Roboto,Arial';
+  ctx.fillText('MI RECUERDO',40,70);
+  ctx.font='900 28px -apple-system,Segoe UI,Roboto,Arial';
+  ctx.fillText('BSB26 · DÜSSELDORF 2026',40,108);
   ctx.fillStyle='#111';
-  ctx.font='700 22px -apple-system,Segoe UI,Roboto,Arial';
-  ctx.fillText('Backstreet Boys · Into The Millennium · 3 oct 2026',40,212);
+  ctx.font='700 21px -apple-system,Segoe UI,Roboto,Arial';
+  ctx.fillText('Backstreet Boys · Into The Millennium · sábado 3 de octubre de 2026',40,215);
+  ctx.fillStyle='#888';
+  ctx.font='600 18px -apple-system,Segoe UI,Roboto,Arial';
+  ctx.fillText(done.length+' momento'+(done.length===1?'':'s')+' marcado'+(done.length===1?'':'s'),40,244);
 
   if(done.length===0){
     ctx.fillStyle='#888';
     ctx.font='600 26px -apple-system,Segoe UI,Roboto,Arial';
-    ctx.fillText('Marca los momentos que hayáis vivido',40,280);
-    ctx.fillText('para que aparezcan aquí.',40,314);
+    ctx.fillText('Marca los momentos que hayáis vivido',40,300);
+    ctx.fillText('para que aparezcan aquí.',40,334);
   } else {
-    let y=top+40;
+    let y=top+30;
     done.forEach((it,i)=>{
-      ctx.fillStyle='#f5f5f5';
-      ctx.beginPath();ctx.roundRect ? ctx.roundRect(40,y-42,1000,56,14) : ctx.rect(40,y-42,1000,56);
-      ctx.fill();
+      ctx.fillStyle='#f7f7f7';
+      roundRect(ctx,40,y,1000,rowH-16,16); ctx.fill();
+      const img=imgCache[it.id];
+      if(img){ roundRect(ctx,58,y+15,88,88,14); ctx.save(); ctx.clip(); coverDraw(ctx,img,58,y+15,88,88); ctx.restore(); }
+      else { ctx.fillStyle=it.col; roundRect(ctx,58,y+15,88,88,14); ctx.fill(); ctx.fillStyle='#fff'; ctx.font='40px -apple-system,Segoe UI,Roboto,Arial'; ctx.fillText(it.icon,78,y+70); }
+      ctx.fillStyle=it.col; ctx.beginPath(); ctx.arc(146,y+101,17,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#fff'; ctx.font='900 16px -apple-system,Segoe UI,Roboto,Arial';
+      const numW=ctx.measureText(String(i+1)).width; ctx.fillText(String(i+1),146-numW/2,y+107);
+
+      const tx=168;
       ctx.fillStyle='#111';
-      ctx.font='900 30px -apple-system,Segoe UI,Roboto,Arial';
-      ctx.fillText(it.icon+'  '+it.title,58,y-4);
+      ctx.font='900 27px -apple-system,Segoe UI,Roboto,Arial';
+      ctx.fillText(it.title,tx,y+38);
+      ctx.fillStyle='#666';
+      ctx.font='600 18px -apple-system,Segoe UI,Roboto,Arial';
+      ctx.fillText('📍 '+it.place,tx,y+64);
       ctx.fillStyle='#c8102e';
-      ctx.font='850 22px -apple-system,Segoe UI,Roboto,Arial';
-      const w=ctx.measureText(it.time).width;
-      ctx.fillText(it.time,1020-w,y-6);
+      ctx.font='800 18px -apple-system,Segoe UI,Roboto,Arial';
+      ctx.fillText('🕐 '+it.time+' · '+it.dur,tx,y+90);
+      const tagW=ctx.measureText(it.tag).width+22;
+      ctx.fillStyle='#eef2ff'; roundRect(ctx,tx,y+100,tagW,28,14); ctx.fill();
+      ctx.fillStyle='#1769aa'; ctx.font='800 15px -apple-system,Segoe UI,Roboto,Arial';
+      ctx.fillText(it.tag,tx+11,y+119);
       y+=rowH;
     });
   }
@@ -120,6 +208,103 @@ document.getElementById('downloadBtn').addEventListener('click',function(e){
   a.href=cv.toDataURL('image/png');
   document.body.appendChild(a);a.click();document.body.removeChild(a);
 });
+
+/* ---------------- VIDEO (slideshow, recorded client-side, no server) ---------------- */
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+function pickMime(){
+  const opts=['video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'];
+  for(const o of opts){ if(window.MediaRecorder && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(o)) return o; }
+  return '';
+}
+function setStatus(t){document.getElementById('videoStatus').textContent=t;}
+async function createVideo(){
+  const done=items.map((it,idx)=>Object.assign({},it,{col:PALETTE[idx%PALETTE.length]})).filter(it=>checked[it.id]);
+  if(done.length===0){ setStatus('Marca al menos un momento antes de crear el vídeo.'); return; }
+  if(!window.MediaRecorder){ setStatus('Este navegador no permite crear vídeo aquí. Usad "Descargar imagen" en su lugar.'); return; }
+  const mime=pickMime();
+  if(!mime){ setStatus('Este navegador no admite grabar vídeo aquí (frecuente en iPhone/Safari). Usad "Descargar imagen", que funciona en cualquier móvil.'); return; }
+
+  const W=1080,H=1920;
+  const vc=document.createElement('canvas'); vc.width=W; vc.height=H;
+  const vctx=vc.getContext('2d');
+  const stream=vc.captureStream(30);
+  const recorder=new MediaRecorder(stream,{mimeType:mime, videoBitsPerSecond:4500000});
+  const chunks=[];
+  recorder.ondataavailable=e=>{ if(e.data && e.data.size) chunks.push(e.data); };
+  const stopped=new Promise(res=>recorder.onstop=res);
+  recorder.start();
+  setStatus('🎬 Generando vídeo… no cierres esta pestaña.');
+
+  function bg(){ vctx.fillStyle='#111'; vctx.fillRect(0,0,W,H); }
+  function titleCard(alpha){
+    bg();
+    vctx.save(); vctx.globalAlpha=alpha;
+    headerStripe(vctx,W);
+    vctx.fillStyle='#fff'; vctx.font='900 72px -apple-system,Segoe UI,Roboto,Arial'; vctx.textAlign='center';
+    vctx.fillText('MI RECUERDO',W/2,H/2-60);
+    vctx.font='900 40px -apple-system,Segoe UI,Roboto,Arial';
+    vctx.fillText('BSB26 · DÜSSELDORF 2026',W/2,H/2+10);
+    vctx.fillStyle='#ccc'; vctx.font='600 28px -apple-system,Segoe UI,Roboto,Arial';
+    vctx.fillText('Backstreet Boys · 3 oct 2026',W/2,H/2+60);
+    vctx.textAlign='left';
+    vctx.restore();
+  }
+  function slide(it,img,alpha){
+    bg();
+    vctx.save(); vctx.globalAlpha=alpha;
+    if(img){ coverDraw(vctx,img,0,0,W,H*0.68); }
+    else { vctx.fillStyle=it.col; vctx.fillRect(0,0,W,H*0.68); vctx.font='220px -apple-system,Segoe UI,Roboto,Arial'; vctx.textAlign='center'; vctx.fillText(it.icon,W/2,H*0.4); vctx.textAlign='left'; }
+    const grad=vctx.createLinearGradient(0,H*0.5,0,H*0.68);
+    grad.addColorStop(0,'rgba(17,17,17,0)'); grad.addColorStop(1,'#111');
+    vctx.fillStyle=grad; vctx.fillRect(0,H*0.5,W,H*0.18);
+    vctx.fillStyle='#111'; vctx.fillRect(0,H*0.68,W,H*0.32);
+    vctx.fillStyle='#fff'; vctx.font='900 50px -apple-system,Segoe UI,Roboto,Arial';
+    vctx.fillText(it.title,56,H*0.68+70);
+    vctx.fillStyle='#ccc'; vctx.font='600 30px -apple-system,Segoe UI,Roboto,Arial';
+    vctx.fillText('📍 '+it.place,56,H*0.68+118);
+    vctx.fillStyle='#f4c300'; vctx.font='800 30px -apple-system,Segoe UI,Roboto,Arial';
+    vctx.fillText('🕐 '+it.time+' · '+it.dur,56,H*0.68+160);
+    const tagW=vctx.measureText(it.tag).width+30;
+    vctx.fillStyle='#c8102e'; roundRect(vctx,56,H*0.68+185,tagW,40,20); vctx.fill();
+    vctx.fillStyle='#fff'; vctx.font='800 20px -apple-system,Segoe UI,Roboto,Arial';
+    vctx.fillText(it.tag,56+15,H*0.68+211);
+    vctx.restore();
+  }
+  async function playFades(drawFn){
+    const FPS=30, fade=12, hold=48;
+    for(let f=0;f<fade;f++){ drawFn(f/fade); await sleep(1000/FPS); }
+    for(let f=0;f<hold;f++){ drawFn(1); await sleep(1000/FPS); }
+    for(let f=0;f<fade;f++){ drawFn(1-f/fade); await sleep(1000/FPS); }
+  }
+  await playFades(a=>titleCard(a));
+  for(const it of done){
+    const img=imgCache[it.id] || null;
+    await playFades(a=>slide(it,img,a));
+  }
+  await playFades(a=>titleCard(a));
+
+  recorder.stop();
+  await stopped;
+  const ext = mime.indexOf('mp4')>-1 ? 'mp4' : 'webm';
+  const blob=new Blob(chunks,{type:mime});
+  const file=new File([blob], 'BSB26-mi-recuerdo.'+ext, {type:mime});
+
+  if(navigator.canShare && navigator.canShare({files:[file]})){
+    try{
+      await navigator.share({files:[file], title:'BSB26 · Mi recuerdo', text:'Düsseldorf 2026'});
+      setStatus('✅ Vídeo listo — usa "Guardar vídeo" en el menú para añadirlo a tu galería.');
+      return;
+    }catch(err){
+      if(err && err.name==='AbortError'){ setStatus('Descarga cancelada.'); return; }
+      /* si falla compartir, seguimos con la descarga normal de abajo */
+    }
+  }
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download='BSB26-mi-recuerdo.'+ext; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setStatus('✅ Vídeo descargado (revisa Descargas/Archivos). Si no se reproduce, probad con VLC.');
+}
+
 renderList();draw();
 if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
 </script>
