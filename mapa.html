@@ -1,48 +1,83 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111111"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous"><title>Mapa · BSB26 Düsseldorf</title></head><body><div class="wrap"><header><h1>🗺️ MAPA<br>BSB26</h1><div class="sub">Ruta completa + lugares interesantes de Düsseldorf</div></header><main><div class="quick"><a href="index.html">📅 Itinerario</a><a href="mapa.html">🗺️ Mapa</a><a href="fotos.html">📸 Fotos</a><a href="documentos.html">📄 Documentos</a><a href="recuerdo.html" class="highlight">🎟️ Recuerdo</a></div><a class="back" href="index.html">← Volver al itinerario</a><div class="notice"><b>Mapa interactivo.</b> Toca cualquier lugar para ver qué es, cuándo encaja y abrirlo en Google Maps. Hay también lugares extra para aprovechar los huecos libres.</div><div class="map-shell" id="mapShell"><div id="map" class="map"></div><div class="map-loading" id="mapLoading">🗺️ Cargando mapa de Düsseldorf…</div><div class="map-tools"><button id="btnTodo" class="active">📍 Todo</button><button id="btnSabado">🎤 Sábado</button><button id="btnOpciones">⭐ Opciones</button></div><div class="legend"><span>🔴 Ruta / concierto</span><span>🟡 Visita interesante</span><span>🔵 Transporte / hotel</span></div></div><div id="mapFallback" class="map-fallback" style="display:none">El mapa interactivo necesita conexión a Internet. La lista de lugares sigue disponible debajo.</div><div class="card"><b>📍 Lugares incluidos</b><div id="placeList" class="small" style="margin-top:8px"></div></div><div class="grid2"><a class="btn red" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/HK+Hotel+D%C3%BCsseldorf+City%2C+Varnhagenstr.+37%2C+40225+D%C3%BCsseldorf/Heinrich-Heine-Allee%2C+D%C3%BCsseldorf/MERKUR+SPIEL-ARENA+D%C3%BCsseldorf">🚇 Hotel → Arena</a><a class="btn yellow" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/Immermannstra%C3%9Fe+D%C3%BCsseldorf/K%C3%B6-Bogen+II+D%C3%BCsseldorf/K%C3%B6nigsallee+D%C3%BCsseldorf/Hofgarten+D%C3%BCsseldorf/Carlsplatz+D%C3%BCsseldorf/Burgplatz+D%C3%BCsseldorf/Rheinturm+D%C3%BCsseldorf/MedienHafen+D%C3%BCsseldorf">🚶 Ruta de lugares</a></div></main></div><nav class="bottom"><a href="index.html">📅<br>Itinerario</a><a class="active" href="mapa.html">🗺️<br>Mapa</a><a href="fotos.html">📸<br>Fotos</a><a href="documentos.html">📄<br>Documentos</a><a href="recuerdo.html">🎟️<br>Recuerdo</a></nav>
-<script>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111111"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""><title>Mapa · BSB26 Düsseldorf</title></head><body><div class="wrap"><header><h1>🗺️ MAPA<br>BSB26</h1><div class="sub">Puntos interesantes + recorrido del viaje</div></header><main><div class="quick"><a href="index.html">📅 Itinerario</a><a href="mapa.html">🗺️ Mapa</a><a href="transporte.html">🚆 Transporte</a><a href="fotos.html">📸 Fotos</a><a href="documentos.html">📄 Documentos</a><a href="recuerdo.html" class="highlight">🎟️ Recuerdo</a></div><a class="back" href="index.html">← Volver al itinerario</a><div class="notice"><b>Mapa interactivo.</b> Aquí ya no son solo puntos sueltos: puedes moverte por Düsseldorf, acercar/alejar y tocar cada lugar para ver qué es y cuándo encaja.</div><div class="map-shell"><div id="map" class="map"></div><div class="map-tools"><button id="btnCentro" class="active" onclick="focusGroup('centro')">🏙️ Centro</button><button id="btnRin" onclick="focusGroup('rin')">🌊 Rin</button><button id="btnTodo" onclick="focusGroup('todo')">📍 Todo</button></div><div class="legend"><span>🔴 Comida/cerveza</span><span>🟡 Cultura</span><span>🟢 Parque</span><span>🔵 Río/mirador</span><span>🟣 Arquitectura</span><span>🩷 Ocio/concierto</span><span>⚫ Transporte/hotel</span></div><div id="vistoCounter" class="small" style="padding:6px 2px 0;color:#177245;font-weight:800"></div></div><div id="mapInfo" class="card"><b>Explora el mapa</b><div class="small">Hay más puntos para aprovechar los huecos del sábado y la mañana del domingo.</div></div><div id="routeSummary" class="card ok"><b>🚶 Resumen de la ruta por la ciudad</b><div class="small" style="margin-top:6px">Calculando distancia y tiempo a pie…</div></div><div class="grid2"><a class="btn red" href="https://www.google.com/maps/dir/HK+Hotel+D%C3%BCsseldorf+City%2C+Varnhagenstr.+37%2C+40225+D%C3%BCsseldorf/Heinrich-Heine-Allee%2C+D%C3%BCsseldorf/MERKUR+SPIEL-ARENA+D%C3%BCsseldorf" target="_blank">🚇 Hotel → Arena</a><a class="btn yellow" href="https://www.google.com/maps/dir/Heinrich-Heine-Allee%2C+D%C3%BCsseldorf/Immermannstra%C3%9Fe+D%C3%BCsseldorf/K%C3%B6-Bogen+II/Carlsplatz/Burgplatz+D%C3%BCsseldorf/Rheinturm/MedienHafen+D%C3%BCsseldorf" target="_blank">🚶 Ruta por la ciudad</a></div></main></div><nav class="bottom"><a href="index.html">📅<br>Itinerario</a><a class="active" href="mapa.html">🗺️<br>Mapa</a><a href="transporte.html">🚆<br>Transporte</a><a href="documentos.html">📄<br>Documentos</a></nav><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script><script>
 const points=[
-{id:'hotel',name:'HK Hotel Düsseldorf City',lat:51.2097,lon:6.7815,type:'blue',cat:'base',time:'Sábado 08:15–09:00',text:'Hotel y punto de descanso. Varnhagenstr. 37.',gm:'HK Hotel Düsseldorf City, Varnhagenstr. 37, 40225 Düsseldorf'},
-{id:'tokyo',name:'Little Tokyo · Immermannstraße',lat:51.2217,lon:6.7926,type:'yellow',cat:'sabado',time:'Sábado 09:30–15:00 · opción',text:'Barrio japonés y una de las zonas más características de Düsseldorf.',gm:'Immermannstraße Düsseldorf'},
-{id:'kobogen',name:'Kö-Bogen II',lat:51.2266,lon:6.7799,type:'yellow',cat:'sabado',time:'Sábado · opción',text:'Arquitectura moderna y zona de Schadowplatz.',gm:'Kö-Bogen II Düsseldorf'},
-{id:'konigs',name:'Königsallee',lat:51.2254,lon:6.7818,type:'yellow',cat:'sabado',time:'Sábado · opción',text:'Avenida emblemática, paseo y escaparates.',gm:'Königsallee Düsseldorf'},
-{id:'hof',name:'Hofgarten',lat:51.2275,lon:6.7768,type:'yellow',cat:'sabado',time:'Sábado · opción corta',text:'Parque céntrico para un paseo tranquilo.',gm:'Hofgarten Düsseldorf'},
-{id:'carls',name:'Carlsplatz',lat:51.2221,lon:6.7726,type:'yellow',cat:'sabado',time:'Sábado · opción comida/paseo',text:'Mercado y plaza del centro histórico.',gm:'Carlsplatz Düsseldorf'},
-{id:'burg',name:'Burgplatz + Altstadt',lat:51.2271,lon:6.7717,type:'red',cat:'sabado',time:'Sábado · visita principal',text:'Corazón del casco histórico junto al Rin.',gm:'Burgplatz Düsseldorf'},
-{id:'lambertus',name:'St. Lambertus',lat:51.2280,lon:6.7711,type:'yellow',cat:'sabado',time:'Sábado · opción',text:'Iglesia histórica junto a Burgplatz.',gm:'St. Lambertus Düsseldorf'},
-{id:'rhein',name:'Rheinuferpromenade',lat:51.2254,lon:6.7679,type:'red',cat:'sabado',time:'Sábado · visita principal',text:'Paseo del Rin con vistas del skyline.',gm:'Rheinuferpromenade Düsseldorf'},
-{id:'tower',name:'Rheinturm',lat:51.2175,lon:6.7529,type:'yellow',cat:'sabado',time:'Sábado · opción',text:'Torre emblemática. Visita opcional según tiempo.',gm:'Rheinturm Düsseldorf'},
-{id:'media',name:'MedienHafen',lat:51.2134,lon:6.7545,type:'yellow',cat:'sabado',time:'Sábado · opción si hay tiempo',text:'Arquitectura moderna y paseo del puerto.',gm:'MedienHafen Düsseldorf'},
-{id:'heinrich',name:'Heinrich-Heine-Allee',lat:51.2246,lon:6.7763,type:'blue',cat:'sabado',time:'Sábado 17:45 aprox.',text:'Punto para tomar la U78 hacia la arena.',gm:'Heinrich-Heine-Allee Düsseldorf'},
-{id:'arena',name:'MERKUR SPIEL-ARENA',lat:51.2612,lon:6.7330,type:'red',cat:'sabado',time:'Sábado 3 · 20:00',text:'Concierto Backstreet Boys. Arena-Straße 1.',gm:'MERKUR SPIEL-ARENA Düsseldorf'},
-{id:'messe',name:'Messe Nord / U78',lat:51.2590,lon:6.7357,type:'blue',cat:'sabado',time:'Sábado · transporte',text:'Parada de referencia para la llegada/salida del concierto.',gm:'MERKUR SPIEL-ARENA/Messe Nord Düsseldorf'},
-{id:'rheintor',name:'Rheintor / skyline del Rin',lat:51.2192,lon:6.7651,type:'yellow',cat:'opcion',time:'Opción fotográfica',text:'Punto adicional para fotos y vistas del río.',gm:'Rheintor Düsseldorf'},
-{id:'japandorf',name:'EKŌ-Haus / zona japonesa',lat:51.2454,lon:6.7485,type:'yellow',cat:'opcion',time:'Opción extra',text:'Otra alternativa cultural si queréis ampliar el viaje.',gm:'EKŌ-Haus Düsseldorf'},
-{id:'burgblick',name:'Rheinpromenade · mirador',lat:51.2258,lon:6.7698,type:'yellow',cat:'opcion',time:'Opción fotográfica',text:'Buen punto para fotos del skyline y Altstadt.',gm:'Rheinpromenade Düsseldorf'}
+ {id:'hotel',name:'HK Hotel Düsseldorf City',lat:51.2097,lon:6.7815,cat:'black',dur:'',group:'centro',time:'Base del viaje',text:'Hotel · Varnhagenstr. 37 · 40225 Düsseldorf.',gm:'HK Hotel Düsseldorf City, Varnhagenstr. 37, 40225 Düsseldorf'},
+ {id:'tokyo',name:'Little Tokyo · Immermannstraße',lat:51.2217,lon:6.7926,cat:'red',dur:'45 min',group:'centro',time:'Sábado · mañana',text:'Barrio japonés de Düsseldorf, con restaurantes y tiendas. Buen punto para empezar el recorrido y comer algo distinto.',gm:'Immermannstraße Düsseldorf'},
+ {id:'hof',name:'Hofgarten',lat:51.2275,lon:6.7768,cat:'green',dur:'30 min',group:'centro',time:'Opción corta',text:'Parque céntrico para un paseo tranquilo o parar a comer los bocadillos.',gm:'Hofgarten Düsseldorf'},
+ {id:'ko',name:'Kö-Bogen II',lat:51.2266,lon:6.7799,cat:'purple',dur:'20 min',group:'centro',time:'Sábado · mañana',text:'Uno de los edificios modernos más reconocibles de Düsseldorf, con la fachada cubierta de vegetación. Muy buen punto para fotos.',gm:'Kö-Bogen II Düsseldorf'},
+ {id:'konigs',name:'Königsallee',lat:51.2254,lon:6.7818,cat:'purple',dur:'20 min',group:'centro',time:'Opción',text:'Avenida emblemática para paseo y escaparates de lujo.',gm:'Königsallee Düsseldorf'},
+ {id:'heinrich',name:'Heinrich-Heine-Allee',lat:51.2246,lon:6.7763,cat:'black',dur:'',group:'centro',time:'17:45 aprox.',text:'Punto de trasbordo para tomar la U78 hacia la arena.',gm:'Heinrich-Heine-Allee Düsseldorf'},
+ {id:'carls',name:'Carlsplatz',lat:51.2221,lon:6.7726,cat:'red',dur:'30 min',group:'centro',time:'Sábado · mediodía',text:'Mercado tradicional en pleno centro. Buen sitio para parar, tomar algo o picar antes de seguir hacia la Altstadt.',gm:'Carlsplatz Düsseldorf'},
+ {id:'burg',name:'Altstadt + Burgplatz',lat:51.2271,lon:6.7717,cat:'yellow',dur:'45 min',group:'rin',time:'Sábado · visita principal',text:'Casco histórico de Düsseldorf: callejuelas, Ayuntamiento, St. Lambertus y bares tradicionales junto al Rin.',gm:'Burgplatz Düsseldorf'},
+ {id:'lambertus',name:'St. Lambertus',lat:51.2280,lon:6.7711,cat:'yellow',dur:'15 min',group:'centro',time:'Opción',text:'Iglesia histórica junto a Burgplatz.',gm:'St. Lambertus Düsseldorf'},
+ {id:'rhein',name:'Rheinuferpromenade',lat:51.2254,lon:6.7679,cat:'blue',dur:'30 min',group:'rin',time:'Sábado · visita principal',text:'Paseo junto al río con vistas del skyline y del Rheinturm.',gm:'Rheinuferpromenade Düsseldorf'},
+ {id:'tower',name:'Rheinturm',lat:51.2175,lon:6.7529,cat:'blue',dur:'30 min',group:'rin',time:'Opción',text:'Uno de los grandes referentes de Düsseldorf: vistas del Rin, la ciudad y el puerto. Horario/precio a confirmar el día.',gm:'Rheinturm Düsseldorf'},
+ {id:'media',name:'MedienHafen',lat:51.2134,lon:6.7545,cat:'purple',dur:'30–45 min',group:'rin',time:'Opción si hay tiempo',text:'Zona portuaria moderna, con los edificios de Gehry y una buena combinación de puerto, arquitectura y skyline.',gm:'MedienHafen Düsseldorf'},
+ {id:'arena',name:'MERKUR SPIEL-ARENA',lat:51.2612,lon:6.7330,cat:'pink',dur:'~2 h',group:'todo',time:'Sábado 3 · 20:00',text:'Concierto Backstreet Boys. Llegada prevista 18:45–19:00.',gm:'MERKUR SPIEL-ARENA Düsseldorf'},
+ {id:'messe',name:'MERKUR SPIEL-ARENA / Messe Nord',lat:51.2590,lon:6.7357,cat:'black',dur:'',group:'todo',time:'Transporte',text:'Parada de referencia de la U78 para el concierto.',gm:'MERKUR SPIEL-ARENA/Messe Nord Düsseldorf'}
 ];
-const colors={red:'#c8102e',yellow:'#f4c300',blue:'#1769aa'};
-let mapObj=null, markers=[], routeLayers=[];
-function icon(p,n){return L.divIcon({className:'custom-pin',html:`<div style="width:31px;height:31px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:${colors[p.type]};border:3px solid #fff;box-shadow:0 2px 9px #0006;display:flex;align-items:center;justify-content:center;color:${p.type==='yellow'?'#111':'#fff'};font-weight:1000;font-size:12px"><span style="transform:rotate(45deg)">${n}</span></div>`,iconSize:[31,31],iconAnchor:[15,27]});}
-function popup(p,n){return `<div class="popup-title">${n}. ${p.name}</div><div class="popup-time">${p.time}</div><div>${p.text}</div><div style="margin-top:7px"><a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.gm)}">📍 Abrir en Google Maps</a></div>`}
-function clear(){markers.forEach(m=>m.remove());markers=[];routeLayers.forEach(x=>x.remove());routeLayers=[];}
-function show(filter){if(!mapObj)return;clear();let arr=points.filter(p=>filter==='todo'||(filter==='sabado'&&p.cat==='sabado')||(filter==='opciones'&&p.cat==='opcion'));if(filter==='sabado')arr=arr.filter(p=>!['opcion'].includes(p.cat));arr.forEach((p,i)=>{const m=L.marker([p.lat,p.lon],{icon:icon(p,i+1)}).addTo(mapObj).bindPopup(popup(p,i+1));markers.push(m);});
- const routeIds=filter==='sabado'?['hotel','tokyo','kobogen','konigs','hof','carls','burg','lambertus','rhein','tower','media','heinrich','arena']:['tokyo','kobogen','konigs','hof','carls','burg','lambertus','rhein','tower','media'];
- const coords=routeIds.map(id=>points.find(p=>p.id===id)).filter(Boolean).map(p=>[p.lat,p.lon]); if(coords.length>1){const line=L.polyline(coords,{color:'#111',weight:4,opacity:.72,dashArray:'8 7'}).addTo(mapObj);routeLayers.push(line);}
- if(filter==='sabado'){const ar=['hotel','heinrich','arena'].map(id=>points.find(p=>p.id===id)).map(p=>[p.lat,p.lon]);const line=L.polyline(ar,{color:'#c8102e',weight:5,opacity:.85}).addTo(mapObj);routeLayers.push(line);}
- const visible=arr.map(p=>[p.lat,p.lon]); if(visible.length) mapObj.fitBounds(visible,{padding:[35,35]});
- document.getElementById('btnTodo').classList.toggle('active',filter==='todo');document.getElementById('btnSabado').classList.toggle('active',filter==='sabado');document.getElementById('btnOpciones').classList.toggle('active',filter==='opciones');
+const CATCOL={red:'#c8102e',yellow:'#f4c300',green:'#177245',blue:'#1769aa',purple:'#7a3fc8',pink:'#e0529c',black:'#111'};
+const CATLABEL={red:'🍴 Comida / cerveza',yellow:'🏛️ Cultura',green:'🌳 Parque',blue:'🌊 Río / mirador',purple:'🏙️ Arquitectura',pink:'🎤 Ocio / concierto',black:'🚉 Transporte / hotel'};
+let visto={}; try{visto=JSON.parse(localStorage.getItem('bsb26_mapa_visto'))||{};}catch(e){}
+function saveVisto(){try{localStorage.setItem('bsb26_mapa_visto',JSON.stringify(visto));}catch(e){}}
+
+const map=L.map('map',{zoomControl:true}).setView([51.227,6.772],13);L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap &copy; CARTO'}).addTo(map);
+const layers={centro:L.layerGroup().addTo(map),rin:L.layerGroup().addTo(map),todo:L.layerGroup()};
+function markerIcon(p){
+  const col=CATCOL[p.cat]||'#111';
+  const seen=!!visto[p.id];
+  const badge= seen ? '<div style="position:absolute;top:-5px;right:-5px;width:15px;height:15px;border-radius:50%;background:#177245;border:2px solid #fff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:900">✓</div>' : '';
+  return L.divIcon({className:'custom-pin',html:`<div style="position:relative;width:26px;height:26px"><div style="width:26px;height:26px;border-radius:50%;background:${col};border:3px solid #fff;box-shadow:0 2px 8px #0006;${seen?'opacity:.45':''}"></div>${badge}</div>`,iconSize:[26,26],iconAnchor:[13,13]});
 }
-function list(){document.getElementById('placeList').innerHTML=points.map((p,i)=>`<div style="padding:6px 0;border-bottom:1px solid #eee"><b>${i+1}. ${p.name}</b> · ${p.time}</div>`).join('');}
-function init(){if(mapObj)return;if(!window.L){document.getElementById('mapLoading').style.display='none';document.getElementById('mapFallback').style.display='block';return;} mapObj=L.map('map',{zoomControl:true,scrollWheelZoom:true}).setView([51.227,6.772],13);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(mapObj);document.getElementById('mapShell').classList.add('map-loaded');show('todo');setTimeout(()=>mapObj.invalidateSize(),300);}
-document.getElementById('btnTodo').onclick=()=>show('todo');document.getElementById('btnSabado').onclick=()=>show('sabado');document.getElementById('btnOpciones').onclick=()=>show('opciones');list();
-window.addEventListener('load',init);setTimeout(()=>{if(!mapObj && window.L)init()},900);
-</script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-(function(){
-  function startMap(){
-    if(window.L){ init(); }
-    else { document.getElementById('mapLoading').textContent='🗺️ No se ha podido cargar el mapa. Comprueba la conexión.'; document.getElementById('mapFallback').style.display='block'; }
-  }
-  if(window.L) startMap(); else window.addEventListener('load',startMap,{once:true});
-})();
+function popupHtml(p){
+  const seen=!!visto[p.id];
+  const label=CATLABEL[p.cat]||'';
+  return `<div class="popup-title">${p.name}</div><div class="popup-time">${label}${p.dur?(' · ⏱️ '+p.dur):''}</div><div>${p.text}</div><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.gm)}" target="_blank">📍 Abrir en Google Maps</a><button onclick="toggleVisto('${p.id}')" style="display:block;width:100%;margin-top:8px;padding:9px;border-radius:9px;border:0;font-weight:800;background:${seen?'#177245':'#111'};color:#fff">${seen?'✓ Visto':'Marcar como visto'}</button>`;
+}
+const markers={};
+points.forEach((p)=>{
+  const m=L.marker([p.lat,p.lon],{icon:markerIcon(p)}).bindPopup(popupHtml(p));
+  m.on('click',()=>document.getElementById('mapInfo').innerHTML=`<b>${p.name}</b><div class="small" style="margin-top:5px"><b>${CATLABEL[p.cat]||''}${p.dur?(' · '+p.dur):''}</b><br>${p.text}</div>`);
+  markers[p.id]=m;
+  if(p.group==='centro'){m.addTo(layers.centro);m.addTo(layers.todo)}else if(p.group==='rin'){m.addTo(layers.rin);m.addTo(layers.todo)}else m.addTo(layers.todo);
+});
+function toggleVisto(id){
+  visto[id]=!visto[id]; saveVisto();
+  const p=points.find(x=>x.id===id); const m=markers[id];
+  if(m && p){ m.setIcon(markerIcon(p)); m.setPopupContent(popupHtml(p)); m.openPopup(); }
+  updateVistoCounter();
+}
+function updateVistoCounter(){
+  const el=document.getElementById('vistoCounter'); if(!el) return;
+  const total=points.filter(p=>p.dur || p.cat!=='black').length;
+  const seen=points.filter(p=>(p.dur||p.cat!=='black') && visto[p.id]).length;
+  el.textContent = seen>0 ? `✓ ${seen} de ${total} lugares marcados como vistos` : '';
+}
+updateVistoCounter();
+const cityRouteIds=['tokyo','ko','konigs','carls','burg','rhein','tower','media'];
+const cityRoute=cityRouteIds.map(id=>{const p=points.find(x=>x.id===id);return [p.lat,p.lon]});
+const arenaRoute=['hotel','heinrich','arena'].map(id=>{const p=points.find(x=>x.id===id);return [p.lat,p.lon]});
+function drawWalkRoute(coords,color,fallback,onDone){
+  const osrmCoords=coords.map(c=>c[1]+','+c[0]).join(';');
+  fetch('https://router.project-osrm.org/route/v1/foot/'+osrmCoords+'?overview=full&geometries=geojson')
+    .then(r=>r.json())
+    .then(d=>{
+      if(d.routes && d.routes[0]){
+        const line=d.routes[0].geometry.coordinates.map(c=>[c[1],c[0]]);
+        L.polyline(line,{color:color,weight:4,opacity:.8,lineJoin:'round'}).addTo(map);
+        if(onDone) onDone(d.routes[0].distance, d.routes[0].duration);
+      } else { fallback(); }
+    })
+    .catch(()=>{ fallback(); });
+}
+function showRouteSummary(km,min){
+  const box=document.getElementById('routeSummary');
+  if(!box) return;
+  box.innerHTML=`<b>🚶 Resumen de la ruta por la ciudad</b><div class="small" style="margin-top:6px">${cityRouteIds.length} paradas · <b>${km} km</b> a pie · <b>${min}</b> caminando (sin contar visitas)</div>`;
+}
+drawWalkRoute(cityRoute,'#111',()=>L.polyline(cityRoute,{color:'#111',weight:4,opacity:.7,dashArray:'8 7'}).addTo(map),(dist,dur)=>{
+  showRouteSummary((dist/1000).toFixed(1), Math.round(dur/60)+' min');
+});
+drawWalkRoute(arenaRoute,'#c8102e',()=>L.polyline(arenaRoute,{color:'#c8102e',weight:4,opacity:.75}).addTo(map));
+function focusGroup(group){['centro','rin','todo'].forEach(x=>{const b=document.getElementById('btn'+x.charAt(0).toUpperCase()+x.slice(1));if(b)b.classList.remove('active')});const b=document.getElementById('btn'+group.charAt(0).toUpperCase()+group.slice(1));if(b)b.classList.add('active');Object.values(layers).forEach(l=>{if(map.hasLayer(l))map.removeLayer(l)});layers[group].addTo(map);const visible=points.filter(p=>p.group===group||group==='todo').map(p=>[p.lat,p.lon]);if(visible.length)map.fitBounds(visible,{padding:[35,35]});setTimeout(()=>map.invalidateSize(),100)}
+focusGroup('centro');
 </script></body></html>
