@@ -1,4 +1,4 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111111"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""><title>Mapa · BSB26 Düsseldorf</title></head><body><div class="wrap"><header><h1>🗺️ MAPA<br>BSB26</h1><div class="sub">Puntos interesantes + recorrido del viaje</div></header><main><div class="quick"><a href="index.html">📅 Itinerario</a><a href="mapa.html">🗺️ Mapa</a><a href="transporte.html">🚆 Transporte</a><a href="fotos.html">📸 Fotos</a><a href="documentos.html">📄 Documentos</a><a href="recuerdo.html" class="highlight">🎟️ Recuerdo</a></div><a class="back" href="index.html">← Volver al itinerario</a><div class="notice"><b>Mapa interactivo.</b> Aquí ya no son solo puntos sueltos: puedes moverte por Düsseldorf, acercar/alejar y tocar cada lugar para ver qué es y cuándo encaja.</div><div class="map-shell"><div id="map" class="map"></div><div class="map-tools"><button id="btnCentro" class="active" onclick="focusGroup('centro')">🏙️ Centro</button><button id="btnRin" onclick="focusGroup('rin')">🌊 Rin</button><button id="btnTodo" onclick="focusGroup('todo')">📍 Todo</button></div><div class="legend"><span>🔴 Comida/cerveza</span><span>🟡 Cultura</span><span>🟢 Parque</span><span>🔵 Río/mirador</span><span>🟣 Arquitectura</span><span>🩷 Ocio/concierto</span><span>⚫ Transporte/hotel</span></div><div id="vistoCounter" class="small" style="padding:6px 2px 0;color:#177245;font-weight:800"></div></div><div id="mapInfo" class="card"><b>Explora el mapa</b><div class="small">Hay más puntos para aprovechar los huecos del sábado y la mañana del domingo.</div></div><div id="routeSummary" class="card ok"><b>🚶 Resumen de la ruta por la ciudad</b><div class="small" style="margin-top:6px">Calculando distancia y tiempo a pie…</div></div><div class="grid2"><a class="btn red" href="https://www.google.com/maps/dir/HK+Hotel+D%C3%BCsseldorf+City%2C+Varnhagenstr.+37%2C+40225+D%C3%BCsseldorf/Heinrich-Heine-Allee%2C+D%C3%BCsseldorf/MERKUR+SPIEL-ARENA+D%C3%BCsseldorf" target="_blank">🚇 Hotel → Arena</a><a class="btn yellow" href="https://www.google.com/maps/dir/Heinrich-Heine-Allee%2C+D%C3%BCsseldorf/Immermannstra%C3%9Fe+D%C3%BCsseldorf/K%C3%B6-Bogen+II/Carlsplatz/Burgplatz+D%C3%BCsseldorf/Rheinturm/MedienHafen+D%C3%BCsseldorf" target="_blank">🚶 Ruta por la ciudad</a></div></main></div><nav class="bottom"><a href="index.html">📅<br>Itinerario</a><a class="active" href="mapa.html">🗺️<br>Mapa</a><a href="transporte.html">🚆<br>Transporte</a><a href="documentos.html">📄<br>Documentos</a></nav><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script><script>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111111"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""><title>Mapa · BSB26 Düsseldorf</title></head><body><div class="wrap"><header><h1>🗺️ MAPA<br>BSB26</h1><div class="sub">Puntos interesantes + recorrido del viaje</div></header><main><div class="quick"><a href="index.html">📅 Itinerario</a><a href="mapa.html">🗺️ Mapa</a><a href="transporte.html">🚆 Transporte</a><a href="fotos.html">📸 Fotos</a><a href="documentos.html">📄 Documentos</a><a href="recuerdo.html" class="highlight">🎟️ Recuerdo</a></div><a class="back" href="index.html">← Volver al itinerario</a><div class="notice"><b>Mapa interactivo.</b> Aquí ya no son solo puntos sueltos: puedes moverte por Düsseldorf, acercar/alejar y tocar cada lugar para ver qué es y cuándo encaja.</div><div class="map-shell"><div id="map" class="map"></div><div class="map-tools"><button id="btnCentro" class="active" onclick="focusGroup('centro')">🏙️ Centro</button><button id="btnRin" onclick="focusGroup('rin')">🌊 Rin</button><button id="btnTodo" onclick="focusGroup('todo')">📍 Todo</button></div><div class="legend"><span>🔴 Comida/cerveza</span><span>🟡 Cultura</span><span>🟢 Parque</span><span>🔵 Río/mirador</span><span>🟣 Arquitectura</span><span>🩷 Ocio/concierto</span><span>⚫ Transporte/hotel</span></div><div id="vistoCounter" class="small" style="padding:6px 2px 0;color:#177245;font-weight:800"></div><div id="syncStatus" class="small" style="padding:2px 2px 0;color:#999"></div></div><div id="mapInfo" class="card"><b>Explora el mapa</b><div class="small">Hay más puntos para aprovechar los huecos del sábado y la mañana del domingo.</div></div><div id="routeSummary" class="card ok"><b>🚶 Resumen de la ruta por la ciudad</b><div class="small" style="margin-top:6px">Calculando distancia y tiempo a pie…</div></div><div class="grid2"><a class="btn red" href="https://www.google.com/maps/dir/HK+Hotel+D%C3%BCsseldorf+City%2C+Varnhagenstr.+37%2C+40225+D%C3%BCsseldorf/Heinrich-Heine-Allee%2C+D%C3%BCsseldorf/MERKUR+SPIEL-ARENA+D%C3%BCsseldorf" target="_blank">🚇 Hotel → Arena</a><a class="btn yellow" href="https://www.google.com/maps/dir/Heinrich-Heine-Allee%2C+D%C3%BCsseldorf/Immermannstra%C3%9Fe+D%C3%BCsseldorf/K%C3%B6-Bogen+II/Carlsplatz/Burgplatz+D%C3%BCsseldorf/Rheinturm/MedienHafen+D%C3%BCsseldorf" target="_blank">🚶 Ruta por la ciudad</a></div></main></div><nav class="bottom"><a href="index.html">📅<br>Itinerario</a><a class="active" href="mapa.html">🗺️<br>Mapa</a><a href="transporte.html">🚆<br>Transporte</a><a href="documentos.html">📄<br>Documentos</a></nav><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script><script>
 const points=[
  {id:'hotel',name:'HK Hotel Düsseldorf City',lat:51.2097,lon:6.7815,cat:'black',dur:'',group:'centro',time:'Base del viaje',text:'Hotel · Varnhagenstr. 37 · 40225 Düsseldorf.',gm:'HK Hotel Düsseldorf City, Varnhagenstr. 37, 40225 Düsseldorf'},
  {id:'tokyo',name:'Little Tokyo · Immermannstraße',lat:51.2217,lon:6.7926,cat:'red',dur:'45 min',group:'centro',time:'Sábado · mañana',text:'Barrio japonés de Düsseldorf, con restaurantes y tiendas. Buen punto para empezar el recorrido y comer algo distinto.',gm:'Immermannstraße Düsseldorf'},
@@ -17,8 +17,37 @@ const points=[
 ];
 const CATCOL={red:'#c8102e',yellow:'#f4c300',green:'#177245',blue:'#1769aa',purple:'#7a3fc8',pink:'#e0529c',black:'#111'};
 const CATLABEL={red:'🍴 Comida / cerveza',yellow:'🏛️ Cultura',green:'🌳 Parque',blue:'🌊 Río / mirador',purple:'🏙️ Arquitectura',pink:'🎤 Ocio / concierto',black:'🚉 Transporte / hotel'};
+const FIREBASE_URL='https://bsb26-dusseldorf-default-rtdb.europe-west1.firebasedatabase.app';
 let visto={}; try{visto=JSON.parse(localStorage.getItem('bsb26_mapa_visto'))||{};}catch(e){}
-function saveVisto(){try{localStorage.setItem('bsb26_mapa_visto',JSON.stringify(visto));}catch(e){}}
+function saveVistoLocal(){try{localStorage.setItem('bsb26_mapa_visto',JSON.stringify(visto));}catch(e){}}
+function setSync(t,ok){const el=document.getElementById('syncStatus'); if(el){el.textContent=t; el.style.color = ok ? '#177245' : '#999';}}
+function redrawAllMarkers(){
+  points.forEach(p=>{const m=markers[p.id]; if(m){ m.setIcon(markerIcon(p)); m.setPopupContent(popupHtml(p)); }});
+  updateVistoCounter();
+}
+(function initSync(){
+  fetch(FIREBASE_URL+'/visto.json').then(r=>r.json()).then(remote=>{
+    if(remote){ visto=remote; saveVistoLocal(); if(window.markers) redrawAllMarkers(); }
+    setSync('☁️ Sincronizado con el grupo', true);
+  }).catch(()=>setSync('📴 Sin conexión — usando datos del móvil', false));
+  try{
+    const es=new EventSource(FIREBASE_URL+'/visto.json');
+    es.addEventListener('put', e=>{
+      const d=JSON.parse(e.data);
+      if(d.path==='/'){ visto = d.data || {}; } else { const key=d.path.replace('/',''); if(d.data===null) delete visto[key]; else visto[key]=d.data; }
+      saveVistoLocal(); redrawAllMarkers(); setSync('☁️ Sincronizado con el grupo', true);
+    });
+    es.addEventListener('patch', e=>{
+      const d=JSON.parse(e.data);
+      if(d.path==='/' && d.data && typeof d.data==='object'){ Object.assign(visto, d.data); }
+      saveVistoLocal(); redrawAllMarkers(); setSync('☁️ Sincronizado con el grupo', true);
+    });
+    es.onerror=()=>setSync('📴 Reconectando…', false);
+  }catch(e){ setSync('📴 Sin conexión — usando datos del móvil', false); }
+})();
+function syncVisto(id,val){
+  fetch(FIREBASE_URL+'/visto.json',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({[id]:val})}).catch(()=>{});
+}
 
 const map=L.map('map',{zoomControl:true}).setView([51.227,6.772],13);L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap &copy; CARTO'}).addTo(map);
 const layers={centro:L.layerGroup().addTo(map),rin:L.layerGroup().addTo(map),todo:L.layerGroup()};
@@ -41,7 +70,7 @@ points.forEach((p)=>{
   if(p.group==='centro'){m.addTo(layers.centro);m.addTo(layers.todo)}else if(p.group==='rin'){m.addTo(layers.rin);m.addTo(layers.todo)}else m.addTo(layers.todo);
 });
 function toggleVisto(id){
-  visto[id]=!visto[id]; saveVisto();
+  visto[id]=!visto[id]; saveVistoLocal(); syncVisto(id, visto[id]);
   const p=points.find(x=>x.id===id); const m=markers[id];
   if(m && p){ m.setIcon(markerIcon(p)); m.setPopupContent(popupHtml(p)); m.openPopup(); }
   updateVistoCounter();

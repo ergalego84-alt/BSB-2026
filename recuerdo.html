@@ -34,6 +34,7 @@
 <div class="notice warn" style="background:#fff3e0;border-color:#f0b24d"><b>⚠️ Nota técnica.</b> Las fotos solo viven en esta pestaña del navegador mientras la tenéis abierta — si recargáis la página, se pierden (hay que volver a añadirlas antes de descargar). Al crear el vídeo, el móvil os ofrecerá "Guardar vídeo" para añadirlo directamente a la galería; si vuestro navegador no lo permite (más probable en iPhones con iOS antiguo), se descargará igualmente a Archivos/Descargas, o podéis usar la imagen, que funciona siempre.</div>
 
 <div class="quickrow"><button onclick="setAll(true)">✅ Marcar todo</button><button onclick="setAll(false)">⬜ Vaciar</button></div>
+<div id="syncStatus" class="small" style="color:#999;margin:2px 0 4px"></div>
 
 <div class="canvas-wrap"><canvas id="recuerdoCanvas" width="1080" height="600"></canvas></div>
 <div class="modebtns">
@@ -65,10 +66,35 @@ const items=[
  {id:'flight-back',day:'DOMINGO 4',icon:'✈️',title:'Düsseldorf → Sevilla',place:'DUS → SVQ',time:'15:25–18:20',dur:'2 h 55 min',note:'Eurowings EW9568',tag:'Vuelo'}
 ];
 const PALETTE=['#c8102e','#1769aa','#177245','#f4c300','#7a3fc8','#c8102e','#1769aa','#177245','#f4c300','#7a3fc8','#c8102e','#1769aa','#177245'];
+const FIREBASE_URL='https://bsb26-dusseldorf-default-rtdb.europe-west1.firebasedatabase.app';
 const STORE_KEY='bsb26_recuerdo_checked';
 function loadChecked(){try{return JSON.parse(localStorage.getItem(STORE_KEY))||{}}catch(e){return {}}}
-function saveChecked(c){try{localStorage.setItem(STORE_KEY,JSON.stringify(c))}catch(e){}}
+function saveCheckedLocal(c){try{localStorage.setItem(STORE_KEY,JSON.stringify(c))}catch(e){}}
 let checked=loadChecked();
+function setSync(t,ok){const el=document.getElementById('syncStatus'); if(el){el.textContent=t; el.style.color = ok ? '#177245' : '#999';}}
+function syncChecked(id,val){
+  fetch(FIREBASE_URL+'/checked.json',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({[id]:val})}).catch(()=>{});
+}
+(function initSync(){
+  fetch(FIREBASE_URL+'/checked.json').then(r=>r.json()).then(remote=>{
+    if(remote){ checked=remote; saveCheckedLocal(checked); renderList(); draw(); }
+    setSync('☁️ Sincronizado con el grupo', true);
+  }).catch(()=>setSync('📴 Sin conexión — usando datos del móvil', false));
+  try{
+    const es=new EventSource(FIREBASE_URL+'/checked.json');
+    es.addEventListener('put', e=>{
+      const d=JSON.parse(e.data);
+      if(d.path==='/'){ checked = d.data || {}; } else { const key=d.path.replace('/',''); if(d.data===null) delete checked[key]; else checked[key]=d.data; }
+      saveCheckedLocal(checked); renderList(); draw(); setSync('☁️ Sincronizado con el grupo', true);
+    });
+    es.addEventListener('patch', e=>{
+      const d=JSON.parse(e.data);
+      if(d.path==='/' && d.data && typeof d.data==='object'){ Object.assign(checked, d.data); }
+      saveCheckedLocal(checked); renderList(); draw(); setSync('☁️ Sincronizado con el grupo', true);
+    });
+    es.onerror=()=>setSync('📴 Reconectando…', false);
+  }catch(e){ setSync('📴 Sin conexión — usando datos del móvil', false); }
+})();
 let photos={}; // id -> dataURL (session only, not persisted: can be heavy)
 let imgCache={}; // id -> Image object, preloaded
 
@@ -125,8 +151,8 @@ function renderList(){
   });
   wrap.innerHTML=html;
 }
-function toggle(id,val){checked[id]=val;saveChecked(checked);draw();}
-function setAll(val){items.forEach(it=>checked[it.id]=val);saveChecked(checked);renderList();draw();}
+function toggle(id,val){checked[id]=val;saveCheckedLocal(checked);syncChecked(id,val);draw();}
+function setAll(val){items.forEach(it=>checked[it.id]=val);saveCheckedLocal(checked);fetch(FIREBASE_URL+'/checked.json',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(checked)}).catch(()=>{});renderList();draw();}
 
 const cv=document.getElementById('recuerdoCanvas');
 const ctx=cv.getContext('2d');
