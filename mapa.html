@@ -49,7 +49,7 @@ function syncVisto(id,val){
   fetch(FIREBASE_URL+'/visto.json',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({[id]:val})}).catch(()=>{});
 }
 
-const map=L.map('map',{zoomControl:true}).setView([51.227,6.772],13);L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap &copy; CARTO'}).addTo(map);
+const map=L.map('map',{zoomControl:true}).setView([51.227,6.772],13);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
 const layers={centro:L.layerGroup().addTo(map),rin:L.layerGroup().addTo(map),todo:L.layerGroup()};
 function markerIcon(p){
   const col=CATCOL[p.cat]||'#111';
